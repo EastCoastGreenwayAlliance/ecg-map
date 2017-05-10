@@ -4,12 +4,12 @@
 --------------------------------------------------------------------------------
 
 -- Data files: unzipped original KMZ files, uploaded to CARTO
---  ecglines
---  ecgpoints
+--  ecglines_raw
+--  ecgpoints_raw
 --  route_options (note: lines 44-46 in the original CSV contain unescaped quotes
 --      in the name field. modify field to remove quotes before upload)
 
--- Modify the data types imported as strings to numbers in route-options
+-- Modify the data imported as strings to numbers in route-options
 -- I just changed fields in the UI: is_north, north_weight, and south_weight
 
 -- north_weight and south_weight look like the cleanest definition of route direction
