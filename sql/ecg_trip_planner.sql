@@ -3,6 +3,20 @@
 -- Assumes PostgreSQL / PostGIS hosted by CARTO
 --------------------------------------------------------------------------------
 
+-- Order cue points by nearest neighbor using a cartodb_id to identify a starting cue point
+-- and filtering out subset of cue points by bbox
+-- TO DO: bbox isn't precise enough to correctly choose an exact starting & ending cue point
+-- this example is for heading north from Savannah to Charleston
+SELECT *
+FROM ecgpoints_clean a
+WHERE the_geom && ST_MakeEnvelope(-81.287842,31.938178,-79.790955,32.953368)
+AND a.north_cue != ''
+ORDER BY a.the_geom <-> (
+  SELECT b.the_geom
+  FROM ecgpoints_clean b
+  WHERE b.cartodb_id = 5464
+);
+
 --- In order to query a portion of the ECG Route, the data needs to be aggregated
 -- merge the entire ecg route into a single line
 SELECT ST_MakeLine(
