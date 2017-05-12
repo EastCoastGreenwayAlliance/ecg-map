@@ -169,6 +169,7 @@ select ST_StartPoint(geom_linestring) startnode,
     cartodb_id, pline_id, direction  
 FROM ecglines_topo
 
+-- Try to snap lines to either start or end nodes
 SELECT b.pline_id, ST_Snap(geom_linestring, a.reference, 10) as the_geom
 FROM ecglines_topo b, 
 ( SELECT ST_Collect(ST_StartPoint(geom_linestring)) reference FROM ecglines_topo
@@ -177,7 +178,7 @@ FROM ecglines_topo b,
 WHERE b.direction = 'N'
 OR b.direction = 'B'
 
--- This led to a dead end. I don't think this topology can be cleaned
+-- This led to a dead end. I'll try to come up with an alternative approach
 
 
 --==================================================================
