@@ -36,9 +36,9 @@ The routing system makes strong use of whether the route is heading north or sou
 * `direction1` -- *When joined to a line as `pline_id`* whether this cue point is to be included in northbound routes (N), southbound routes (S), or both (B).
 * `direction2` -- *When joined to a line as `pline_id2`* whether this cue point is to be included in northbound routes (N), southbound routes (S), or both (B).
 * `n_turn_type` -- When making a north-bound route, this briefly describes the turn to be made, e.g. "Turn right"
-    * Not used for anything?
+    * Normalized domain text, used for categorizing the type/degree of a cue point e.g. potential iconography.
 * `s_turn_type` -- When making a south-bound route, this briefly describes the turn to be made, e.g. "Turn right"
-    * Not used for anything?
+    * Normalized domain text, used for categorizing the type/degree of a cue point e.g. potential iconography.
 * `north_cue` -- When making a north-bound route, this verbosely describes the turn to be made, e.g. "Turn right onto 123rd Street"
 * `south_cue` -- When making a south-bound route, this verbosely describes the turn to be made, e.g. "Turn right onto 123rd Street"
 * `one_way` -- Whether this is a one-way path or street.
