@@ -1,0 +1,45 @@
+The following line segments do not exist in ecglines
+but are referenced as the pline_id or pline_id2 in a ecgpoints.
+
+As such, following lines by their ID has "breaks" where it would be impossible to route.
+
+1114702
+1124097
+653839
+657233
+657285
+657712
+657864
+661956
+661957
+681826
+681829
+687025
+687026
+687513
+687538
+687582
+687590
+780320
+780321
+780403
+780404
+781335
+928675
+928686
+928692
+928693
+928975
+
+One specific case:
+
+Line with pline_id=1117628 is US17 aka Ocean Hwy
+This connects via cue point 234980 to Drigger Blvd at its southern end
+At its northern end, the line ends at pline 687562 (Ft King George Dr)
+However, there is no node here judging by the IDs.
+
+Cue point 39551 appears to be the intersection of the two, with its coordinates and directions matching this location.
+However, it connects lines 687562 (Ft King George) with 687538 (does not exist).
+I would expect 39551 to connect 687562 and 1117628
+
+Visual location of this break is -81.435363 31.368478
