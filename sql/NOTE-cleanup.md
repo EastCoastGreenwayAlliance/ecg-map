@@ -2,10 +2,10 @@
 
 Some to-do items as part of the cleanup process.
 
-- [ ] Address non-unique lines. See `NOTE-nonunique_pline_id.md`
+- [x] Address non-unique lines. See `NOTE-nonunique_pline_id.md`
     * See `ecglines_clean_unique` table.
 
-- [ ] Address non-unique cue points. See `NOTE-nonunique_cuepoints.md`
+- [x] Address non-unique cue points. See `NOTE-nonunique_cuepoints.md`
     * See `ecgpoints_clean_unique` table.
 
 - [ ] Remove the `case_1` field, which indicates opportunities for cleanup or adjustment. (not sure the origin of this field)
@@ -17,6 +17,8 @@ Some to-do items as part of the cleanup process.
 - [ ] Lines: Remove `north_weight` and `south_weight` fields as they are not used here.
 
 - [ ] Lines: Rename `pline_id` to simply `id`
+
+- [ ] Points: Standardize `pline_id` and `pline_id2` to something more meaningful, if we can establish that there is an explicit meaning to the two fields.
 
 - [ ] Points: Remove `point_type` as it has only one vlaue.
     * Maybe this would make sense if non-directions cue points existed?

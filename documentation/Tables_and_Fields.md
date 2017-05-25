@@ -31,8 +31,10 @@ The routing system makes strong use of whether the route is heading north or sou
 * `case_1` -- A field tagging some points for extra attention and checkup, for quality control.
     * Not sure the nature of this followup.
     * Tagged for deletion, see cleanup doc under sql/
-* `pline_id` -- The ID# of the line to which this should be joined. This cue point will represent the northern end of the line.
-* `pline_id2` -- The ID# of the line to which this should be joined. This cue point will represent the southern end of the line.
+* `pline_id` -- The ID# of the line to which this should be joined.
+    * A cue point joins two lines. *It is unclear whether there is a reason/meaning between a line being connected a `pline_id` versus `pline_id2`*
+* `pline_id2` -- The ID# of the line to which this should be joined.
+    * A cue point joins two lines. *It is unclear whether there is a reason/meaning between a line being connected a `pline_id` versus `pline_id2`*
 * `direction1` -- *When joined to a line as `pline_id`* whether this cue point is to be included in northbound routes (N), southbound routes (S), or both (B).
 * `direction2` -- *When joined to a line as `pline_id2`* whether this cue point is to be included in northbound routes (N), southbound routes (S), or both (B).
 * `n_turn_type` -- When making a north-bound route, this briefly describes the turn to be made, e.g. "Turn right"
