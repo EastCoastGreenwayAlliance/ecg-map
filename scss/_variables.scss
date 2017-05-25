@@ -1,0 +1,17 @@
+// global sass variables go here
+// NOTE: media query breakpoints are located in skeleton/base/_variables.scss
+// to change them you'll either need to edit them there or override them in an import in skeleton/skeleton.scss
+// sample media queries are in skeleton/modules/media-queries.scss
+
+// sample color palette
+$black:           #231f20 !default;
+$blue:            #00aeef !default;
+$mid-blue:        #007cc3 !default;
+$orange:          #f58220 !default;
+$purple:          #1d3259 !default;
+$teal:            #008e9a !default;
+$light-grey:      #bababa !default;
+
+// component sizes
+$navbarHeight:  65px;
+$mapHeight:     calc(100% - #{$navbarHeight});

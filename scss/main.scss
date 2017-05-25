@@ -1,0 +1,18 @@
+// SASS port of Skeleton CSS framework,
+// see: http://getskeleton.com/ && https://github.com/WhatsNewSaes/Skeleton-Sass
+// this includes Normalize CSS
+@import 'skeleton/skeleton';
+
+// import Leaflet's CSS
+@import '~leaflet/dist/leaflet.css';
+
+// global variables: colors, etc.
+@import 'variables';
+
+// basic page layout
+@import 'layout';
+
+// styles for individual react components
+@import 'components/app';
+@import 'components/navbar';
+@import 'components/leaflet-map';

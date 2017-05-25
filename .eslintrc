@@ -1,0 +1,51 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "L": false,
+    "cartodb": false,
+    "cdb": false
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "spread": true,
+    }
+  },
+  "plugins": [
+    "babel"
+  ],
+  "rules": {
+    "arrow-body-style": ["error", "as-needed"],
+    "camelcase": 0,
+    "comma-dangle": 0,
+    "indent": [1, 2, { "SwitchCase": 1 }],
+    "jsx-a11y/no-static-element-interactions": 0,
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": true,
+      "optionalDependencies": false,
+      "peerDependencies": false
+      }],
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0,
+    "react/jsx-filename-extension": 0,
+    "react/no-array-index-key": 0,
+    "react/no-unescaped-entities": 0,
+    "react/no-unused-prop-types": 0,
+    "react/prefer-stateless-function": 0,
+    "semi": [2, "always"],
+    "space-before-function-paren": 0
+  },
+  "settings": {
+    "import/extensions": [".js"],
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    }
+  }
+}
