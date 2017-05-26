@@ -1,5 +1,6 @@
 .LeafletMap {
   height: $mapHeight;
+  z-index: 0;
 
   #map {
     height: 100%;

@@ -26,8 +26,21 @@ class LeafletMap extends Component {
   constructor(props) {
     super(props);
     const { lat, lng, zoom } = props;
+
+    this.baseLayers = {
+      positron: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>',
+        maxZoom: 18,
+      }),
+      satellite: L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '<a href="http://www.esri.com/">Esri</a>',
+        maxZoom: 18,
+      })
+    };
+
     this.mapOptions = {
       center: [lat, lng],
+      layers: [this.baseLayers.positron],
       zoom,
       zoomControl: false,
       scrollWheelZoom: false,
@@ -49,11 +62,9 @@ class LeafletMap extends Component {
 
   initMap() {
     this.map = L.map('map', this.mapOptions);
-    this.zoomControl = L.control.zoom({ position: 'topright' }).addTo(this.map);
-    this.basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>',
-    }).addTo(this.map);
+    this.layersControl = L.control.layers(this.baseLayers, null);
+    this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
+    this.layersControl.addTo(this.map, { position: 'topright' });
   }
 
   render() {
