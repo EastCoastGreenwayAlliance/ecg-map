@@ -12,7 +12,10 @@
 // basic page layout
 @import 'layout';
 
-// styles for individual react components
+// styles for react view components
+@import 'views/cue-sheet';
+
+// styles for other components
 @import 'components/app';
 @import 'components/not-found';
 @import 'components/navbar';

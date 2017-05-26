@@ -49,6 +49,8 @@ class LeafletMap extends Component {
       layers: [this.baseLayers.positron],
       maxBounds: [[18.312811, -110.830078], [53.278353, -45.351563]],
       scrollWheelZoom: false,
+      minZoom: 4,
+      maxZoom: 18,
       zoom: hashZXY.zoom || zoom,
       zoomControl: false,
     };
