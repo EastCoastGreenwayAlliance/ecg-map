@@ -1,0 +1,10 @@
+.SearchBox {
+  position: absolute;
+  top: $navbarHeight + 10px;
+  left: 10px;
+  z-index: 401;
+
+  input {
+    width: 250px;
+  }
+}
