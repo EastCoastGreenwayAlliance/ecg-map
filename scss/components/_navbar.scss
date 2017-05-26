@@ -1,6 +1,7 @@
 .Navbar {
   padding: 10px;
   height: $navbarHeight;
+  border-bottom: 1px solid $light-grey;
 
   h2 {
     text-align: left;

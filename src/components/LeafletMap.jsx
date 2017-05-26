@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as L from 'leaflet';
 
 import baseURL from '../common/config';
+import parseURLHash from '../common/api';
 
 // set default image paths for Leaflet
 // note the "gin-static-site-starter" as the first directory if NODE_ENV === production
@@ -27,6 +28,7 @@ class LeafletMap extends Component {
   constructor(props) {
     super(props);
     const { lat, lng, zoom } = props;
+    const hashZXY = parseURLHash();
 
     this.baseLayers = {
       positron: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
@@ -40,11 +42,15 @@ class LeafletMap extends Component {
     };
 
     this.mapOptions = {
-      center: [lat, lng],
+      center: [
+        hashZXY.lat && hashZXY.lng ? hashZXY.lat : lat,
+        hashZXY.lat && hashZXY.lng ? hashZXY.lng : lng,
+      ],
       layers: [this.baseLayers.positron],
-      zoom,
-      zoomControl: false,
+      maxBounds: [[18.312811, -110.830078], [53.278353, -45.351563]],
       scrollWheelZoom: false,
+      zoom: hashZXY.zoom || zoom,
+      zoomControl: false,
     };
   }
 

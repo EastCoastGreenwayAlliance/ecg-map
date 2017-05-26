@@ -32,7 +32,12 @@ class App extends Component {
       <div className="App">
         <NavBar />
         <SearchBox />
-        <LeafletMap lat={36.897} lng={-74.619} zoom={5} onMapMove={this.updateHash} />
+        <LeafletMap
+          lat={36.897}
+          lng={-74.619}
+          zoom={5}
+          onMapMove={this.updateHash}
+        />
       </div>
     );
   }
