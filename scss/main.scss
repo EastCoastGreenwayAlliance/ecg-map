@@ -14,10 +14,10 @@
 
 // styles for react view components
 @import 'views/cue-sheet';
+@import 'views/app';
+@import 'views/not-found';
 
 // styles for other components
-@import 'components/app';
-@import 'components/not-found';
 @import 'components/navbar';
 @import 'components/search-box';
 @import 'components/leaflet-map';
