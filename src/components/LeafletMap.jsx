@@ -21,6 +21,7 @@ class LeafletMap extends Component {
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
+    onMapMove: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -61,10 +62,20 @@ class LeafletMap extends Component {
   }
 
   initMap() {
+    const { onMapMove } = this.props;
     this.map = L.map('map', this.mapOptions);
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
     this.layersControl.addTo(this.map, { position: 'topright' });
+
+    // update the URL hash with zoom, lat, lng
+    this.map.on('moveend', (e) => {
+      if (e && e.target) {
+        const zoom = e.target.getZoom();
+        const latLng = e.target.getCenter();
+        onMapMove(latLng.lat, latLng.lng, zoom);
+      }
+    });
   }
 
   render() {
