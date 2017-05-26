@@ -2,18 +2,20 @@ import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import store from './store';
-
-// tell webpack to use our scss
-import '../scss/main.scss';
+import '../scss/main.scss'; // tell webpack to use our scss
+import store from './store'; // default redux store
 import App from './views/App';
+import NotFound from './views/404';
 
 render(
   <Provider store={store}>
     <Router>
-      <Route exact path="/" component={App} />
+      <Switch>
+        <Route exact path="/" component={App} />
+        <Route component={NotFound} />
+      </Switch>
     </Router>
   </Provider>,
   document.getElementById('root')
