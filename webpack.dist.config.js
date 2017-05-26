@@ -15,6 +15,12 @@ const VENDOR_LIBS = [
   'babel-polyfill',
   'react',
   'react-dom',
+  'react-redux',
+  'react-router-dom',
+  'redux',
+  'redux-logger',
+  'redux-responsive',
+  'redux-thunk',
   'prop-types',
   'leaflet',
   'lodash/debounce'
