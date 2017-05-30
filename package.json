@@ -23,7 +23,6 @@
   "homepage": "https://github.com/EastCoastGreenwayAlliance/ecg-map#readme",
   "dependencies": {
     "babel-polyfill": "^6.23.0",
-    "leaflet": "^1.0.3",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",

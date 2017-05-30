@@ -21,7 +21,6 @@ const VENDOR_LIBS = [
   'redux-responsive',
   'redux-thunk',
   'prop-types',
-  'leaflet',
   'lodash/debounce'
 ];
 

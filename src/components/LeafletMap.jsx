@@ -1,21 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as L from 'leaflet';
 
-import { baseURL } from '../common/config';
 import parseURLHash from '../common/api';
 
-// set default image paths for Leaflet
-// note the "gin-static-site-starter" as the first directory if NODE_ENV === production
-// this is because Github Pages will be looking for the markers at:
-// https://greeninfo-network.github.io/gin-static-site-starter/assets/icons/<filename>.png
-// while locally it will be localhost:8080/assets/icons/<filename>.png
-L.Icon.Default.imagePath = '../../';
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: `${baseURL}assets/icons/marker-icon-2x.png`,
-  iconUrl: `${baseURL}assets/icons/marker-icon.png`,
-  shadowUrl: `${baseURL}assets/icons/marker-shadow.png`,
-});
 
 class LeafletMap extends Component {
   static propTypes = {
