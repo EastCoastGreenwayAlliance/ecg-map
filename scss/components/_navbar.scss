@@ -3,9 +3,9 @@
   height: $navbarHeight;
   border-bottom: 1px solid $light-grey;
 
-  h2 {
-    text-align: left;
-    color: $black;
-    margin-bottom: 0;
+  .ecg-logo {
+    width: 163px;
+    height: 85px;
+    background-image: url('/assets/logo/logo-ecg.png');
   }
 }
