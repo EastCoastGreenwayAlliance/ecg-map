@@ -4,15 +4,19 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import { baseURL } from './common/config';
+
 import '../scss/main.scss'; // tell webpack to use our scss
 import store from './store'; // default redux store
 import App from './views/App';
 import CueSheet from './views/CueSheet';
 import NotFound from './views/404';
 
+const basename = baseURL || null;
+
 render(
   <Provider store={store}>
-    <Router>
+    <Router basename={`${basename}`}>
       <Switch>
         <Route exact path="/" component={App} />
         <Route path="/cuesheet" component={CueSheet} />

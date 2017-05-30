@@ -28,14 +28,15 @@ const VENDOR_LIBS = [
 module.exports = {
   entry: {
     bundle: './src/index.js',
-    vendor: VENDOR_LIBS
+    vendor: VENDOR_LIBS,
+    publicPath: '/'
   },
   cache: false,
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[chunkhash].js',
-    publicPath: '/'
+    publicPath: '/ecg-map/'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.geojson']
@@ -106,6 +107,9 @@ module.exports = {
       template: 'src/index.html'
     }),
     // tell Webpack to copy static assets (images, icons, etc.) to dist/
-    new CopyWebpackPlugin([{ from: 'assets/', to: 'assets/' }])
+    new CopyWebpackPlugin([
+      { from: 'assets/', to: 'assets/' },
+      { from: 'src/404.html', to: '404.html' }
+    ])
   ]
 };
