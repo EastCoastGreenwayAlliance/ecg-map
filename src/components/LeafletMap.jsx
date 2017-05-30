@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as L from 'leaflet';
 
-import baseURL from '../common/config';
+import { baseURL } from '../common/config';
 import parseURLHash from '../common/api';
 
 // set default image paths for Leaflet
