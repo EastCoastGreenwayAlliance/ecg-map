@@ -1,8 +1,11 @@
+import { cartoUser, routeSegmentsFieldsVisible } from './config';
+import cartocss from '../common/cartocss';
+
 export const noop = () => ({});
 
 const isNumber = val => val && typeof val === 'number';
 
-const parseURLHash = () => {
+export const parseURLHash = () => {
   // parses the URL hash to see if it contains zxy settings for the leaflet map
   // used to set the map's center and zoom on load
   const hash = window.location.hash;
@@ -21,4 +24,18 @@ const parseURLHash = () => {
   };
 };
 
-export default parseURLHash;
+// CARTO layer source object for use with carto(db).js
+export const cartoLayerSource = {
+  user_name: cartoUser,
+  type: 'cartodb',
+  sublayers: [{
+    sql: '',
+    cartocss,
+    interactivity: routeSegmentsFieldsVisible.join(',')
+  }]
+};
+
+export const configureLayerSource = (sql) => {
+  cartoLayerSource.sublayers[0].sql = sql;
+  return cartoLayerSource;
+};

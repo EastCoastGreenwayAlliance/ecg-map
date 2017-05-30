@@ -34,14 +34,3 @@ export const routeSegmentFieldsSQL = [
   'north_weight',
   'pline_id',
 ];
-
-// CARTO layer source object for use with carto(db).js
-export const cartoLayerSource = {
-  user_name: cartoUser,
-  type: 'cartodb',
-  sublayers: [{
-    sql: '',
-    cartocss: '',
-    interactivity: routeSegmentsFieldsVisible.join(',')
-  }]
-};

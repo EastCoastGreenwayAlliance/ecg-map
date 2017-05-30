@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import parseURLHash from '../common/api';
-
+import { configureLayerSource, parseURLHash } from '../common/api';
+import configureMapSQL from '../common/sqlQueries';
 
 class LeafletMap extends Component {
   static propTypes = {
@@ -17,14 +17,17 @@ class LeafletMap extends Component {
     const { lat, lng, zoom } = props;
     const hashZXY = parseURLHash();
 
+    this.map = null;
     this.baseLayers = {
       positron: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>',
         maxZoom: 18,
+        zIndex: 0,
       }),
       satellite: L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: '<a href="http://www.esri.com/">Esri</a>',
         maxZoom: 18,
+        zIndex: 0,
       })
     };
 
@@ -41,6 +44,9 @@ class LeafletMap extends Component {
       zoom: hashZXY.zoom || zoom,
       zoomControl: false,
     };
+
+    // reference to CARTO sublayer
+    this.cartoSubLayer = null;
   }
 
   componentDidMount() {
@@ -71,6 +77,37 @@ class LeafletMap extends Component {
         onMapMove(latLng.lat, latLng.lng, zoom);
       }
     });
+
+    this.initCartoLayer();
+  }
+
+  initCartoLayer() {
+    const self = this;
+    const layerSource = configureLayerSource(configureMapSQL());
+    const options = {
+      https: true,
+      infowindow: true,
+      legends: false,
+    };
+
+    // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
+    // this creates the crash data tile layer & utf grid for Leaflet
+    cartodb.createLayer(self.map, layerSource, options)
+      .addTo(self.map, 5) // 2nd param is layer z-index
+      .on('done', (layer) => {
+        self.cartoLayer = layer;
+        layer.on('error', (error) => { throw error; });
+        // layer.on('loading', () => self.props.dataLoading(true));
+        // layer.on('load', () => self.props.dataLoading(false));
+        // store a reference to the Carto SubLayer so we can act upon it later,
+        // mainly to update the SQL query based on filters applied by the user
+        self.cartoSubLayer = layer.getSubLayer(0);
+        // add tooltips to sublayer
+          // self.initCartoSubLayerTooltips();
+        // add infowindows to sublayer
+          // self.initCartoSubLayerInfowindows();
+      })
+      .on('error', (error) => { throw error; });
   }
 
   render() {
