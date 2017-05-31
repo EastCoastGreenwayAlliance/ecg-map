@@ -14,10 +14,6 @@ export const cartoTables = {
   cue_points: 'ecgpoints_clean_unique',
 };
 
-// CARTO SQL API endpoint
-export const cartoSQLQuery = query =>
-  `https://${cartoUser}.carto.com/api/v2/sql?q=${query}`;
-
 // route segment field names to appear within InfoWindows / PopUps
 export const routeSegmentsFieldsVisible = [
   'line_type',
@@ -35,3 +31,5 @@ export const routeSegmentFieldsSQL = [
   'north_weight',
   'pline_id',
 ];
+
+export const maxGeoBounds = [[18.312811, -110.830078], [53.278353, -45.351563]];

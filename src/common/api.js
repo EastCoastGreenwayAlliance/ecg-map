@@ -1,7 +1,7 @@
 import { cartoUser, routeSegmentsFieldsVisible } from './config';
 import cartocss from '../common/cartocss';
 
-export const noop = () => ({});
+const noop = () => ({});
 
 const isNumber = val => val && typeof val === 'number';
 
@@ -39,3 +39,7 @@ export const configureLayerSource = (sql) => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;
 };
+
+// CARTO SQL API endpoint
+export const cartoSQLQuery = query =>
+  `https://${cartoUser}.carto.com/api/v2/sql?q=${query}`;
