@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { configureLayerSource, parseURLHash } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
+import { maxGeoBounds } from '../common/config';
 
 class LeafletMap extends Component {
   static propTypes = {
@@ -20,7 +21,7 @@ class LeafletMap extends Component {
     this.map = null;
     this.baseLayers = {
       positron: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;<a href="https://carto.com/attribution">CARTO</a>',
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 18,
         zIndex: 0,
       }),
@@ -37,7 +38,7 @@ class LeafletMap extends Component {
         hashZXY.lat && hashZXY.lng ? hashZXY.lng : lng,
       ],
       layers: [this.baseLayers.positron],
-      maxBounds: [[18.312811, -110.830078], [53.278353, -45.351563]],
+      maxBounds: maxGeoBounds,
       scrollWheelZoom: false,
       minZoom: 4,
       maxZoom: 18,
