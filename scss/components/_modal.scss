@@ -1,0 +1,8 @@
+.Modal {
+  position: absolute;
+  left: 50%;
+  width: 700px;
+  height: auto;
+  transform: translate(-50%, $navbarHeight + 40px);
+  background-color: #fff;
+}

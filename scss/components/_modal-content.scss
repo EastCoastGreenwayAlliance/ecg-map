@@ -1,0 +1,62 @@
+.ModalContent {
+  position: relative;
+
+  .modal-content__close {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: auto;
+    font-size: 3em;
+    font-weight: normal;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+    border: 0;
+  }
+
+  .modal-content__top-box,
+  .modal-content__bottom-box {
+    padding: 25px 35px 25px 25px;
+  }
+
+  .modal-content__top-box {
+    color: #fff;
+    background: lighten($dark-grey, 10%);
+  }
+
+  .modal-content__greeting-copy {
+    margin-bottom: 0;
+  }
+
+  .modal-content__bottom-box {
+    .modal-content__signup-form {
+      display: inline-block;
+      margin-bottom: 0;
+      border: 1px solid lighten($dark-grey, 10%);
+    }
+
+    .signup-copy,
+    .signup-input,
+    .signup-submit {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .signup-copy {
+      width: 250px;
+    }
+
+    .signup-input {
+      width: 275px;
+    }
+
+    .signup-submit {
+      text-transform: none;
+      background: $green;
+      color: #fff;
+    }
+  }
+}
