@@ -35,10 +35,10 @@ class ModalContent extends Component {
     }
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit() {
+    // event.preventDefault();
+    this.setState({ submitted: true });
     this.props.handleCloseModal();
-    // to do: handle logic for form submission
   }
 
   render() {
@@ -62,10 +62,21 @@ class ModalContent extends Component {
         </div>
         <div className="modal-content__bottom-box">
           <p className="signup-copy">Sign up to receive Greenway map, event, & program updates.</p>
-          <form className="modal-content__signup-form" onSubmit={this.handleSubmit}>
+          <form
+            className="modal-content__signup-form"
+            onSubmit={this.handleSubmit}
+            action="https://greenway.us11.list-manage.com/subscribe/post"
+            method="POST"
+          >
+            <input type="hidden" name="u" value="1912b94880f9bb2c2834cbcf6" />
+            <input type="hidden" name="id" value="962cce34d4" />
             <input
               className="signup-input"
-              type="text"
+              type="email"
+              name="MERGE0"
+              id="MERGE0"
+              autoCapitalize="off"
+              autoCorrect="off"
               tabIndex={0}
               placeholder="email address"
               value={email}
