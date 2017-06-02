@@ -15,3 +15,4 @@ $dark-grey:          #333 !default;
 $navbarHeight:        105px;
 $navbarHeightMobile:  61px;
 $mapHeight:           calc(100% - #{$navbarHeight});
+$mapHeightMobile:     calc(100% - #{$navbarHeightMobile});

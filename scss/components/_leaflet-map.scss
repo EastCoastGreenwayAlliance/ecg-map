@@ -1,6 +1,10 @@
 .LeafletMap {
-  height: $mapHeight;
+  height: $mapHeightMobile;
   z-index: 0;
+
+  @media (#{$bp-larger-than-mobile}) {
+    height: $mapHeight;
+  }
 
   #map {
     height: 100%;
