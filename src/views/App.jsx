@@ -15,6 +15,7 @@ class App extends Component {
     location: PropTypes.object, // via react-router
     match: PropTypes.object, // via react-router
     staticContext: PropTypes.object, // via react-router
+    isMobile: PropTypes.bool,
   }
 
   constructor() {
@@ -39,10 +40,11 @@ class App extends Component {
 
   render() {
     const { showModal } = this.state;
+    const { isMobile } = this.props;
 
     return (
       <div className="App">
-        <NavBar />
+        <NavBar {...{ isMobile }} />
         <SearchBox />
         <LeafletMap
           lat={36.897}

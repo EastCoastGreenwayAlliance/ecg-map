@@ -8,7 +8,7 @@ import { baseURL } from './common/config';
 
 import '../scss/main.scss'; // tell webpack to use our scss
 import store from './store'; // default redux store
-import App from './views/App';
+import AppConnected from './containers/AppConnected';
 import CueSheet from './views/CueSheet';
 import NotFound from './views/404';
 
@@ -18,7 +18,7 @@ render(
   <Provider store={store}>
     <Router basename={`${basename}`}>
       <Switch>
-        <Route exact path="/" component={App} />
+        <Route exact path="/" component={AppConnected} />
         <Route path="/cuesheet" component={CueSheet} />
         <Route component={NotFound} />
       </Switch>

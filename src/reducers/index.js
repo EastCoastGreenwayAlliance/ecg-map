@@ -3,7 +3,7 @@ import { createResponsiveStateReducer } from 'redux-responsive';
 
 // breakpoints to match Skeleton CSS's
 const browser = createResponsiveStateReducer({
-  extraSmall: 400,
+  extraSmall: 420,
   small: 550,
   medium: 750,
   large: 1000,

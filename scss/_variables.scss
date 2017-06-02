@@ -12,5 +12,6 @@ $light-grey:      #bababa !default;
 $dark-grey:          #333 !default;
 
 // component sizes
-$navbarHeight:  105px;
-$mapHeight:     calc(100% - #{$navbarHeight});
+$navbarHeight:        105px;
+$navbarHeightMobile:  61px;
+$mapHeight:           calc(100% - #{$navbarHeight});

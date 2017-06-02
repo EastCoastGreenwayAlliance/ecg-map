@@ -1,8 +1,12 @@
 .SearchBox {
   position: absolute;
-  top: $navbarHeight + 10px;
+  top: $navbarHeightMobile + 10px;
   left: 10px;
   z-index: 401;
+
+  @media (#{$bp-larger-than-mobile}) {
+    top: $navbarHeight + 10px;
+  }
 
   input {
     width: 250px;

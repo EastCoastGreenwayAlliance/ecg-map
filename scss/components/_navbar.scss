@@ -1,9 +1,10 @@
 .Navbar {
   padding: 10px;
-  height: $navbarHeight;
   border-bottom: 1px solid $light-grey;
+  height: auto;
 
   .ecg-logo {
+    background-size: contain;
     width: 163px;
     height: 85px;
   }
