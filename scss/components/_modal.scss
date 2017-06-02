@@ -1,8 +1,13 @@
 .Modal {
   position: absolute;
   left: 50%;
-  width: 700px;
+  width: calc(100% - 20px);
   height: auto;
-  transform: translate(-50%, $navbarHeight + 40px);
+  transform: translate(-50%, 80px);
   background-color: #fff;
+
+  @media (#{$bp-larger-than-mobile}) {
+    width: 700px;
+    transform: translate(-50%, $navbarHeight + 40px);
+  }
 }

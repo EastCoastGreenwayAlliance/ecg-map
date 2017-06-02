@@ -9,15 +9,21 @@ class ModalContent extends Component {
   constructor() {
     super();
     this.state = {
+      noDisplayInFuture: false,
       email: '',
       valid: false,
       submitted: false,
     };
     this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleTextChange(event) {
+  componentWillUpdate() {
+    // TO DO: set localstorage to not show intro modal if noDisplayInFuture
+  }
+
+  handleTextChange() {
     event.preventDefault();
     const value = event.target.value;
 
@@ -35,15 +41,20 @@ class ModalContent extends Component {
     }
   }
 
+  handleCheckboxChange() {
+    this.setState({
+      noDisplayInFuture: !this.state.noDisplayInFuture
+    });
+  }
+
   handleSubmit() {
-    // event.preventDefault();
     this.setState({ submitted: true });
     this.props.handleCloseModal();
   }
 
   render() {
     const { handleCloseModal } = this.props;
-    const { email, valid } = this.state;
+    const { noDisplayInFuture, email, valid } = this.state;
 
     const buttonStyle = {
       background: valid ? '#65bf80' : 'hsl(0,0%,50%)',
@@ -61,7 +72,6 @@ class ModalContent extends Component {
           </h5>
         </div>
         <div className="modal-content__bottom-box">
-          <p className="signup-copy">Sign up to receive Greenway map, event, & program updates.</p>
           <form
             className="modal-content__signup-form"
             onSubmit={this.handleSubmit}
@@ -70,27 +80,52 @@ class ModalContent extends Component {
           >
             <input type="hidden" name="u" value="1912b94880f9bb2c2834cbcf6" />
             <input type="hidden" name="id" value="962cce34d4" />
-            <input
-              className="signup-input"
-              type="email"
-              name="MERGE0"
-              id="MERGE0"
-              autoCapitalize="off"
-              autoCorrect="off"
-              tabIndex={0}
-              placeholder="email address"
-              value={email}
-              onChange={this.handleTextChange}
-            />
-            <button
-              className="signup-submit"
-              tabIndex={0}
-              onClick={() => {}}
-              disabled={!valid}
-              style={buttonStyle}
-            >
-              { 'sign up' }
-            </button>
+            <fieldset className="email-signup-group">
+              <label
+                htmlFor="MERGE0"
+                className="signup-copy"
+              >
+                { 'Sign up to receive Greenway map, event, & program updates.' }
+              </label>
+              <div className="signup-input-button-group">
+                <input
+                  className="signup-input"
+                  type="email"
+                  name="MERGE0"
+                  id="MERGE0"
+                  autoCapitalize="off"
+                  autoCorrect="off"
+                  tabIndex={0}
+                  placeholder="email address"
+                  value={email}
+                  onChange={this.handleTextChange}
+                />
+                <button
+                  className="signup-submit"
+                  tabIndex={0}
+                  onClick={() => {}}
+                  disabled={!valid}
+                  style={buttonStyle}
+                >
+                  { 'sign up' }
+                </button>
+              </div>
+            </fieldset>
+            <fieldset className="hide-modal-group">
+              <input
+                className="hide-modal-checkbox"
+                id="hide-modal"
+                type="checkbox"
+                checked={noDisplayInFuture}
+                onChange={this.handleCheckboxChange}
+              />
+              <label
+                className="hide-modal-label"
+                htmlFor="hide-modal"
+              >
+                { 'Do not display this message in the future' }
+              </label>
+            </fieldset>
           </form>
         </div>
       </div>
