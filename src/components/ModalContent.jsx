@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { setStorageItem, getStorageItem } from '../utils/localStorage';
+
 class ModalContent extends Component {
   static propTypes = {
     handleCloseModal: PropTypes.func.isRequired,
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const showModal = getStorageItem('ecg-modal-form');
     this.state = {
-      noDisplayInFuture: false,
+      noDisplayInFuture: showModal || false,
       email: '',
       valid: false,
       submitted: false,
@@ -19,8 +22,17 @@ class ModalContent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentWillUpdate() {
-    // TO DO: set localstorage to not show intro modal if noDisplayInFuture
+  componentDidMount() {
+    const { noDisplayInFuture } = this.state;
+    // close the modal prematurely if user checked "don't show in the future"
+    if (noDisplayInFuture) this.props.handleCloseModal();
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    // set localstorage to not show intro modal if they checked "don't show in the future"
+    if (this.state.noDisplayInFuture !== nextState.noDisplayInFuture) {
+      setStorageItem('ecg-modal-form', nextState.noDisplayInFuture);
+    }
   }
 
   handleTextChange() {
