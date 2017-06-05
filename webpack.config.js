@@ -12,6 +12,7 @@ const extractSass = new ExtractTextPlugin({
 
 const VENDOR_LIBS = [
   'babel-polyfill',
+  'isomorphic-fetch',
   'react',
   'react-dom',
   'react-redux',
