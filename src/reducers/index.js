@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux';
 import { createResponsiveStateReducer } from 'redux-responsive';
 
+import geocodeReducer from './geocodeReducer';
+import routingReducer from './ecgRoutingReducer';
+
 // breakpoints to match Skeleton CSS's
 const browser = createResponsiveStateReducer({
   extraSmall: 420,
@@ -17,6 +20,8 @@ const browser = createResponsiveStateReducer({
 
 const rootReducer = combineReducers({
   browser,
+  geocoding: geocodeReducer,
+  routing: routingReducer,
 });
 
 export default rootReducer;

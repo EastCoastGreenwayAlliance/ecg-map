@@ -5,6 +5,8 @@ import packageJSON from '../../package.json';
 // then we need to add the sub-directory name
 export const baseURL = process.env.NODE_ENV === 'production' ? `/${packageJSON.name}` : '';
 
+export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
+
 // CARTO account name (temporarily set to "greeninfo" until data is in order)
 export const cartoUser = 'greeninfo';
 
