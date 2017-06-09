@@ -5,3 +5,4 @@ export {
   acceptRoutingLocation,
   cancelRoutingLocation
 } from './ecgRoutingActions';
+export postMailchimpAPI from './mailchimpActions';
