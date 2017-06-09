@@ -10,8 +10,9 @@ import {
 } from '../common/actionTypes';
 
 // we are about to make a GET request to geocode a location
-const locationGeocodeRequest = () => ({
+const locationGeocodeRequest = searchTerm => ({
   type: LOCATION_GEOCODE_REQUEST,
+  searchTerm
 });
 
 // we have JSON data representing the geocoded location

@@ -6,7 +6,8 @@ import {
 } from '../common/actionTypes';
 
 const defaultState = {
-  fetchingLocationGeocode: false,
+  isFetching: false,
+  searchTerm: '',
   result: null,
   error: null
 };
@@ -16,20 +17,21 @@ export default (state = defaultState, action) => {
     case LOCATION_GEOCODE_REQUEST:
       return {
         ...state,
-        fetchingLocationGeocode: true,
+        isFetching: true,
+        searchTerm: action.searchTerm
       };
 
     case LOCATION_GEOCODE_SUCESS:
       return {
         ...state,
-        fetchingLocationGeocode: false,
+        isFetching: false,
         result: action.json
       };
 
     case LOCATION_GEOCODE_ERROR:
       return {
         ...state,
-        fetchingLocationGeocode: false,
+        isFetching: false,
         error: action.error
       };
 
