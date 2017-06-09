@@ -2,7 +2,7 @@
 
 // Geocoding a search location
 export const LOCATION_GEOCODE_REQUEST = 'LOCATION_GEOCODE_REQUEST';
-export const LOCATION_GEOCODE_SUCESS = 'LOCATION_GEOCODE_SUCESS';
+export const LOCATION_GEOCODE_SUCCESS = 'LOCATION_GEOCODE_SUCCESS';
 export const LOCATION_GEOCODE_ERROR = 'LOCATION_GEOCODE_ERROR';
 
 // UX flow for accepting, setting, or canceling a routing location (start or end)

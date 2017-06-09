@@ -1,1 +1,1 @@
-export fetchLocationGeocode from './geocodeActions';
+export fetchLocationGeocode, { locationGeocodeError } from './geocodeActions';

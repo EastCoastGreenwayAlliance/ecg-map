@@ -5,7 +5,7 @@ import { googleAPIKey } from '../common/config';
 
 import {
   LOCATION_GEOCODE_REQUEST,
-  LOCATION_GEOCODE_SUCESS,
+  LOCATION_GEOCODE_SUCCESS,
   LOCATION_GEOCODE_ERROR,
 } from '../common/actionTypes';
 
@@ -17,12 +17,12 @@ const locationGeocodeRequest = searchTerm => ({
 
 // we have JSON data representing the geocoded location
 const locationGeocodeSuccess = json => ({
-  type: LOCATION_GEOCODE_SUCESS,
+  type: LOCATION_GEOCODE_SUCCESS,
   json
 });
 
 // we encountered an error geocoding the location
-const locationGeocodeError = error => ({
+export const locationGeocodeError = error => ({
   type: LOCATION_GEOCODE_ERROR,
   error
 });
@@ -32,14 +32,23 @@ const locationGeocodeError = error => ({
  * @param {string} location: A URI encoded string representing an address,
  *   e.g. "1600+Amphitheatre+Parkway,+Mountain+View,+CA"
 */
-const fetchLocationGeocode = (location) => {
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${googleAPIKey}`;
+const fetchLocationGeocode = (searchTerm) => {
+  const searchTermEncoded = encodeURIComponent(searchTerm);
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchTermEncoded}&key=${googleAPIKey}`;
 
   return (dispatch) => {
-    dispatch(locationGeocodeRequest());
+    dispatch(locationGeocodeRequest(searchTerm));
     return fetch(url)
       .then(res => res.json())
-      .then(json => dispatch(locationGeocodeSuccess(json)))
+      .then((json) => {
+        const { results, status } = json;
+        // catch a non-successful geocode result that was returned in the response
+        if (!results || !results.length || status !== 'OK') {
+          dispatch(locationGeocodeError('Address not found, please try again.'));
+        } else {
+          dispatch(locationGeocodeSuccess(results[0]));
+        }
+      })
       .catch(error => dispatch(locationGeocodeError(error)));
   };
 };
