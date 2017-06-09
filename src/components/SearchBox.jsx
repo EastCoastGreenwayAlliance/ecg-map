@@ -26,10 +26,10 @@ class SearchBox extends Component {
     e.preventDefault();
 
     if (searchAddress && searchAddress.length) {
+      this.props.fetchLocationGeocode(searchAddress);
       this.setState({
         searchAddress: ''
       });
-      this.props.fetchLocationGeocode(searchAddress);
     }
   }
 

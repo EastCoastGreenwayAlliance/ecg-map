@@ -3,7 +3,7 @@ import packageJSON from '../../package.json';
 // App wide configuration goes here
 // e.g. our app's base URL; if deployed on Github Pages as a Project Page
 // then we need to add the sub-directory name
-export const baseURL = process.env.NODE_ENV === 'production' ? `/${packageJSON.name}` : '';
+export const baseURL = process.env.NODE_ENV === 'production' ? `${packageJSON.name}` : '';
 
 export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
 

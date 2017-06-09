@@ -3,7 +3,19 @@ import PropTypes from 'prop-types';
 
 import { configureLayerSource, parseURLHash } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
-import { maxGeoBounds } from '../common/config';
+import { maxGeoBounds, baseURL } from '../common/config';
+
+// set default image paths for Leaflet
+// note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
+// this is because Github Pages will be looking for the markers at:
+// https://eastcoastgreenwayalliance.github.io/ecg-map/assets/icons/<filename>.png
+// while locally it will be localhost:8080/assets/icons/<filename>.png
+L.Icon.Default.imagePath = '../../assets/icons';
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: `${baseURL}/assets/icons/marker-icon-2x.png`,
+  iconUrl: `${baseURL}/assets/icons/marker-icon.png`,
+  shadowUrl: `${baseURL}/assets/icons/marker-shadow.png`,
+});
 
 class LeafletMap extends Component {
   static propTypes = {
@@ -11,6 +23,7 @@ class LeafletMap extends Component {
     lng: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
     onMapMove: PropTypes.func.isRequired,
+    geocodeResult: PropTypes.object,
   }
 
   constructor(props) {
@@ -48,14 +61,28 @@ class LeafletMap extends Component {
 
     // reference to CARTO sublayer
     this.cartoSubLayer = null;
+
+    // layer to store searchResults in when user is searching for a location
+    this.searchResults = L.featureGroup();
   }
 
   componentDidMount() {
     this.initMap();
   }
 
-  componentWillReceiveProps() {
-    // do stuff to the map from new props here
+  componentWillReceiveProps(nextProps) {
+    const { geocodeResult } = nextProps;
+
+    if (geocodeResult) {
+      const { geometry, addressFormatted } = geocodeResult;
+
+      // first clear the layers in case it's a new search result
+      this.searchResults.clearLayers();
+      // add the search result to the map
+      this.searchResults.addLayer(
+        L.marker([geometry.lat, geometry.lng]).bindPopup(addressFormatted)
+      );
+    }
   }
 
   shouldComponentUpdate() {
@@ -78,6 +105,8 @@ class LeafletMap extends Component {
         onMapMove(latLng.lat, latLng.lng, zoom);
       }
     });
+
+    this.searchResults.addTo(this.map);
 
     this.initCartoLayer();
   }
