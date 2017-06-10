@@ -2,13 +2,26 @@
   position: absolute;
   top: $navbarHeightMobile + 10px;
   left: 10px;
+  background: $transparent;
   z-index: 401;
 
   @media (#{$bp-larger-than-mobile}) {
     top: $navbarHeight + 10px;
   }
 
+  form {
+    margin-bottom: 15px;
+  }
+
   input {
-    width: 250px;
+    width: 280px;
+    margin: 0;
+    border: 0;
+  }
+
+  .searchbox__error-msg {
+    padding: 25px;
+    background: #fff;
+    color: red;
   }
 }

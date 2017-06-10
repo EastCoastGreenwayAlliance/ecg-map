@@ -33,6 +33,7 @@ export default (state = defaultState, action) => {
     case LOCATION_GEOCODE_SUCCESS:
       return {
         ...state,
+        error: null,
         isFetching: false,
         result: parseGeocodeResult(action.json)
       };
