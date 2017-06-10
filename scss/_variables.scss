@@ -15,5 +15,6 @@ $transparent:     rgba(255, 255, 255, 0);
 // component sizes
 $navbarHeight:        105px;
 $navbarHeightMobile:  61px;
+$searchboxHeightMobile: 45px;
 $mapHeight:           calc(100% - #{$navbarHeight});
-$mapHeightMobile:     calc(100% - #{$navbarHeightMobile});
+$mapHeightMobile:     calc(100% - #{$navbarHeightMobile} - #{$searchboxHeightMobile});

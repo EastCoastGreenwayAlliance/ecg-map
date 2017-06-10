@@ -1,4 +1,6 @@
 .LeafletMap {
+  // NOTE: may want to set map height via JS as the mobile height takes intoa account
+  // the SearchBox UI, and at some point in the UX flow the SearchBox is not displayed...
   height: $mapHeightMobile;
   z-index: 0;
 
@@ -9,11 +11,24 @@
   #map {
     height: 100%;
     width: 100%;
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
+    margin-top: $searchboxHeightMobile;
+
+    @media (#{$bp-larger-than-mobile}) {
+      margin-top: 0;
+    }
 
     .cartodb-logo {
       z-index: 100 !important;
     }
+
+    // div.leaflet-top.leaflet-right {
+    //   top: 45px;
+    //
+    //   @media (#{$bp-larger-than-mobile}) {
+    //     top: 0;
+    //   }
+    // }
   }
 }

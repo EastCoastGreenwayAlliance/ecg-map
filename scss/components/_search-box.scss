@@ -1,22 +1,38 @@
 .SearchBox {
   position: absolute;
-  top: $navbarHeightMobile + 10px;
-  left: 10px;
+  top: $navbarHeightMobile;
+  left: 0;
+  right: 0;
   background: $transparent;
   z-index: 401;
+  border-top: 1px solid $light-grey;
+  border-bottom: 1px solid $light-grey;
 
   @media (#{$bp-larger-than-mobile}) {
     top: $navbarHeight + 10px;
+    left: 10px;
+    right: initial;
+    border: 0;
   }
 
   form {
-    margin-bottom: 15px;
+    margin-bottom: 0;
+
+    @media (#{$bp-larger-than-mobile}) {
+      margin-bottom: 15px;
+    }
   }
 
   input {
-    width: 280px;
+    width: 100vw;
+    height: $searchboxHeightMobile;
     margin: 0;
     border: 0;
+
+    @media (#{$bp-larger-than-mobile}) {
+      width: 280px;
+      height: auto;
+    }
   }
 
   .searchbox__error-msg {

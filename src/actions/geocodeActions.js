@@ -34,7 +34,7 @@ export const locationGeocodeError = error => ({
 */
 const fetchLocationGeocode = (searchTerm) => {
   const searchTermEncoded = encodeURIComponent(searchTerm);
-  const viewportBias = '24.046464,-90.175781|48.224673,-58.666992';
+  const viewportBias = encodeURIComponent('24.046464,-90.175781|48.224673,-58.666992');
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchTermEncoded}&bounds=${viewportBias}&key=${googleAPIKey}`;
 
   return (dispatch) => {
