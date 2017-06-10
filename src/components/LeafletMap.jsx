@@ -10,7 +10,7 @@ import { maxGeoBounds, baseURL } from '../common/config';
 // this is because Github Pages will be looking for the markers at:
 // https://eastcoastgreenwayalliance.github.io/ecg-map/assets/icons/<filename>.png
 // while locally it will be localhost:8080/assets/icons/<filename>.png
-L.Icon.Default.imagePath = '../../assets/icons';
+L.Icon.Default.imagePath = `${baseURL}/assets/icons`;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: `${baseURL}/assets/icons/marker-icon-2x.png`,
   iconUrl: `${baseURL}/assets/icons/marker-icon.png`,
