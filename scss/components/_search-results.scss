@@ -1,7 +1,59 @@
 .SearchResults {
-  .searchbox__error-msg {
-    padding: 25px;
-    background: #fff;
+  margin-top: 0;
+
+  @media (#{$bp-larger-than-mobile}) {
+    margin-top: 15px;
+  }
+
+  p,
+  button {
+    // override Skeleton defaults
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 10px;
+    border: 0;
+    border-bottom: 1px solid $grey;
+    text-transform: none;
+    font-size: 1.4rem;
+    font-weight: normal;
+    line-height: normal;
+    white-space: normal;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &.center {
+      text-align: center;
+    }
+
+    &.green {
+      color: $green;
+    }
+
+    &.blue {
+      color: $blue;
+    }
+  }
+
+  p {
+    width: auto;
+    font-size: 1.6rem;
+
+    span {
+      &.bold {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .search-results__ui {
+    background-color: #fff;
+  }
+
+  .search-results__error-msg {
     color: red;
   }
 }

@@ -2,9 +2,9 @@
   form {
     margin-bottom: 0;
 
-    @media (#{$bp-larger-than-mobile}) {
-      margin-bottom: 15px;
-    }
+    // @media (#{$bp-larger-than-mobile}) {
+    //   margin-bottom: 15px;
+    // }
   }
 
   input {
@@ -14,7 +14,7 @@
     border: 0;
 
     @media (#{$bp-larger-than-mobile}) {
-      width: 280px;
+      width: 100%;
       height: auto;
     }
   }

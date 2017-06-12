@@ -28,9 +28,6 @@ class SearchInput extends Component {
 
     if (searchAddress && searchAddress.length) {
       this.props.fetchLocationGeocode(searchAddress);
-      this.setState({
-        searchAddress: ''
-      });
     }
   }
 
