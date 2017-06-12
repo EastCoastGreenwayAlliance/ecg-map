@@ -12,6 +12,7 @@ const mapStateToProps = ({ geocoding }) => {
   };
 };
 
+/** Connects the SearchBox to the Redux store & action creator functions */
 export default connect(mapStateToProps, {
   fetchLocationGeocode,
 })(SearchBox);
