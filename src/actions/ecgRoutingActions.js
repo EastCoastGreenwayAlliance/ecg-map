@@ -3,7 +3,13 @@ import {
   ACCEPT_ROUTING_LOCATION,
   SET_ROUTING_LOCATION,
   CANCEL_ROUTING_LOCATION,
+  ROUTING_LOCATION_ERROR,
 } from '../common/actionTypes';
+
+export const nearestSegmentError = error => ({
+  ROUTING_LOCATION_ERROR,
+  error
+});
 
 // app displays current routing location
 // @param { array } coords: lat, lng for start location

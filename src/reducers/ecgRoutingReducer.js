@@ -3,6 +3,7 @@ import {
   ACCEPT_ROUTING_LOCATION,
   SET_ROUTING_LOCATION,
   CANCEL_ROUTING_LOCATION,
+  ROUTING_LOCATION_ERROR,
 } from '../common/actionTypes';
 
 const defaultState = {
@@ -27,29 +28,6 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
 
-    case ACCEPT_ROUTING_LOCATION:
-      if (action.step === 'START') {
-        return {
-          ...state,
-          startLocation: {
-            ...state.startLocation,
-            accepted: true,
-          }
-        };
-      }
-
-      if (action.step === 'END') {
-        return {
-          ...state,
-          endLocation: {
-            ...state.endLocation,
-            accepted: true,
-          }
-        };
-      }
-
-      break;
-
     case SET_ROUTING_LOCATION:
       if (action.step === 'START') {
         return {
@@ -67,6 +45,29 @@ export default (state = defaultState, action) => {
           endLocation: {
             ...state.endLocation,
             coordinates: action.coords,
+          }
+        };
+      }
+
+      break;
+
+    case ACCEPT_ROUTING_LOCATION:
+      if (action.step === 'START') {
+        return {
+          ...state,
+          startLocation: {
+            ...state.startLocation,
+            accepted: true,
+          }
+        };
+      }
+
+      if (action.step === 'END') {
+        return {
+          ...state,
+          endLocation: {
+            ...state.endLocation,
+            accepted: true,
           }
         };
       }
@@ -92,6 +93,29 @@ export default (state = defaultState, action) => {
             accepted: false,
             coordinates: [],
             placeName: '',
+          }
+        };
+      }
+
+      break;
+
+    case ROUTING_LOCATION_ERROR:
+      if (action.step === 'START') {
+        return {
+          ...state,
+          startLocation: {
+            ...state.startLocation,
+            error: action.error
+          }
+        };
+      }
+
+      if (action.step === 'END') {
+        return {
+          ...state,
+          endLocation: {
+            ...state.endLocation,
+            error: action.error
           }
         };
       }
