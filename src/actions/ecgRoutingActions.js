@@ -6,6 +6,7 @@ import {
   ROUTING_LOCATION_ERROR,
 } from '../common/actionTypes';
 
+
 export const nearestSegmentError = error => ({
   ROUTING_LOCATION_ERROR,
   error
@@ -14,9 +15,10 @@ export const nearestSegmentError = error => ({
 // app displays current routing location
 // @param { array } coords: lat, lng for start location
 // @param { string } step: either START or END
-export const setRoutingLocation = (coords, step) => ({
+export const setRoutingLocation = (coords, distance, step) => ({
   type: SET_ROUTING_LOCATION,
   coords,
+  distance,
   step,
 });
 

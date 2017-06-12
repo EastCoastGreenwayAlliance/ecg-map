@@ -10,11 +10,13 @@ const defaultState = {
   startLocation: {
     accepted: false,
     coordinates: [],
+    distance: null,
     error: null,
   },
   endLocation: {
     accepted: false,
     coordinates: [],
+    distance: null,
     error: null,
   },
   route: {
@@ -37,6 +39,7 @@ export default (state = defaultState, action) => {
           startLocation: {
             ...state.startLocation,
             coordinates: action.coords,
+            distance: action.distance,
           }
         };
       }
@@ -47,6 +50,7 @@ export default (state = defaultState, action) => {
           endLocation: {
             ...state.endLocation,
             coordinates: action.coords,
+            distance: action.distance,
           }
         };
       }
