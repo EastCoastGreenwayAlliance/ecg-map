@@ -17,7 +17,7 @@ const parseGeocodeResult = (result) => {
 
   return {
     addressFormatted: formatted_address,
-    geometry: geometry.location,
+    coordinates: [geometry.location.lat, geometry.location.lng],
   };
 };
 
