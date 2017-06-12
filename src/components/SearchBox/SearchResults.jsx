@@ -49,16 +49,18 @@ class SearchResults extends Component {
   }
 
   handleGeocodeResult(result) {
-    const { geometry } = result;
+    const { coordinates } = result;
     const { startLocation, endLocation } = this.props;
     const self = this;
 
-    if (!geometry.lat || !geometry.lng) return;
+    if (!coordinates || !coordinates.length) return;
 
     // if no start location has been set then get the nearest ECG segment,
     // and we'll call that the start location
     if (!startLocation.accepted && !endLocation.accepted) {
-      const { lat, lng } = geometry;
+      const lat = coordinates[0];
+      const lng = coordinates[1];
+
       ROUTER.findNearestSegmentToLatLng(lat, lng, undefined,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'START'),
         error => self.handleGeoRoutingError(error)
@@ -68,19 +70,21 @@ class SearchResults extends Component {
     // if we have a start location and not an end location, get the nearest ECG segment
     // and we'll call that the end location
     if (startLocation.accepted && !endLocation.accepted) {
-      const { lat, lng } = geometry;
+      const lat = coordinates[0];
+      const lng = coordinates[1];
+
       ROUTER.findNearestSegmentToLatLng(lat, lng, undefined,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'END'),
         error => self.handleGeoRoutingError(error)
       );
     }
 
-    // TO DO: need a way to start over if start and end locations are both accepted
+    // TO DO: implement cancel
   }
 
   handleGeoRoutingSuccess(closestSegment, step) {
     const { closest_lat, closest_lng } = closestSegment;
-    this.props.setRoutingLocation([closest_lng, closest_lat], step);
+    this.props.setRoutingLocation([closest_lat, closest_lng], step);
   }
 
   handleGeoRoutingError(error) {

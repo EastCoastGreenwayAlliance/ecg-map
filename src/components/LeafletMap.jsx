@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 
 import { configureLayerSource, parseURLHash } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
@@ -24,6 +25,9 @@ class LeafletMap extends Component {
     zoom: PropTypes.number.isRequired,
     onMapMove: PropTypes.func.isRequired,
     geocodeResult: PropTypes.object,
+    startLocation: PropTypes.object,
+    endLocation: PropTypes.object,
+    route: PropTypes.object
   }
 
   constructor(props) {
@@ -71,17 +75,22 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geocodeResult } = nextProps;
+    const { geocodeResult, startLocation } = nextProps;
 
     if (geocodeResult) {
-      const { geometry, addressFormatted } = geocodeResult;
+      const { coordinates, addressFormatted } = geocodeResult;
 
       // first clear the layers in case it's a new search result
       this.searchResults.clearLayers();
       // add the search result to the map
       this.searchResults.addLayer(
-        L.marker([geometry.lat, geometry.lng]).bindPopup(addressFormatted)
+        L.marker(coordinates).bindPopup(addressFormatted)
       );
+    }
+
+    if (!isEqual(startLocation, this.props.startLocation)) {
+      // handle displaying the start location of the ECG route
+      this.displayNearestSegment(startLocation);
     }
   }
 
@@ -138,6 +147,36 @@ class LeafletMap extends Component {
           // self.initCartoSubLayerInfowindows();
       })
       .on('error', (error) => { throw error; });
+  }
+
+  displayNearestSegment(startLocation) {
+    // adds the nearest ECG segment to the map as well as a line connecting it to
+    // the last used location geocode result
+    const { coordinates } = startLocation;
+    const { geocodeResult } = this.props;
+
+    if (coordinates.length) {
+      // display marker showing nearest ECG location
+      this.searchResults.addLayer(
+        L.marker(startLocation.coordinates)
+          .bindPopup('Nearest ECG Location')
+      );
+      // connect the nearest ECG location with the user's search
+      this.searchResults.addLayer(
+        L.polyline([
+          geocodeResult.coordinates,
+          startLocation.coordinates
+        ], {
+          color: 'orange',
+          dashArray: '12, 8',
+          lineCap: 'butt',
+        })
+      );
+      // fit the map extent to the user's search and neareset ECG location
+      this.map.fitBounds(this.searchResults.getBounds(), {
+        padding: [25, 25]
+      });
+    }
   }
 
   render() {
