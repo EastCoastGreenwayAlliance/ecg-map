@@ -2,28 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import SearchInput from './SearchInput';
-import SearchResults from './SearchResults';
+import SearchResultsConnected from '../../containers/SearchResultsConnected';
 
 /** Class that houses the Location Search & GeoRouting results */
 class SearchBox extends Component {
   static propTypes = {
-    fetchLocationGeocode: PropTypes.func,
-    geocodeResult: PropTypes.object,
-    geocodeError: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object
-    ]),
+    fetchLocationGeocode: PropTypes.func.isRequired,
   }
 
   render() {
-    const { fetchLocationGeocode, geocodeResult, geocodeError } = this.props;
+    const { fetchLocationGeocode } = this.props;
 
     return (
       <div className="SearchBox">
         <SearchInput {...{ fetchLocationGeocode }} />
-        <SearchResults
-          {...{ geocodeResult, geocodeError }}
-        />
+        <SearchResultsConnected />
       </div>
     );
   }
