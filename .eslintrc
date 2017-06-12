@@ -31,6 +31,7 @@
       "optionalDependencies": false,
       "peerDependencies": false
       }],
+    "no-debugger": 1,
     "no-param-reassign": 0,
     "no-underscore-dangle": 0,
     "react/forbid-prop-types": 0,
