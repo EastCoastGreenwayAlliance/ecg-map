@@ -14,6 +14,8 @@ const extractSass = new ExtractTextPlugin({
 const VENDOR_LIBS = [
   'babel-polyfill',
   'isomorphic-fetch',
+  'lodash/debounce',
+  'prop-types',
   'react',
   'react-dom',
   'react-redux',
@@ -22,8 +24,7 @@ const VENDOR_LIBS = [
   'redux-logger',
   'redux-responsive',
   'redux-thunk',
-  'prop-types',
-  'lodash/debounce'
+  'single-line-string'
 ];
 
 module.exports = {
