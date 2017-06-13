@@ -43,3 +43,8 @@ export const configureLayerSource = (sql) => {
 // CARTO SQL API endpoint
 export const cartoSQLQuery = query =>
   `https://${cartoUser}.carto.com/api/v2/sql?q=${query}`;
+
+export const loadGeoRouter = callback =>
+  import('../../lib/ecgClientRouter')
+    .then(response => callback(null, response))
+    .catch(error => callback(error));

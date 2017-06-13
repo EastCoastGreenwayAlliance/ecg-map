@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
 import { cartoUser, cartoTables } from '../../common/config';
-// TO DO: this thing requires a huge library, make sure to code split!
-import ROUTER from '../../../lib/ecgClientRouter';
-
-ROUTER.init(cartoUser, cartoTables.route_segments);
+import { loadGeoRouter } from '../../common/api';
 
 // helper function to convert meters to miles
 const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
@@ -28,12 +25,33 @@ class SearchResults extends Component {
     route: PropTypes.object,
   }
 
+  constructor() {
+    super();
+    // Placeholder for the geo routing algorithm
+    // not imported immediately due to its dependency, JSTS, being a large file size
+    // instead we load it async after the user performs a search
+    // see Webpack documenation for more info: https://webpack.js.org/guides/code-splitting-async/
+    this.geoRouter = undefined;
+  }
+
   componentWillReceiveProps(nextProps) {
     const { geocodeResult } = nextProps;
 
     if (!isEqual(geocodeResult, this.props.geocodeResult)) {
-      // we received a geocode result from the user, set the start / end location
-      this.handleGeocodeResult(geocodeResult);
+      // We received a geocode result from the user, so set the start / end location
+      // CODE SPLITTING NOTE: if our geoRouter hasn't been loaded yet, then
+      // load it async then handle the geocode result
+      // otherwise just handle the geocode result
+      if (this.geoRouter === undefined) {
+        loadGeoRouter((error, response) => {
+          if (error) throw error;
+          this.geoRouter = response.default;
+          this.geoRouter.init(cartoUser, cartoTables.route_segments);
+          this.handleGeocodeResult(geocodeResult);
+        });
+      } else {
+        this.handleGeocodeResult(geocodeResult);
+      }
     }
   }
 
@@ -71,7 +89,7 @@ class SearchResults extends Component {
       const lat = coordinates[0];
       const lng = coordinates[1];
 
-      ROUTER.findNearestSegmentToLatLng(lat, lng, undefined,
+      this.geoRouter.findNearestSegmentToLatLng(lat, lng, undefined,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'START'),
         error => self.handleGeoRoutingError(error)
       );
@@ -83,7 +101,7 @@ class SearchResults extends Component {
       const lat = coordinates[0];
       const lng = coordinates[1];
 
-      ROUTER.findNearestSegmentToLatLng(lat, lng, undefined,
+      this.geoRouter.findNearestSegmentToLatLng(lat, lng, undefined,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'END'),
         error => self.handleGeoRoutingError(error)
       );
