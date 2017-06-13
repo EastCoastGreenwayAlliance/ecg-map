@@ -63,6 +63,27 @@ class LeafletMap extends Component {
       zoomControl: false,
     };
 
+    const RouteIcon = L.Icon.extend({
+      options: {
+        shadowUrl: `${baseURL}/assets/icons/marker-shadow.png`,
+        iconSize: [38, 47],
+        shadowSize: [41, 41],
+        iconAnchor: [18, 46],
+        shadowAnchor: [10, 40],
+        popupAnchor: [2, -40]
+      }
+    });
+
+    this.startIcon = new RouteIcon({
+      iconUrl: `${baseURL}/assets/icons/icon-map-marker-green.png`,
+      iconRetinaUrl: `${baseURL}/assets/icons/icon-map-marker-green@2x.png`
+    });
+
+    this.endIcon = new RouteIcon({
+      iconUrl: `${baseURL}/assets/icons/icon-map-marker-red.png`,
+      iconRetinaUrl: `${baseURL}/assets/icons/icon-map-marker-red.png`
+    });
+
     // reference to CARTO sublayer
     this.cartoSubLayer = null;
 
@@ -172,7 +193,9 @@ class LeafletMap extends Component {
 
     // add the search result to the map
     this.searchResults.addLayer(
-      L.marker(coordinates).bindPopup(addressFormatted)
+      L.marker(coordinates, {
+        icon: startLocation.accepted ? this.endIcon : this.startIcon
+      }).bindPopup(addressFormatted)
     );
   }
 
@@ -185,7 +208,12 @@ class LeafletMap extends Component {
     if (coordinates.length) {
       // display marker showing nearest ECG location
       this.searchResults.addLayer(
-        L.marker(location.coordinates).bindPopup(`Nearest ECG ${location.positionText} Location`)
+        L.circleMarker(location.coordinates, {
+          color: '#1482c5',
+          fillColor: '#1482c5',
+          opacity: 0.8,
+          fillOpacity: 0.6
+        }).bindPopup(`Nearest ECG ${location.positionText} Location`)
       );
       // connect the nearest ECG location with the user's search
       this.searchResults.addLayer(
@@ -193,7 +221,7 @@ class LeafletMap extends Component {
           geocodeResult.coordinates,
           location.coordinates
         ], {
-          color: 'orange',
+          color: '#1482c5 ',
           dashArray: '12, 8',
           lineCap: 'butt',
         })
@@ -205,14 +233,12 @@ class LeafletMap extends Component {
     }
   }
 
-  zoomToNearestSegment() {
-    const searchLayersIDs = this.searchResults.getLayers().map(layer => layer._leaflet_id);
-    if (searchLayersIDs.length < 3) return;
-
-    // remove 1st and 3rd layers (original geocode result && dashed line)
-    this.searchResults.removeLayer(searchLayersIDs[0]);
-    this.searchResults.removeLayer(searchLayersIDs[2]);
-    this.map.fitBounds(this.searchResults.getBounds());
+  zoomToNearestSegment(location) {
+    this.searchResults.clearLayers();
+    this.searchResults.addLayer(L.marker(location.coordinates, {
+      icon: location.positionText === 'start' ? this.startIcon : this.endIcon
+    }));
+    this.map.panTo(location.coordinates);
   }
 
   showSelectedRoute(startLocation, endLocation) {
@@ -220,10 +246,14 @@ class LeafletMap extends Component {
     // TO DO: integrate route overlay
     this.searchResults.clearLayers();
     this.searchResults.addLayer(
-      L.marker(startLocation.coordinates).bindPopup('Start')
+      L.marker(startLocation.coordinates, {
+        icon: this.startIcon
+      }).bindPopup('Start')
     );
     this.searchResults.addLayer(
-      L.marker(endLocation.coordinates).bindPopup('End')
+      L.marker(endLocation.coordinates, {
+        icon: this.endIcon
+      }).bindPopup('End')
     );
     this.map.fitBounds(this.searchResults.getBounds(), {
       padding: [50, 50]
