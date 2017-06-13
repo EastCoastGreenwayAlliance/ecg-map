@@ -19,10 +19,13 @@ class SearchInput extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { startLocation } = nextProps;
+    const { startLocation, endLocation } = nextProps;
 
-    // if user accepted a starting location
-    if (startLocation.accepted && !this.props.startLocation.accepted) {
+    // if user accepted a starting or ending location, clear our searchAddres state
+    if (
+        (startLocation.accepted && !this.props.startLocation.accepted) ||
+        (endLocation.accepted && !this.props.endLocation.accepted)
+      ) {
       // change the placeholder text
       this.setState({ searchAddress: '' });
     }
@@ -43,17 +46,25 @@ class SearchInput extends Component {
     }
   }
 
+  renderPlaceholderText() {
+    const { startLocation, endLocation } = this.props;
+    let text = '';
+
+    if (!startLocation.accepted && !endLocation.accepted) text = 'Search a Starting Point';
+    if (startLocation.accepted && !endLocation.accepted) text = 'Search a Ending Point';
+
+    return text;
+  }
+
   render() {
     const { searchAddress } = this.state;
-    const { startLocation } = this.props;
-    const placeholderText = !startLocation.accepted ? 'Search a Starting Point' : 'Search a Ending Point';
 
     return (
       <div className="SearchInput">
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
-            placeholder={placeholderText}
+            placeholder={this.renderPlaceholderText()}
             value={searchAddress}
             onChange={this.handleChange}
           />

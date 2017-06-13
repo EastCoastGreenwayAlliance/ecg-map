@@ -75,22 +75,30 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geocodeResult, startLocation } = nextProps;
+    const { geocodeResult, startLocation, endLocation } = nextProps;
 
-    if (geocodeResult) {
-      const { coordinates, addressFormatted } = geocodeResult;
-
-      // first clear the layers in case it's a new search result
-      this.searchResults.clearLayers();
-      // add the search result to the map
-      this.searchResults.addLayer(
-        L.marker(coordinates).bindPopup(addressFormatted)
-      );
+    if (!isEqual(geocodeResult, this.props.geocodeResult)) {
+      this.displayGeocodeResult(geocodeResult);
     }
 
-    if (!isEqual(startLocation, this.props.startLocation)) {
+    if (!isEqual(startLocation.coordinates, this.props.startLocation.coordinates)) {
       // handle displaying the start location of the ECG route
       this.displayNearestSegment(startLocation);
+    }
+
+    if (startLocation.accepted && !this.props.startLocation.accepted) {
+      // zoom to the ECG starting segment
+      this.zoomToNearestSegment(startLocation);
+    }
+
+    if (!isEqual(endLocation.coordinates, this.props.endLocation.coordinates)) {
+      // handle displaying the end location of the ECG route
+      this.displayNearestSegment(endLocation);
+    }
+
+    if (startLocation.accepted && endLocation.accepted && !this.props.endLocation.accepted) {
+      // zoom to the entire route!
+      this.showSelectedRoute(startLocation, endLocation);
     }
   }
 
@@ -118,6 +126,10 @@ class LeafletMap extends Component {
     this.searchResults.addTo(this.map);
 
     this.initCartoLayer();
+
+    // for debugging...
+    // window.map = this.map;
+    // window.searchResults = this.searchResults;
   }
 
   initCartoLayer() {
@@ -149,23 +161,37 @@ class LeafletMap extends Component {
       .on('error', (error) => { throw error; });
   }
 
-  displayNearestSegment(startLocation) {
+  displayGeocodeResult(geocodeResult) {
+    const { coordinates, addressFormatted } = geocodeResult;
+    const { startLocation, endLocation } = this.props;
+
+    // if it's a new search and the user hasn't accepted start, clear the search layers
+    if (!startLocation.accepted || !endLocation.accepted) {
+      this.searchResults.clearLayers();
+    }
+
+    // add the search result to the map
+    this.searchResults.addLayer(
+      L.marker(coordinates).bindPopup(addressFormatted)
+    );
+  }
+
+  displayNearestSegment(location) {
     // adds the nearest ECG segment to the map as well as a line connecting it to
     // the last used location geocode result
-    const { coordinates } = startLocation;
+    const { coordinates } = location;
     const { geocodeResult } = this.props;
 
     if (coordinates.length) {
       // display marker showing nearest ECG location
       this.searchResults.addLayer(
-        L.marker(startLocation.coordinates)
-          .bindPopup('Nearest ECG Location')
+        L.marker(location.coordinates).bindPopup(`Nearest ECG ${location.positionText} Location`)
       );
       // connect the nearest ECG location with the user's search
       this.searchResults.addLayer(
         L.polyline([
           geocodeResult.coordinates,
-          startLocation.coordinates
+          location.coordinates
         ], {
           color: 'orange',
           dashArray: '12, 8',
@@ -177,6 +203,31 @@ class LeafletMap extends Component {
         padding: [25, 25]
       });
     }
+  }
+
+  zoomToNearestSegment() {
+    const searchLayersIDs = this.searchResults.getLayers().map(layer => layer._leaflet_id);
+    if (searchLayersIDs.length < 3) return;
+
+    // remove 1st and 3rd layers (original geocode result && dashed line)
+    this.searchResults.removeLayer(searchLayersIDs[0]);
+    this.searchResults.removeLayer(searchLayersIDs[2]);
+    this.map.fitBounds(this.searchResults.getBounds());
+  }
+
+  showSelectedRoute(startLocation, endLocation) {
+    // user has finished selecting their start and end, show the entire route
+    // TO DO: integrate route overlay
+    this.searchResults.clearLayers();
+    this.searchResults.addLayer(
+      L.marker(startLocation.coordinates).bindPopup('Start')
+    );
+    this.searchResults.addLayer(
+      L.marker(endLocation.coordinates).bindPopup('End')
+    );
+    this.map.fitBounds(this.searchResults.getBounds(), {
+      padding: [50, 50]
+    });
   }
 
   render() {

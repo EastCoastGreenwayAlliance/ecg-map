@@ -12,12 +12,14 @@ const defaultState = {
     coordinates: [],
     distance: null,
     error: null,
+    positionText: 'start',
   },
   endLocation: {
     accepted: false,
     coordinates: [],
     distance: null,
     error: null,
+    positionText: 'end'
   },
   route: {
     // to do...

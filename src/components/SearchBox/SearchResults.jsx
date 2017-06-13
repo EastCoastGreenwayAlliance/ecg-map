@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
 import { cartoUser, cartoTables } from '../../common/config';
-// geo router
+// TO DO: this thing requires a huge library, make sure to code split!
 import ROUTER from '../../../lib/ecgClientRouter';
 
 ROUTER.init(cartoUser, cartoTables.route_segments);
@@ -136,23 +136,62 @@ class SearchResults extends Component {
     );
   }
 
-  render() {
-    const { geocodeError, startLocation } = this.props;
+  showEndOptions() {
+    const { endLocation, acceptRoutingLocation } = this.props;
 
     return (
+      <div className="search-results__ui search-results__end">
+        <p>
+          { ' The nearest Greenway location is '}
+          <span className="bold">{`${metersToMiles(endLocation.distance)} miles`}</span>
+          { ' away.' }
+        </p>
+        <button className="center blue" onClick={() => acceptRoutingLocation('END')}>
+          Use this Greenway location as your end point
+        </button>
+      </div>
+    );
+  }
+
+  showPostEndOptions() {
+    return (
+      <div className="search-results__ui search-results__post-end">
+        <p>TO DO...</p>
+      </div>
+    );
+  }
+
+  renderSearchResultsStep() {
+    // handles which step of the Search UX Flow to display using application state
+    const { geocodeError, startLocation, endLocation } = this.props;
+
+    if (geocodeError) {
+      return this.handleGeocodeError();
+    }
+
+    if (startLocation.distance && !startLocation.accepted) {
+      return this.showStartOptions();
+    }
+
+    if (startLocation.accepted && !endLocation.coordinates.length) {
+      return this.showPostStartOptions();
+    }
+
+    if (endLocation.coordinates.length && !endLocation.accepted) {
+      return this.showEndOptions();
+    }
+
+    if (endLocation.accepted && startLocation.accepted) {
+      return this.showPostEndOptions();
+    }
+
+    return null;
+  }
+
+  render() {
+    return (
       <div className="SearchResults">
-        {
-          geocodeError &&
-            this.handleGeocodeError()
-        }
-        {
-          (startLocation.distance && !startLocation.accepted) &&
-            this.showStartOptions()
-        }
-        {
-          startLocation.accepted &&
-            this.showPostStartOptions()
-        }
+        { this.renderSearchResultsStep() }
       </div>
     );
   }
