@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import SearchBox from '../components/SearchBox';
+import SearchInput from '../components/SearchBox/SearchInput';
 import {
   fetchLocationGeocode,
   setRoutingLocation,
@@ -8,10 +8,18 @@ import {
   cancelRoutingLocation,
 } from '../actions/';
 
+const mapStateToProps = ({ routing }) => {
+  const { startLocation, endLocation } = routing;
+  return {
+    startLocation,
+    endLocation,
+  };
+};
+
 /** Connects the SearchBox to the Redux store & action creator functions */
-export default connect(null, {
+export default connect(mapStateToProps, {
   fetchLocationGeocode,
   setRoutingLocation,
   acceptRoutingLocation,
   cancelRoutingLocation,
-})(SearchBox);
+})(SearchInput);

@@ -122,6 +122,20 @@ class SearchResults extends Component {
     );
   }
 
+  showPostStartOptions() {
+    return (
+      <div className="search-results__ui search-results__post-start">
+        <p>Search End Point or:</p>
+        <button className="center blue" onClick={() => {}}>
+          View North Cues
+        </button>
+        <button className="center blue" onClick={() => {}}>
+          View South Cues
+        </button>
+      </div>
+    );
+  }
+
   render() {
     const { geocodeError, startLocation } = this.props;
 
@@ -134,6 +148,10 @@ class SearchResults extends Component {
         {
           (startLocation.distance && !startLocation.accepted) &&
             this.showStartOptions()
+        }
+        {
+          startLocation.accepted &&
+            this.showPostStartOptions()
         }
       </div>
     );

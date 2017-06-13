@@ -5,7 +5,7 @@ import ReactModal from 'react-modal';
 
 // import components
 import NavBar from '../components/NavBar';
-import SearchBoxConnected from '../containers/SearchBoxConnected';
+import SearchBox from '../components/SearchBox';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
 import ModalContent from '../components/ModalContent';
 
@@ -45,7 +45,7 @@ class App extends Component {
     return (
       <div className="App">
         <NavBar {...{ isMobile }} />
-        <SearchBoxConnected />
+        <SearchBox />
         <LeafletMapConnected
           lat={36.897}
           lng={-74.619}

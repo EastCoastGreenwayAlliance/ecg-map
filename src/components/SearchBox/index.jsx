@@ -1,25 +1,14 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 
-import SearchInput from './SearchInput';
+import SearchInputConnected from '../../containers/SearchInputConnected';
 import SearchResultsConnected from '../../containers/SearchResultsConnected';
 
 /** Class that houses the Location Search & GeoRouting results */
-class SearchBox extends Component {
-  static propTypes = {
-    fetchLocationGeocode: PropTypes.func.isRequired,
-  }
-
-  render() {
-    const { fetchLocationGeocode } = this.props;
-
-    return (
-      <div className="SearchBox">
-        <SearchInput {...{ fetchLocationGeocode }} />
-        <SearchResultsConnected />
-      </div>
-    );
-  }
-}
+const SearchBox = () => (
+  <div className="SearchBox">
+    <SearchInputConnected />
+    <SearchResultsConnected />
+  </div>
+);
 
 export default SearchBox;
