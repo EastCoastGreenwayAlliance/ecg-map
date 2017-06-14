@@ -11,6 +11,12 @@ $light-grey:      #bababa !default;
 $dark-grey:          #333 !default;
 $transparent:     rgba(255, 255, 255, 0);
 
+// ECG route colors
+$route-green:     #cbfe00 !default; // separated bike path / trail
+$route-blue:      #b6f8ff !default; // on-road / shared with traffic
+$route-yellow:       #ff0 !default; // public transit
+$route-grey:         #333 !default; // casing
+
 // component sizes
 $navbarHeight:        106px;
 $navbarHeightMobile:  62px;
