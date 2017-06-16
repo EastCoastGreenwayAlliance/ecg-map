@@ -8,12 +8,12 @@ export const baseURL = process.env.NODE_ENV === 'production' ? `/${packageJSON.n
 export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
 
 // CARTO account name (temporarily set to "greeninfo" until data is in order)
-export const cartoUser = 'greeninfo';
+export const cartoUser = 'niles';
 
 // CARTO tables (temporary tables for testing data in app)
 export const cartoTables = {
-  route_segments: 'ecglines_clean_unique',
-  cue_points: 'ecgpoints_clean_unique',
+  route_segments: 'ecg_route_lines_prod',
+  cue_points: 'ecg_route_cues_prod',
 };
 
 // route segment field names to appear within InfoWindows / PopUps
