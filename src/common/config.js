@@ -12,7 +12,7 @@ export const cartoUser = 'niles';
 
 // CARTO tables (temporary tables for testing data in app)
 export const cartoTables = {
-  route_segments: 'ecg_route_lines_prod',
+  route_segments: 'ecg_route_lines_prod_2',
   cue_points: 'ecg_route_cues_prod',
 };
 
