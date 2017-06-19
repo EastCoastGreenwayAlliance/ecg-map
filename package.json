@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "install:client": "cd client && yarn && npm run build && cd ..",
+    "heroku-postbuild": "npm run install:client"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,9 @@
     "url": "https://github.com/EastCoastGreenwayAlliance/ecg-map/issues"
   },
   "homepage": "https://github.com/EastCoastGreenwayAlliance/ecg-map#readme",
+  "engines": {
+    "node": "6.10.3"
+  },
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
