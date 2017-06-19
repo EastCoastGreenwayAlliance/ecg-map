@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { baseURL } from '../common/config';
-
 const NavBar = (props) => {
   const { isMobile } = props;
 
@@ -14,7 +12,7 @@ const NavBar = (props) => {
       <div
         className="ecg-logo"
         style={{
-          backgroundImage: `url(${baseURL}/assets/logo/${bgImage})`,
+          backgroundImage: `url(/assets/logo/${bgImage})`,
           height,
           width,
         }}

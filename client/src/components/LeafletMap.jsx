@@ -4,18 +4,18 @@ import isEqual from 'lodash/isEqual';
 
 import { configureLayerSource, parseURLHash } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
-import { maxGeoBounds, baseURL } from '../common/config';
+import { maxGeoBounds } from '../common/config';
 
 // set default image paths for Leaflet
 // note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
 // this is because Github Pages will be looking for the markers at:
 // https://eastcoastgreenwayalliance.github.io/ecg-map/assets/icons/<filename>.png
 // while locally it will be localhost:8080/assets/icons/<filename>.png
-L.Icon.Default.imagePath = `${baseURL}/assets/icons`;
+L.Icon.Default.imagePath = '/assets/icons';
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: `${baseURL}/assets/icons/marker-icon-2x.png`,
-  iconUrl: `${baseURL}/assets/icons/marker-icon.png`,
-  shadowUrl: `${baseURL}/assets/icons/marker-shadow.png`,
+  iconRetinaUrl: '/assets/icons/marker-icon-2x.png',
+  iconUrl: '/assets/icons/marker-icon.png',
+  shadowUrl: '/assets/icons/marker-shadow.png',
 });
 
 class LeafletMap extends Component {
@@ -65,7 +65,7 @@ class LeafletMap extends Component {
 
     const RouteIcon = L.Icon.extend({
       options: {
-        shadowUrl: `${baseURL}/assets/icons/marker-shadow.png`,
+        shadowUrl: '/assets/icons/marker-shadow.png',
         iconSize: [38, 47],
         shadowSize: [41, 41],
         iconAnchor: [18, 46],
@@ -75,13 +75,13 @@ class LeafletMap extends Component {
     });
 
     this.startIcon = new RouteIcon({
-      iconUrl: `${baseURL}/assets/icons/icon-map-marker-green.png`,
-      iconRetinaUrl: `${baseURL}/assets/icons/icon-map-marker-green@2x.png`
+      iconUrl: '/assets/icons/icon-map-marker-green.png',
+      iconRetinaUrl: '/assets/icons/icon-map-marker-green@2x.png'
     });
 
     this.endIcon = new RouteIcon({
-      iconUrl: `${baseURL}/assets/icons/icon-map-marker-red.png`,
-      iconRetinaUrl: `${baseURL}/assets/icons/icon-map-marker-red.png`
+      iconUrl: '/assets/icons/icon-map-marker-red.png',
+      iconRetinaUrl: '/assets/icons/icon-map-marker-red.png'
     });
 
     // reference to CARTO sublayer
