@@ -1,6 +1,6 @@
 # East Coast Greenway: Map & Trip Planner
 
-Mobile friendly Node.JS web application for the [East Coast Greenway](http://greenway.org) map and trip planner, developed by [GreenInfo Network](http://greeninfo.org).
+Mobile friendly, Node.JS web application for the [East Coast Greenway](http://greenway.org) map and trip planner, developed by [GreenInfo Network](http://greeninfo.org).
 
 ## Install Instructions
 Make sure you have NodeJS >= 6.9.x and NPM >= 3.10.x and Yarn >= 0.22 installed.
@@ -57,13 +57,17 @@ The `-D` flag will save the dependency to `devDependencies` in `package.json`.
 To develop the app locally, and to have Webpack bundle files, start the dev server, and watch for changes do:
 
 ```bash
+# start the Node.JS server
 foreman run node server.js
-# in a new terminal window / tab:
+
+# in a new terminal window / tab do:
 cd client
 npm start
 ```
 
 This will compile the assets in the project and start [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/#devserver) as a local server. This should automatically open your web browser to `localhost:8080` and you should see the site once Webpack has finished its initial bundling process. Webpack will automatically refresh the page when it recompiles and notify you that it has done so.
+
+**NOTE** that there is a **proxy** enabled with the Webpack Dev Server so that HTTP requests can be made from port 8888 to the Node.JS server which is running on port 5001.
 
 ## Build
 To have Webpack create an optimized production build in `client/dist` do:
@@ -108,9 +112,6 @@ git push heroku branch-name:master
 
 **This app no longer will run on Github Pages as it now requires a NodeJS server**
 
-```
-npm run deploy:gh-pages
-```
 
 ## Using Static Assets
 The empty `assets/` directory is available for Webpack to include static assets such as images, icons, etc. The Webpack Dev Server should resolve file paths just by doing `assets/filename.png` in your code (e.g. for the `src` attribute of an image tag). When doing `npm run build` the `CopyWebpackPlugin` will copy the `assets/` directory to `dist/assets` for you.
