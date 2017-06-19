@@ -20,7 +20,7 @@ const mailchimpPostError = error => ({
 });
 
 const postMailchimpAPI = (data) => {
-  const url = process.env.NODE_ENV === 'production' ? '/signup' : 'http://:5001/signup';
+  const url = '/signup';
 
   return (dispatch) => {
     dispatch(mailchimpPostRequest());

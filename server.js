@@ -44,11 +44,11 @@ function makePostRequest(strEmail, res) {
 }
 
 // Serve static assets
-app.use(express.static(path.resolve(__dirname, '.', 'client/dist')));
+app.use(express.static(path.resolve(__dirname, 'client/dist')));
 
 // Always return the main index.html, so react-router render the route in the client
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '.', 'client/dist', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'client/dist', 'index.html'));
 });
 
 // Handle Mailchimp API calls from the client
