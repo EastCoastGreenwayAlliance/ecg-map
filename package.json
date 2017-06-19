@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "East Coast Greenway route map and trip planner",
   "main": "src/index.js",
+  "proxy": "http://localhost:5001/",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.config.js",
     "build": "export NODE_ENV=production npm run clean && webpack -p --progress --colors --config webpack.dist.config.js",
@@ -27,6 +28,7 @@
     "express": "^4.15.3",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
+    "morgan": "^1.8.2",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

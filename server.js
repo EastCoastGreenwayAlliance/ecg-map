@@ -8,13 +8,20 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('superagent');
+var morgan = require('morgan');
 var path = require('path');
 
-var app = express();
+// mailchimp API settings are stored in the .env file
 var mailchimpAPIKey = process.env.MAILCHIMP_API_KEY;
 var mailchimpServerInstance = mailchimpAPIKey.split('-')[1];
 var mailchimpListID = process.env.MAILCHIMP_LIST_ID;
+// mailchimp API url
 var url = `https://${mailchimpServerInstance}.api.mailchimp.com/3.0/lists/${mailchimpListID}/members/`;
+
+var app = express();
+
+// setup logging
+app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,14 +53,16 @@ app.get('*', (req, res) => {
 
 // Handle Mailchimp API calls from the client
 app.post('/signup', function(req, res) {
+  console.log(req.body);
+
   // validate email
-  if (!req.body || !req.body.email) {
+  if (!req.body || !req.body.email_address) {
     return res.status(500).send('Invalid mailchimp post');
   }
 
   // validate email address
-  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email)) {
-    makePostRequest(req.body.email, res);
+  if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(req.body.email_address)) {
+    makePostRequest(req.body.email_address, res);
   } else {
     return res.status(500).send('Invalid email format');
   }
