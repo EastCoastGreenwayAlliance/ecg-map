@@ -38,7 +38,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[chunkhash].js',
-    publicPath: '/ecg-map/'
+    publicPath: '/'
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.geojson']
