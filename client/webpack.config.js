@@ -82,7 +82,10 @@ module.exports = {
   devServer: {
     compress: true,
     historyApiFallback: true,
-    port: 8888
+    port: 8888,
+    proxy: {
+      '/signup*': 'http://127.0.0.1:5001'
+    }
   },
   plugins: [
     extractSass,
