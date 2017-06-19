@@ -111,7 +111,6 @@ module.exports = {
     // tell Webpack to copy static assets (images, icons, etc.) to dist/
     new CopyWebpackPlugin([
       { from: 'assets/', to: 'assets/' },
-      { from: 'src/404.html', to: '404.html' }
     ])
   ]
 };
