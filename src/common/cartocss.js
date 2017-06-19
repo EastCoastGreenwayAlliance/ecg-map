@@ -25,6 +25,10 @@ const cartocss = sls`
         line-opacity: 0.6;
       }
 
+      [zoom <= 6] {
+        line-simplify: 0.2;
+      }
+
       [zoom >= 14] {
         line-width: 5;
       }
@@ -39,6 +43,10 @@ const cartocss = sls`
       line-width: 2;
       line-join: round;
       line-opacity: 1;
+
+      [zoom <= 6] {
+        line-simplify: 0.2;
+      }
 
       [line_type = 'Trail'] {
         line-color: @trail;
