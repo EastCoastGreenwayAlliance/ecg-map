@@ -20,7 +20,7 @@ const mailchimpPostError = error => ({
 });
 
 const postMailchimpAPI = (data) => {
-  const url = process.env.NODE_ENV === 'production' ? '/signup' : 'http://:::5001/signup';
+  const url = process.env.NODE_ENV === 'production' ? '/signup' : 'http://:5001/signup';
 
   return (dispatch) => {
     dispatch(mailchimpPostRequest());
@@ -32,7 +32,7 @@ const postMailchimpAPI = (data) => {
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
       },
-      credentials: 'include'
+      mode: 'cors'
     })
       .then(res => res.text())
       .then(text => dispatch(mailchimpPostSuccess(text)))

@@ -44,18 +44,16 @@ function makePostRequest(strEmail, res) {
 }
 
 // Serve static assets
-app.use(express.static(path.resolve(__dirname, '.', 'dist')));
+app.use(express.static(path.resolve(__dirname, '.', 'app/dist')));
 
 // Always return the main index.html, so react-router render the route in the client
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '.', 'dist', 'index.html'));
+  res.sendFile(path.resolve(__dirname, '.', 'app/dist', 'index.html'));
 });
 
 // Handle Mailchimp API calls from the client
 app.post('/signup', function(req, res) {
-  console.log(req.body);
-
-  // validate email
+  // validate body content
   if (!req.body || !req.body.email_address) {
     return res.status(500).send('Invalid mailchimp post');
   }
