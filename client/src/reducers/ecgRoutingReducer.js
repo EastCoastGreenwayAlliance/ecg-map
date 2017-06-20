@@ -4,6 +4,9 @@ import {
   SET_ROUTING_LOCATION,
   CANCEL_ROUTING_LOCATION,
   ROUTING_LOCATION_ERROR,
+  ROUTE_SEARCH_REQUEST,
+  ROUTE_SEARCH_SUCCESS,
+  ROUTE_SEARCH_ERROR,
 } from '../common/actionTypes';
 
 const defaultState = {
@@ -22,7 +25,9 @@ const defaultState = {
     positionText: 'end'
   },
   route: {
-    // to do...
+    isLoadingRoute: false,
+    response: null,
+    error: null,
   }
 };
 
@@ -129,6 +134,34 @@ export default (state = defaultState, action) => {
       }
 
       break;
+
+    case ROUTE_SEARCH_REQUEST:
+      return {
+        ...state,
+        route: {
+          isLoadingRoute: true,
+          ...state.route,
+        }
+      };
+
+    case ROUTE_SEARCH_SUCCESS:
+      return {
+        ...state,
+        route: {
+          isLoadingRoute: false,
+          response: action.response,
+          ...state.route
+        }
+      };
+
+    case ROUTE_SEARCH_ERROR:
+      return {
+        ...state,
+        route: {
+          isLoadingRoute: false,
+          error: action.error
+        }
+      };
 
     default:
       return state;

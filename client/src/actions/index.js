@@ -3,6 +3,9 @@ export {
   nearestSegmentError,
   setRoutingLocation,
   acceptRoutingLocation,
-  cancelRoutingLocation
+  cancelRoutingLocation,
+  routeSearchRequest,
+  routeSearchSuccess,
+  routeSearchError,
 } from './ecgRoutingActions';
 export postMailchimpAPI from './mailchimpActions';
