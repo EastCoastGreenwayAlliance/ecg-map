@@ -139,8 +139,8 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         route: {
-          isLoadingRoute: true,
           ...state.route,
+          isLoadingRoute: true,
         }
       };
 
@@ -148,9 +148,9 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         route: {
+          ...state.route,
           isLoadingRoute: false,
           response: action.response,
-          ...state.route
         }
       };
 
@@ -158,8 +158,9 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         route: {
+          ...state.route,
           isLoadingRoute: false,
-          error: action.error
+          error: action.error,
         }
       };
 
