@@ -7,7 +7,7 @@ import ReactModal from 'react-modal';
 import NavBar from '../components/NavBar';
 import SearchBox from '../components/SearchBox';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
-import ModalContent from '../components/ModalContent';
+import ModalContent from '../components/Modal';
 
 class App extends Component {
   static propTypes = {
@@ -15,8 +15,9 @@ class App extends Component {
     location: PropTypes.object, // via react-router
     match: PropTypes.object, // via react-router
     staticContext: PropTypes.object, // via react-router
-    isMobile: PropTypes.bool,
-    postMailchimpAPI: PropTypes.func.isRequired,
+    isMobile: PropTypes.bool, // via redux-responsive
+    mailchimp: PropTypes.object, // mailchimp POST status
+    postMailchimpAPI: PropTypes.func.isRequired, // action creator for POSTing to mailchip
   }
 
   constructor() {
@@ -41,7 +42,7 @@ class App extends Component {
 
   render() {
     const { showModal } = this.state;
-    const { isMobile, postMailchimpAPI } = this.props;
+    const { isMobile, mailchimp, postMailchimpAPI } = this.props;
 
     return (
       <div className="App">
@@ -63,6 +64,8 @@ class App extends Component {
           <ModalContent
             handleCloseModal={this.handleCloseModal}
             handleFormSubmit={postMailchimpAPI}
+            mailchimpResponse={mailchimp.text}
+            mailchimpError={mailchimp.error}
           />
         </ReactModal>
       </div>
