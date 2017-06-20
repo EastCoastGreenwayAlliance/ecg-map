@@ -7,7 +7,7 @@
   "proxy": "http://127.0.0.1:5001/",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.config.js",
-    "build": "export NODE_ENV=production npm run clean && webpack -p --progress --colors --config webpack.dist.config.js",
+    "build": "npm run clean && webpack -p --progress --colors --config webpack.dist.config.js",
     "clean": "rimraf dist",
     "deploy:gh-pages": "npm run build && . ./deploy_gh_pages.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
