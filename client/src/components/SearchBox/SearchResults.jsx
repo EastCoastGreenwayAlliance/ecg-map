@@ -65,6 +65,7 @@ class SearchResults extends Component {
   }
 
   getRoute(startLocation, endLocation) {
+    const self = this;
     // handles making the geo routing search request
     // tell our app we are starting the search for a geo route
     this.props.routeSearchRequest();
@@ -75,8 +76,8 @@ class SearchResults extends Component {
       startLocation.coordinates[1],
       endLocation.coordinates[0],
       endLocation.coordinates[1],
-      route => this.props.routeSearchSuccess(route),
-      error => this.props.routeSearchError(error)
+      route => self.props.routeSearchSuccess(route),
+      error => self.props.routeSearchError(error)
     );
   }
 
@@ -203,9 +204,54 @@ class SearchResults extends Component {
   }
 
   showPostEndOptions() {
+    const { route } = this.props;
+    const { isLoadingRoute, error } = route;
+    let errorMsg;
+
+    if (error && typeof error === 'string') {
+      errorMsg = error;
+    }
+
+    if (error && error.message) {
+      errorMsg = error.message;
+    }
+
+    function loadingMessage() {
+      if (isLoadingRoute) {
+        return (
+          <div className="route-loading-msg">
+            <p>Calculating Route...</p>
+          </div>
+        );
+      }
+      return null;
+    }
+
+    function errorMessage() {
+      if (errorMsg) {
+        return (
+          <div className="route-error-msg">
+            <p>Sorry, there was an error:</p>
+            <p className="red">{ errorMsg }</p>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
     return (
       <div className="search-results__ui search-results__post-end">
-        <p>TO DO...</p>
+        <div className="start-description">
+          <img alt="start-icon" className="map-marker" src="assets/icons/icon-map-marker-green@2x.png" />
+          <p>Starting Location</p>
+        </div>
+        <div className="end-description">
+          <img alt="start-icon" className="map-marker" src="assets/icons/icon-map-marker-red@2x.png" />
+          <p>Ending Location</p>
+        </div>
+        { loadingMessage() }
+        { errorMessage() }
       </div>
     );
   }
