@@ -15,6 +15,9 @@ class SearchResults extends Component {
     setRoutingLocation: PropTypes.func.isRequired,
     acceptRoutingLocation: PropTypes.func.isRequired,
     cancelRoutingLocation: PropTypes.func.isRequired,
+    routeSearchRequest: PropTypes.func.isRequired,
+    routeSearchSuccess: PropTypes.func.isRequired,
+    routeSearchError: PropTypes.func.isRequired,
     geocodeError: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object
@@ -56,9 +59,25 @@ class SearchResults extends Component {
     }
 
     // user has okay'd start and end locations, now get the actual route
-    if (startLocation.accepted && endLocation.accepted) {
-      // TO DO...
+    if (startLocation.accepted && endLocation.accepted && !this.props.endLocation.accepted) {
+      this.getRoute(startLocation, endLocation);
     }
+  }
+
+  getRoute(startLocation, endLocation) {
+    // handles making the geo routing search request
+    // tell our app we are starting the search for a geo route
+    this.props.routeSearchRequest();
+    // make the findRoute call from our geoRouter, passing coordinates for
+    // start and end locations, and callbacks for success and error
+    this.geoRouter.findRoute(
+      startLocation.coordinates[0],
+      startLocation.coordinates[1],
+      endLocation.coordinates[0],
+      endLocation.coordinates[1],
+      route => this.props.routeSearchSuccess(route),
+      error => this.props.routeSearchError(error)
+    );
   }
 
   handleGeocodeError() {

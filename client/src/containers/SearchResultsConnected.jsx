@@ -6,6 +6,9 @@ import {
   setRoutingLocation,
   acceptRoutingLocation,
   cancelRoutingLocation,
+  routeSearchRequest,
+  routeSearchSuccess,
+  routeSearchError,
 } from '../actions';
 
 const mapStateToProps = ({ geocoding, routing }) => {
@@ -25,4 +28,7 @@ export default connect(mapStateToProps, {
   setRoutingLocation,
   acceptRoutingLocation,
   cancelRoutingLocation,
+  routeSearchRequest,
+  routeSearchSuccess,
+  routeSearchError,
 })(SearchResults);
