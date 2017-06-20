@@ -161,10 +161,10 @@ class SearchResults extends Component {
           <span className="bold">{`${metersToMiles(startLocation.distance)} miles`}</span>
           { ' away.' }
         </p>
-        <button className="center green" onClick={() => window.open(directionsURL)}>
+        <button className="center green" tabIndex="0" onClick={() => window.open(directionsURL)}>
           Get Directions to the Greenway
         </button>
-        <button className="center blue" onClick={() => acceptRoutingLocation('START')}>
+        <button className="center blue" tabIndex="0" onClick={() => acceptRoutingLocation('START')}>
           Use this Greenway location as your starting point
         </button>
       </div>
@@ -175,10 +175,10 @@ class SearchResults extends Component {
     return (
       <div className="search-results__ui search-results__post-start">
         <p>Search End Point or:</p>
-        <button className="center blue" onClick={() => {}}>
+        <button className="center blue" tabIndex="0" onClick={() => {}}>
           View North Cues
         </button>
-        <button className="center blue" onClick={() => {}}>
+        <button className="center blue" tabIndex="0" onClick={() => {}}>
           View South Cues
         </button>
       </div>
@@ -195,7 +195,7 @@ class SearchResults extends Component {
           <span className="bold">{`${metersToMiles(endLocation.distance)} miles`}</span>
           { ' away.' }
         </p>
-        <button className="center blue" onClick={() => acceptRoutingLocation('END')}>
+        <button className="center blue" tabIndex="0" onClick={() => acceptRoutingLocation('END')}>
           Use this Greenway location as your end point
         </button>
       </div>

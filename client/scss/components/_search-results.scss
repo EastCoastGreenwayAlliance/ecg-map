@@ -36,6 +36,10 @@
     &.blue {
       color: $blue;
     }
+
+    &:focus {
+      outline: 5px auto $outline-color;
+    }
   }
 
   p {
