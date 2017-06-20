@@ -96,7 +96,7 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geocodeResult, startLocation, endLocation } = nextProps;
+    const { geocodeResult, startLocation, endLocation, route } = nextProps;
 
     if (!isEqual(geocodeResult, this.props.geocodeResult)) {
       this.displayGeocodeResult(geocodeResult);
@@ -118,8 +118,12 @@ class LeafletMap extends Component {
     }
 
     if (startLocation.accepted && endLocation.accepted && !this.props.endLocation.accepted) {
-      // zoom to the entire route!
-      this.showSelectedRoute(startLocation, endLocation);
+      // zoom to the route extent
+      this.zoomRouteExtent(startLocation, endLocation);
+    }
+
+    if (route.response && !this.props.route.response) {
+      this.renderRouteHighlight(route.response);
     }
   }
 
@@ -149,8 +153,8 @@ class LeafletMap extends Component {
     this.initCartoLayer();
 
     // for debugging...
-    // window.map = this.map;
-    // window.searchResults = this.searchResults;
+    window.map = this.map;
+    window.searchResults = this.searchResults;
   }
 
   initCartoLayer() {
@@ -241,7 +245,7 @@ class LeafletMap extends Component {
     this.map.panTo(location.coordinates);
   }
 
-  showSelectedRoute(startLocation, endLocation) {
+  zoomRouteExtent(startLocation, endLocation) {
     // user has finished selecting their start and end, show the entire route
     // TO DO: integrate route overlay
     this.searchResults.clearLayers();
@@ -258,6 +262,14 @@ class LeafletMap extends Component {
     this.map.fitBounds(this.searchResults.getBounds(), {
       padding: [50, 50]
     });
+  }
+
+  renderRouteHighlight(routeGeoJson) {
+    if (!routeGeoJson || !routeGeoJson.features || !routeGeoJson.features.length) {
+      // don't bother adding anything if no GeoJSON was returned from the router?
+      return;
+    }
+    this.searchResults.addLayer(L.geoJson(routeGeoJson));
   }
 
   render() {
