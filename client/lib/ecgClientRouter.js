@@ -27396,7 +27396,7 @@ var ROUTER = {
 
                 var sql = "SELECT pline_id AS id, title, meters, ST_ASTEXT(" + geomtext + ") AS geom FROM " + self.DBTABLE_EDGES + " WHERE DIRECTION IN ('B', '{{ dir }}') AND the_geom && ST_MAKEENVELOPE({{ w }}, {{ s }}, {{ e }}, {{ n }}, 4326)";
 
-                new cartodb.SQL({ user: self.CARTODB_USER }).execute(sql, params).done(function (data) {
+                new cartodb.SQL({ user: self.CARTODB_USER, protocol: 'https' }).execute(sql, params).done(function (data) {
                     var wktreader = new jsts.io.WKTReader();
                     var gfactory = new jsts.geom.GeometryFactory();
 
@@ -27498,7 +27498,7 @@ var ROUTER = {
         var sql = "SELECT pline_id AS id, title, ST_DISTANCE(the_geom::geography, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326)::geography) AS closest_distance, ST_Y(ST_CLOSESTPOINT(the_geom, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326))) AS closest_lat, ST_X(ST_CLOSESTPOINT(the_geom, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326))) AS closest_lng, ST_XMAX(the_geom) AS e, ST_XMIN(the_geom) AS w, ST_YMIN(the_geom) AS s, ST_YMAX(the_geom) AS n FROM " + self.DBTABLE_EDGES + " WHERE " + directionclause + " AND " + trailtypeclause + " ORDER BY the_geom <-> ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326) LIMIT 1";
         var params = { lng: lng, lat: lat };
 
-        new cartodb.SQL({ user: self.CARTODB_USER }).execute(sql, params).done(function (data) {
+        new cartodb.SQL({ user: self.CARTODB_USER, protocol: 'https' }).execute(sql, params).done(function (data) {
             closest_segment = data.rows[0];
 
             closest_segment.wanted_lat = lat; // decorate with the actually-requested lat+lng
