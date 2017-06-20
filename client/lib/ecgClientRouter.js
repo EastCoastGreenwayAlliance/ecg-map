@@ -27342,38 +27342,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * ROUTER routing class for ECG data
  * Gregor Allensworth   gregor@greeninfo.org
  * apololgies in advance for it not being a proper ES6 class
- *
- * Params:
- * ROUTER.findRoute(start_lat, start_lng, target_lat, target_lng, success_callback, failure_callback)
- *
- * Return:
- * A GeoJSON-compliant structure suited for consumption by Leaflet or almost anything
- *
- * Feature properties are:
- * id -- The ID# of the line in CartoDB.
- * title -- The name of the road or trail which this line represents.
- * length -- Length of this section, in meters.
- * transition -- Metadata about the transition to the next segment on the route.
- * transition.title -- Human-readable text for this transition, e.g. "Turn left onto Hayward Avenue"
- * transition.lat -- The latitude at which the transition occurs.
- * transition.lng -- The longitude at which the transition occurs.
- * transition.code -- A domain code indicating the type of transition, e.g. "RT" for a right turn. This domain-coded version would be suited to selecting icons. Search this document for TRANSITION_CODES to see the list.
- *
- * Additionally, the structure contains a .properties attribute of its own, containing medatata about the route. The attributes of route.properties are as follows:
- * total_meters -- The total length of the route in meters, summed from the individual steps.
- * startpoint_wanted -- The desired starting latlng. GeoJSON-compliant point feature object.
- * endpoint_wanted -- The desired ending latlng. GeoJSON-compliant point feature object.
- * startpoint_trail -- The closest latlng on the route to the desired starting latlng. GeoJSON-compliant point feature object.
- * endpoint_trail -- The closest latlng on the route to the desired starting latlng. GeoJSON-compliant point feature object.
- * startpoint_meters -- The distance in meters, between startpoint_wanted and startpoint_trail.
- * endpoint_meters -- The distance in meters, between endpoint_wanted and endpoint_trail.
+ * See API.md for API documentation
  */
 
 var ROUTER = {
-    init: function init(user, table) {
+    init: function init(user, table, options) {
         // set the router's CARTO account / user & route segments table
         this.CARTODB_USER = user;
         this.DBTABLE_EDGES = table;
+        // set other options
+        this.options = options ? options : {};
     },
 
     //
@@ -27393,10 +27371,14 @@ var ROUTER = {
         var northbound = start_lat <= target_lat;
 
         // find the best edges for our starting and ending location
-        self.findNearestSegmentToLatLng(start_lat, start_lng, northbound ? 'N' : 'S', function (start_segment) {
-            self.findNearestSegmentToLatLng(target_lat, target_lng, northbound ? 'N' : 'S', function (target_segment) {
-                console.log(['start segment', start_lat, start_lng, start_segment]);
-                console.log(['target segment', target_lat, target_lng, target_segment]);
+        var pointfinderoptions = {
+            direction: northbound ? 'N' : 'S'
+        };
+
+        self.findNearestSegmentToLatLng(start_lat, start_lng, function (start_segment) {
+            self.findNearestSegmentToLatLng(target_lat, target_lng, function (target_segment) {
+                if (self.options.debug) console.log(['start segment', start_lat, start_lng, start_segment]);
+                if (self.options.debug) console.log(['target segment', target_lat, target_lng, target_segment]);
 
                 // fetch relevant route segments
                 // loading the whole dataset can be workable over a fast connection, but we'd rather not
@@ -27409,7 +27391,8 @@ var ROUTER = {
                     dir: northbound ? 'N' : 'S'
                 };
 
-                var geomtext = "ST_SIMPLIFY(the_geom,0.0001)"; // a teeny-tiny simplification to clean some of their flourishes that have wonky angles at starts and ends
+                // var geomtext = "ST_SIMPLIFY(the_geom,0.0001)"; // a teeny-tiny simplification to clean some of their flourishes that have wonky angles at starts and ends
+                var geomtext = "the_geom"; // the geometry is clean enough we can just use it as-is
 
                 var sql = "SELECT pline_id AS id, title, meters, ST_ASTEXT(" + geomtext + ") AS geom FROM " + self.DBTABLE_EDGES + " WHERE DIRECTION IN ('B', '{{ dir }}') AND the_geom && ST_MAKEENVELOPE({{ w }}, {{ s }}, {{ e }}, {{ n }}, 4326)";
 
@@ -27442,7 +27425,7 @@ var ROUTER = {
                     // hand off to our path-finder
                     // tack on some metadata to the resulting list of segments
                     // then pass the results through cleanup and serialization
-                    console.log('downloaded ' + data.rows.length + ' segments, starting assembly');
+                    if (self.options.debug) console.log('downloaded ' + data.rows.length + ' segments, starting assembly');
                     try {
                         var route = self.assemblePath(start_segment, target_segment, data.rows, northbound);
 
@@ -27469,24 +27452,31 @@ var ROUTER = {
                 });
             }, function (errmsg) {
                 failure_callback("error finding target segment: " + errmsg);
-            });
+            }, pointfinderoptions);
         }, function (errmsg) {
             failure_callback("error finding start segment: " + errmsg);
-        });
+        }, pointfinderoptions);
     },
 
     //
     // utility function: find the nearest segment to the given latlng
     // asynchronous: provide success + failure callbacks
-    // success -- will be passed 1 param: the resulting segment
+    // success -- will be passed 1 param: the resulting segment;; decorated with some attribtues e.g. wanted_lat, wanted_lng
     // error -- will be passed 1 param: error message
+    // options -- extra tuning of the nearest point depending on use case
     //
-    findNearestSegmentToLatLng: function findNearestSegmentToLatLng(lat, lng, direction, success_callback, failure_callback) {
+    // options:
+    // direction -- 'N' or 'S' if we must find only northbound or southbound segments
+    //              used when routing so we don't pick a starting segment that isn't even valid on our own path
+    // trailonly -- if true, select only segments which are truly part of the trail, as opposed to roads etc.
+    //              used for finding how close one is to the real trail, as opposed to how close to some road/transit to get onto the trail
+    //
+    findNearestSegmentToLatLng: function findNearestSegmentToLatLng(lat, lng, success_callback, failure_callback, options) {
         var self = this;
         var closest_segment;
 
         var directionclause = "TRUE";
-        switch (direction) {
+        switch (options && options.direction) {
             case 'N':
                 // N trails only
                 directionclause = "direction IN ('B', 'N')";
@@ -27500,7 +27490,12 @@ var ROUTER = {
                 break;
         }
 
-        var sql = "SELECT pline_id AS id, title, ST_DISTANCE(the_geom::geography, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326)::geography) AS closest_distance, ST_Y(ST_CLOSESTPOINT(the_geom, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326))) AS closest_lat, ST_X(ST_CLOSESTPOINT(the_geom, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326))) AS closest_lng, ST_XMAX(the_geom) AS e, ST_XMIN(the_geom) AS w, ST_YMIN(the_geom) AS s, ST_YMAX(the_geom) AS n FROM " + self.DBTABLE_EDGES + " WHERE " + directionclause + " ORDER BY the_geom <-> ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326) LIMIT 1";
+        var trailtypeclause = "TRUE";
+        if (options && options.trailonly) {
+            trailtypeclause = "line_type NOT IN ('Transit or Ferry')";
+        }
+
+        var sql = "SELECT pline_id AS id, title, ST_DISTANCE(the_geom::geography, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326)::geography) AS closest_distance, ST_Y(ST_CLOSESTPOINT(the_geom, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326))) AS closest_lat, ST_X(ST_CLOSESTPOINT(the_geom, ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326))) AS closest_lng, ST_XMAX(the_geom) AS e, ST_XMIN(the_geom) AS w, ST_YMIN(the_geom) AS s, ST_YMAX(the_geom) AS n FROM " + self.DBTABLE_EDGES + " WHERE " + directionclause + " AND " + trailtypeclause + " ORDER BY the_geom <-> ST_SETSRID(ST_MAKEPOINT({{ lng }}, {{ lat }}), 4326) LIMIT 1";
         var params = { lng: lng, lat: lat };
 
         new cartodb.SQL({ user: self.CARTODB_USER }).execute(sql, params).done(function (data) {
@@ -27522,6 +27517,9 @@ var ROUTER = {
     assemblePath: function assemblePath(start_segment, target_segment, universe_segments, northbound) {
         var self = this;
 
+        // Point.clone() does not work, thus the use of gfactory
+        var gfactory = new jsts.geom.GeometryFactory();
+
         // a list of edges which we have already traversed: so we never go backward esp. when exploring forks
         var poisoned = {};
 
@@ -27538,30 +27536,48 @@ var ROUTER = {
         });
         poisoned[start_segment.id] = true;
 
+        // segment-flip our starting segment route[0]
+        // so its lastpoint (our current location along the path, so to speak) is the endpoint closer to our goal
+        // 50% of the time this makes a faster route by heading the right way on the first step
+        var d1 = route[0].firstpoint.distance(target_geom.centroid);
+        var d2 = route[0].lastpoint.distance(target_geom.centroid);
+        if (d1 < d2) {
+            route[0].geom.geometries[0].points.coordinates.reverse();
+
+            var thispoints = route[0].geom.getCoordinates();
+            route[0].firstpoint = gfactory.createPoint(thispoints[0]);
+            route[0].lastpoint = gfactory.createPoint(thispoints[thispoints.length - 1]);
+        }
+
+        // if we fail our way back to start, remember that our starting segment has two ends and we should try the other end
+        var already_flipped_start = false;
+
         // the big loop
         // starting at our latest segment, find all other segments which touch it (more or less) and they are candidates for our next step
         // unless they've been poisoned (tagged as backward)
         while (true) {
             var here = route[route.length - 1];
-            if (here.id == target_segment.id) console.log(["arrived", here.debug]);
+            if (here.id == target_segment.id) if (self.options.debug) console.log(["arrived", here.debug]);
             if (here.id == target_segment.id) break; // we're there! done!
 
-            console.log(["current location:", here.debug]);
+            if (self.options.debug) console.log(["current location:", here.debug, here.lastpoint]);
             var candidates = universe_segments.filter(function (candidate) {
                 // use this to debug if two segments aren't connecting but you think they should
                 // compare their endpoint-to-endpoint distance to the tolerance below
                 // tip: if the end-to-end distance is greater than the minimum distance, maybe the ends you see aren't really the ends, e.g. the line bends back over itself
+                var tolerance = 0.002; // about 50ft; the topology is bad but we should tolerate it
+
                 /*
                 if (here.id == 661596 && candidate.id == 661598) {
-                    console.log([ 'minimum distance between segments', here.geom.distance(candidate.geom) ]);
-                    console.log([ 'distance to next segment first endpoint', here.geom.distance(candidate.firstpoint), here.geom.distance(candidate.firstpoint) <= 0.002 ]);
-                    console.log([ 'distance to next segment last endpoint', here.geom.distance(candidate.lastpoint), here.geom.distance(candidate.lastpoint) <= 0.002 ]);
+                    if (self.options.debug) console.log([ 'minimum distance between segments', here.geom.distance(candidate.geom) ]);
+                    if (self.options.debug) console.log([ 'distance to next segment first endpoint', here.lastpoint.distance(candidate.firstpoint), here.geom.distance(candidate.firstpoint) <= tolerance ]);
+                    if (self.options.debug) console.log([ 'distance to next segment last endpoint', here.lastpoint.distance(candidate.lastpoint), here.geom.distance(candidate.lastpoint) <= tolerance ]);
                 }
                 */
 
-                var tolerance = 0.002; // about 50ft; the topology is bad but we should tolerate it
                 if (poisoned[candidate.id]) return false;
-                return here.geom.distance(candidate.firstpoint) <= tolerance || here.geom.distance(candidate.lastpoint) <= tolerance;
+
+                return here.lastpoint.distance(candidate.firstpoint) <= tolerance || here.lastpoint.distance(candidate.lastpoint) <= tolerance;
             });
 
             var nextsegment = null;
@@ -27573,7 +27589,7 @@ var ROUTER = {
             } else if (candidates.length) {
                 // more than 1 unpoisoned candidate = this is a fork; pick one and move on
                 // if we were wrong we'd eventually end up with 0 candidates, a dead end; see below
-                console.log(["fork detected here:", here.debug, 'candidates are:', candidates]);
+                if (self.options.debug) console.log(["fork detected here:", here.debug, 'candidates are:', candidates]);
                 here.fork = true;
 
                 // Manhattan heuristic: whichever candidate is closer to our destination, is probably right
@@ -27581,27 +27597,38 @@ var ROUTER = {
                     return p.centroid.distance(target_geom.centroid) < q.centroid.distance(target_geom.centroid) ? -1 : 1;
                 });
                 nextsegment = candidates[0];
+            } else if (route.length == 1) {
+                // we're at our starting segment and have no candidates
+                // try flipping the starting segment's vertices so we start at the other end of the segment, see if we get better fortune that way
+                // if we already tried that (fork=false) then we've exhausted both ends of the starting segment, and it's time to give up
+                if (!already_flipped_start) {
+                    if (self.options.debug) console.log(["zero candidates at starting node. try flipping"]);
+                    here.geom.geometries[0].points.coordinates.reverse();
+
+                    var thispoints = here.geom.getCoordinates();
+                    here.firstpoint = gfactory.createPoint(thispoints[0]);
+                    here.lastpoint = gfactory.createPoint(thispoints[thispoints.length - 1]);
+
+                    already_flipped_start = true;
+                } else {
+                    if (self.options.debug) console.log(["zero candidates at starting node even after flipping. there is no path"]);
+                    route = null;
+                }
             } else {
-                // no candidates at all? then we're at a dead end and it's not our destination
+                // no candidates at all? then we're at a dead end, but not at our beginning
+                if (self.options.debug) console.log(['dead end at:', here.debug]);
+
+                // this is not a fork if we have 0 candidates
                 here.fork = false;
 
                 // find the last node in our route which is a fork
                 // strip off the remainder of the route
                 // then let nextsegment remain null, so our next pass will be on that fork node with one less option
-                console.log(['dead end at:', here.debug]);
-
                 for (var i = route.length - 1; i >= 0; i--) {
-                    // if we are all the way back at the start and are seeing 0 candidates, it's not gonna happen
-                    if (i == 0) {
-                        console.log(["zero candidates at starting node. there is no path"]);
-                        route = null;
-                        break;
-                    }
-
-                    if (!route[i].fork) continue;
-                    console.log(["last fork was at step:", i, route[i].debug]);
+                    if (i > 0 && !route[i].fork) continue;
+                    if (self.options.debug) console.log(["last fork was at step:", i, route[i].debug]);
                     route.splice(i + 1);
-                    console.log(['stripped back to last fork:', route[route.length - 1].debug]);
+                    if (self.options.debug) console.log(['stripped back to last fork:', route[route.length - 1].debug]);
                     break;
                 }
             }
@@ -27610,8 +27637,68 @@ var ROUTER = {
             if (route === null) break;
 
             // add this segment to our route
-            // then poison this segment so we won't try it again (backward is never a way forward)
+            // involves a few steps...
             if (nextsegment) {
+                // flip this next segment's vertices so we're sure we have an end-to-end trail, a consistent set of vertices in sequence
+                // and thus the last coordinate of our last step of our route, is basically "our location" as far as we have progressed
+                // this doesn't make a difference if just drawing the lines' shapes onto a map, but matters a lot when figuring out turning, elevation profiles, etc.
+                // segment flipping -- align each step's ending vertex to the next line's starting vertex
+                // this makes the vertices truly sequential along the route, which is relevant to:
+                // - generating elevation profile charts, as one would want the elevations in sequence
+                // - filling in gaps, by fudging the starting and ending points so they have the same vertex
+                // - generating turning directions, where one lines changes into the next
+                // http://gregorthemapguy.blogspot.com/2012/08/turning-directions-for-every-segment.html
+                var dx11 = here.firstpoint.distance(nextsegment.firstpoint);
+                var dx22 = here.lastpoint.distance(nextsegment.lastpoint);
+                var dx12 = here.firstpoint.distance(nextsegment.lastpoint);
+                var dx21 = here.lastpoint.distance(nextsegment.firstpoint);
+                switch (Math.min(dx11, dx12, dx22, dx21)) {
+                    case dx21:
+                        // this segment's end meets the next segment's start; great!
+                        if (self.options.debug) console.log(['segment end align', here.debug, nextsegment.debug, 'ok as is']);
+                        break;
+                    case dx11:
+                        // this segment's start meets the next segment's start; flip this one
+                        if (self.options.debug) console.log(['segment end align', here.debug, nextsegment.debug, 'flip here']);
+
+                        here.geom.geometries[0].points.coordinates.reverse();
+
+                        var thispoints = here.geom.getCoordinates();
+                        here.firstpoint = gfactory.createPoint(thispoints[0]);
+                        here.lastpoint = gfactory.createPoint(thispoints[thispoints.length - 1]);
+
+                        break;
+                    case dx12:
+                        // this segment's start meets the next segment's end; flip both
+                        if (self.options.debug) console.log(['segment end align', here.debug, nextsegment.debug, 'flip both']);
+
+                        here.geom.geometries[0].points.coordinates.reverse();
+                        nextsegment.geom.geometries[0].points.coordinates.reverse();
+
+                        var thispoints = here.geom.getCoordinates();
+                        here.firstpoint = gfactory.createPoint(thispoints[0]);
+                        here.lastpoint = gfactory.createPoint(thispoints[thispoints.length - 1]);
+
+                        var nextpoints = nextsegment.geom.getCoordinates();
+                        nextsegment.firstpoint = gfactory.createPoint(nextpoints[0]);
+                        nextsegment.lastpoint = gfactory.createPoint(nextpoints[nextpoints.length - 1]);
+
+                        break;
+                    case dx22:
+                        // this segment's end meets the next segment's end; flip next one
+                        if (self.options.debug) console.log(['segment end align', here.debug, nextsegment.debug, 'flip next']);
+
+                        nextsegment.geom.geometries[0].points.coordinates.reverse();
+
+                        var nextpoints = nextsegment.geom.getCoordinates();
+                        nextsegment.firstpoint = gfactory.createPoint(nextpoints[0]);
+                        nextsegment.lastpoint = gfactory.createPoint(nextpoints[nextpoints.length - 1]);
+
+                        break;
+                }
+
+                // add this segment to our route
+                // and poison this segment so we won't try it again (backward is never a way forward)
                 poisoned[nextsegment.id] = true;
                 route.push(nextsegment);
             }
@@ -27628,78 +27715,18 @@ var ROUTER = {
     // give each segment a "transition" object describing the turn and the transition
     //
     routeDecorate: function routeDecorate(route) {
+        var self = this;
+
         // tip: Point.clone() does not work, thus the use of gfactory
         // also to compose new point objects based on route metadata
         var gfactory = new jsts.geom.GeometryFactory();
-
-        // segment flipping -- align each step's ending vertex to the next line's starting vertex
-        // this makes the vertices truly sequential along the route, which is relevant to:
-        // - generating elevation profile charts, as one would want the elevations in sequence
-        // - filling in gaps, by fudging the starting and ending points so they have the same vertex
-        // - generating turning directions, where one lines changes into the next
-        // http://gregorthemapguy.blogspot.com/2012/08/turning-directions-for-every-segment.html
-        //
-        // DON'T FORGET when flipping the linestring geometry TO ALSO update the firstpoint and lastpoint references
-        // as we will likely be comparing them for later phases of work
-        for (var i = 0, l = route.length - 2; i <= l; i++) {
-            var thisstep = route[i];
-            var nextstep = route[i + 1];
-
-            var dx11 = thisstep.firstpoint.distance(nextstep.firstpoint);
-            var dx22 = thisstep.lastpoint.distance(nextstep.lastpoint);
-            var dx12 = thisstep.firstpoint.distance(nextstep.lastpoint);
-            var dx21 = thisstep.lastpoint.distance(nextstep.firstpoint);
-            switch (Math.min(dx11, dx12, dx22, dx21)) {
-                case dx21:
-                    // this segment's end meets the next segment's start; great!
-                    console.log(['segment end align', thisstep.debug, nextstep.debug, 'ok as is']);
-                    break;
-                case dx11:
-                    // this segment's start meets the next segment's start; flip this one
-                    console.log(['segment end align', thisstep.debug, nextstep.debug, 'flip this']);
-
-                    thisstep.geom.geometries[0].points.coordinates.reverse();
-
-                    var thispoints = thisstep.geom.getCoordinates();
-                    thisstep.firstpoint = gfactory.createPoint(thispoints[0]);
-                    thisstep.lastpoint = gfactory.createPoint(thispoints[thispoints.length - 1]);
-
-                    break;
-                case dx12:
-                    // this segment's start meets the next segment's end; flip both
-                    console.log(['segment end align', thisstep.debug, nextstep.debug, 'flip both']);
-
-                    thisstep.geom.geometries[0].points.coordinates.reverse();
-                    nextstep.geom.geometries[0].points.coordinates.reverse();
-
-                    var thispoints = thisstep.geom.getCoordinates();
-                    thisstep.firstpoint = gfactory.createPoint(thispoints[0]);
-                    thisstep.lastpoint = gfactory.createPoint(thispoints[thispoints.length - 1]);
-
-                    var nextpoints = nextstep.geom.getCoordinates();
-                    nextstep.firstpoint = gfactory.createPoint(nextpoints[0]);
-                    nextstep.lastpoint = gfactory.createPoint(nextpoints[nextpoints.length - 1]);
-
-                    break;
-                case dx22:
-                    // this segment's end meets the next segment's end; flip next one
-                    console.log(['segment end align', thisstep.debug, nextstep.debug, 'flip next']);
-
-                    nextstep.geom.geometries[0].points.coordinates.reverse();
-
-                    var nextpoints = nextstep.geom.getCoordinates();
-                    nextstep.firstpoint = gfactory.createPoint(nextpoints[0]);
-                    nextstep.lastpoint = gfactory.createPoint(nextpoints[nextpoints.length - 1]);
-
-                    break;
-            }
-        }
 
         // go through the transitions and clean up non-matching ends, which form visible breaks where the segments don't really touch
         // effectively, fudge the last point of the previous trail to be the same as the first point of next, so they will overlap
         for (var i = 0, l = route.length - 2; i <= l; i++) {
             var thisstep = route[i];
             var nextstep = route[i + 1];
+
             // if the distance between the two points is quite close, don't bother; the topology is destined for a significant cleanup which will solve many of them
             var dx = thisstep.lastpoint.distance(nextstep.firstpoint);
             if (dx < 0.0001) continue;
@@ -27707,7 +27734,7 @@ var ROUTER = {
             // clone the next segment's starting point, append it to our linestring; don't forget to update our lastpoint
             // this is way off API, modifying the geometry in place
             var newpoint = gfactory.createPoint(nextstep.firstpoint.coordinates.coordinates[0]);
-            console.log(['patching gap', thisstep.debug, nextstep.debug, newpoint]);
+            if (self.options.debug) console.log(['patching gap', thisstep.debug, nextstep.debug, newpoint]);
             thisstep.geom.geometries[0].points.coordinates.push(newpoint.coordinates.coordinates[0]);
             thisstep.lastpoint = newpoint;
         }
@@ -27769,7 +27796,7 @@ var ROUTER = {
             var angle = Math.round(nextaz - thisaz);
             if (angle > 180) angle = angle - 360;
             if (angle < -180) angle = angle + 360;
-            console.log(['turning', thisstep.debug, nextstep.debug, thisaz, nextaz, angle]);
+            if (self.options.debug) console.log(['turning', thisstep.debug, nextstep.debug, thisaz, nextaz, angle]);
 
             var turntype = TRANSITION_CODES.OTHER;
             if (angle >= -30 && angle <= 30) turntype = TRANSITION_CODES.STRAIGHT;else if (angle >= 31 && angle <= 60) turntype = TRANSITION_CODES.RIGHT_SOFT;else if (angle >= 61 && angle <= 100) turntype = TRANSITION_CODES.RIGHT_TURN;else if (angle >= 101) turntype = TRANSITION_CODES.RIGHT_HARD;else if (angle <= -30 && angle >= -60) turntype = TRANSITION_CODES.LEFT_SOFT;else if (angle <= -61 && angle >= -100) turntype = TRANSITION_CODES.LEFT_TURN;else if (angle <= -101) turntype = TRANSITION_CODES.LEFT_HARD;

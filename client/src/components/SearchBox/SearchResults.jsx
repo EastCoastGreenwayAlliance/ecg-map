@@ -35,12 +35,13 @@ class SearchResults extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geocodeResult } = nextProps;
+    const { geocodeResult, startLocation, endLocation } = nextProps;
 
     if (!isEqual(geocodeResult, this.props.geocodeResult)) {
-      // We received a geocode result from the user, so set the start / end location
-      // CODE SPLITTING NOTE: if our geoRouter hasn't been loaded yet, then
-      // load it async then handle the geocode result
+      // We received a geocode result from the user, so show the geocode result
+      // and nearest ECG route segment node
+      // CODE SPLITTING NOTE: if our geoRouter object hasn't been loaded yet,
+      // then load it async then handle the geocode result
       // otherwise just handle the geocode result
       if (this.geoRouter === undefined) {
         loadGeoRouter((error, response) => {
@@ -52,6 +53,11 @@ class SearchResults extends Component {
       } else {
         this.handleGeocodeResult(geocodeResult);
       }
+    }
+
+    // user has okay'd start and end locations, now get the actual route
+    if (startLocation.accepted && endLocation.accepted) {
+      // TO DO...
     }
   }
 
@@ -89,9 +95,12 @@ class SearchResults extends Component {
       const lat = coordinates[0];
       const lng = coordinates[1];
 
-      this.geoRouter.findNearestSegmentToLatLng(lat, lng, undefined,
+      this.geoRouter.findNearestSegmentToLatLng(lat, lng,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'START'),
-        error => self.handleGeoRoutingError(error)
+        error => self.handleGeoRoutingError(error),
+        {
+          trailonly: true
+        }
       );
     }
 
@@ -101,9 +110,12 @@ class SearchResults extends Component {
       const lat = coordinates[0];
       const lng = coordinates[1];
 
-      this.geoRouter.findNearestSegmentToLatLng(lat, lng, undefined,
+      this.geoRouter.findNearestSegmentToLatLng(lat, lng,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'END'),
-        error => self.handleGeoRoutingError(error)
+        error => self.handleGeoRoutingError(error),
+        {
+          trailonly: true
+        }
       );
     }
 
