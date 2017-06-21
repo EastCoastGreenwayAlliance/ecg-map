@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 class SearchInput extends Component {
   static propTypes = {
     fetchLocationGeocode: PropTypes.func,
+    cancelRoutingLocation: PropTypes.func,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
   }
@@ -39,10 +40,17 @@ class SearchInput extends Component {
 
   handleSubmit(e) {
     const { searchAddress } = this.state;
+    const { startLocation, endLocation, fetchLocationGeocode,
+      cancelRoutingLocation } = this.props;
     e.preventDefault();
 
+    // temporary logic to start over, this should be moved elsewhere
+    if (startLocation.accepted && endLocation.accepted) {
+      cancelRoutingLocation('DONE');
+    }
+
     if (searchAddress && searchAddress.length) {
-      this.props.fetchLocationGeocode(searchAddress);
+      fetchLocationGeocode(searchAddress);
     }
   }
 
@@ -52,6 +60,7 @@ class SearchInput extends Component {
 
     if (!startLocation.accepted && !endLocation.accepted) text = 'Search a Starting Point';
     if (startLocation.accepted && !endLocation.accepted) text = 'Search a Ending Point';
+    if (startLocation.accepted && endLocation.accepted) text = 'Search Again';
 
     return text;
   }

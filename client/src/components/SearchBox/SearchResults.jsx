@@ -8,7 +8,10 @@ import { loadGeoRouter } from '../../common/api';
 // helper function to convert meters to miles
 const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
 
-/** Class that handles displaying location search results & geo-routing results */
+/** Class that handles:
+  - logic for selecting a portion of the ECG route
+  - displaying location search results
+  - displaying geo-routing results */
 class SearchResults extends Component {
   static propTypes = {
     nearestSegmentError: PropTypes.func.isRequired,
