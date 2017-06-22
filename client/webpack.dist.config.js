@@ -108,6 +108,8 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: 'src/index.html'
     }),
+    // enable scope hoisting for faster load time in browser
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // tell Webpack to copy static assets (images, icons, etc.) to dist/
     new CopyWebpackPlugin([
       { from: 'assets/', to: 'assets/' },
