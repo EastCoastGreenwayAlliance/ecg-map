@@ -1,3 +1,4 @@
+/* eslint-disable func-names, object-shorthand */
 const webpack = require('webpack');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
@@ -10,26 +11,9 @@ const extractSass = new ExtractTextPlugin({
   disable: process.env.NODE_ENV === 'development'
 });
 
-const VENDOR_LIBS = [
-  'babel-polyfill',
-  'isomorphic-fetch',
-  'lodash/debounce',
-  'prop-types',
-  'react',
-  'react-dom',
-  'react-redux',
-  'react-router-dom',
-  'redux',
-  'redux-logger',
-  'redux-responsive',
-  'redux-thunk',
-  'single-line-string'
-];
-
 module.exports = {
   entry: {
-    bundle: './src/index.js',
-    vendor: VENDOR_LIBS
+    bundle: './src/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -99,13 +83,20 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'],
-      minChunks: Infinity
-    }),
     new HTMLWebpackPlugin({
       template: 'src/index.html'
     }),
     new WebpackNotifierPlugin({ alwaysNotify: true }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        // this assumes your vendor imports exist in the node_modules directory
+        return module.context && module.context.indexOf('node_modules') !== -1;
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity
+    }),
   ]
 };

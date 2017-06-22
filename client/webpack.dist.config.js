@@ -1,3 +1,4 @@
+/* eslint-disable func-names, object-shorthand */
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -11,27 +12,9 @@ const extractSass = new ExtractTextPlugin({
   disable: process.env.NODE_ENV === 'development'
 });
 
-const VENDOR_LIBS = [
-  'babel-polyfill',
-  'isomorphic-fetch',
-  'lodash/debounce',
-  'prop-types',
-  'react',
-  'react-dom',
-  'react-redux',
-  'react-router-dom',
-  'redux',
-  'redux-logger',
-  'redux-responsive',
-  'redux-thunk',
-  'single-line-string'
-];
-
 module.exports = {
   entry: {
-    bundle: './src/index.js',
-    vendor: VENDOR_LIBS,
-    publicPath: '/'
+    bundle: './src/index.js'
   },
   cache: false,
   devtool: 'source-map',
@@ -90,10 +73,6 @@ module.exports = {
     }),
     extractSass,
     new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity
-    }),
     new webpack.NoEmitOnErrorsPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
@@ -111,6 +90,17 @@ module.exports = {
     // tell Webpack to copy static assets (images, icons, etc.) to dist/
     new CopyWebpackPlugin([
       { from: 'assets/', to: 'assets/' },
-    ])
+    ]),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        // this assumes your vendor imports exist in the node_modules directory
+        return module.context && module.context.indexOf('node_modules') !== -1;
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity
+    })
   ]
 };
