@@ -106,8 +106,6 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: 'src/index.html'
     }),
-    // enable scope hoisting for faster load time in browser
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new WebpackNotifierPlugin({ alwaysNotify: true }),
   ]
 };
