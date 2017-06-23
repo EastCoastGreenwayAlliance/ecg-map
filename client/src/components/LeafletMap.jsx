@@ -185,6 +185,13 @@ class LeafletMap extends Component {
       .on('error', (error) => { throw error; });
   }
 
+  fitBoundsToSearchResults(padding) {
+    // fit the map bounds to the search results featureGroup
+    this.map.fitBounds(this.searchResults.getBounds(), {
+      padding,
+    });
+  }
+
   displayGeocodeResult(geocodeResult) {
     const { coordinates, addressFormatted } = geocodeResult;
     const { startLocation, endLocation } = this.props;
@@ -230,9 +237,7 @@ class LeafletMap extends Component {
         })
       );
       // fit the map extent to the user's search and neareset ECG location
-      this.map.fitBounds(this.searchResults.getBounds(), {
-        padding: [25, 25]
-      });
+      this.fitBoundsToSearchResults([325, 275]);
     }
   }
 
@@ -258,9 +263,7 @@ class LeafletMap extends Component {
         icon: this.endIcon
       }).bindPopup('End')
     );
-    this.map.fitBounds(this.searchResults.getBounds(), {
-      padding: [50, 50]
-    });
+    this.fitBoundsToSearchResults([50, 50]);
   }
 
   renderRouteHighlight(routeGeoJson) {
@@ -269,9 +272,7 @@ class LeafletMap extends Component {
       return;
     }
     this.searchResults.addLayer(L.geoJson(routeGeoJson));
-    this.map.fitBounds(this.searchResults.getBounds(), {
-      padding: [50, 50]
-    });
+    this.fitBoundsToSearchResults([50, 50]);
   }
 
   render() {
