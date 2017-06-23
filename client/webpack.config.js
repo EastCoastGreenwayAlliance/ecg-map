@@ -2,26 +2,23 @@
 const webpack = require('webpack');
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
-
-const extractSass = new ExtractTextPlugin({
-  filename: '[name].[hash].css',
-  disable: process.env.NODE_ENV === 'development'
-});
 
 module.exports = {
   entry: {
     bundle: ['react-hot-loader/patch', './src/index.js']
   },
+
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash].js',
   },
+
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.geojson']
   },
+
   module: {
     rules: [
       {
@@ -60,20 +57,22 @@ module.exports = {
       }
     ]
   },
+
+  devtool: 'eval',
+
   devServer: {
     compress: true,
     historyApiFallback: true,
-    hotOnly: true, // tell dev-server we're using HMR
+    hotOnly: true, // tell dev-server we're using HMR, don't refresh page on failures
     port: 8888,
+    // proxy requests to the backend server on port 5001
     proxy: {
       '/signup*': 'http://127.0.0.1:5001'
     }
   },
-  plugins: [
-    // use Sass
-    extractSass,
 
-    // lint Sass
+  plugins: [
+    // lint Sass/CSS
     new StyleLintPlugin({
       configFile: '.stylelintrc.json',
       files: '**/*.scss',
@@ -109,6 +108,7 @@ module.exports = {
         return module.context && module.context.indexOf('node_modules') !== -1;
       }
     }),
+
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       minChunks: Infinity
