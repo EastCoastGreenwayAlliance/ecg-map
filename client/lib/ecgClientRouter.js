@@ -27876,30 +27876,25 @@ var ROUTER = {
             return d;
         }
 
-        // if the vertex length is already under our threshold, we have a sample already!
-        if (allvertices.length <= howmanysamples) {
-            route.downsampled = allvertices;
-        } else {
-            // what we want is a sample evenly-balanced along the .total_meters of the whole route
-            var meters_between_samples = Math.round(route.total_meters / howmanysamples);
-            if (self.options.debug) console.log(['downsample total/points/interval', route.total_meters, howmanysamples, meters_between_samples]);
+        // what we want is a sample evenly-balanced along the .total_meters of the whole route
+        var meters_between_samples = Math.round(route.total_meters / howmanysamples);
+        if (self.options.debug) console.log(['downsample total/points/interval', route.total_meters, howmanysamples, meters_between_samples]);
 
-            var total_distance_traveled = 0;
-            var accumulated_sample_distance = 0;
-            for (var i = 1, l = allvertices.length - 1; i <= l; i++) {
-                var thisone = allvertices[i];
-                var prevone = allvertices[i - 1];
-                var thisdistance = getLatLonPairDistance(thisone.y, thisone.x, prevone.y, prevone.x);
+        var total_distance_traveled = 0;
+        var accumulated_sample_distance = 0;
+        for (var i = 1, l = allvertices.length - 1; i <= l; i++) {
+            var thisone = allvertices[i];
+            var prevone = allvertices[i - 1];
+            var thisdistance = getLatLonPairDistance(thisone.y, thisone.x, prevone.y, prevone.x);
 
-                total_distance_traveled += thisdistance; // log the total distance we have come; sample points are saved with this as their X axis in miles
+            total_distance_traveled += thisdistance; // log the total distance we have come; sample points are saved with this as their X axis in miles
 
-                accumulated_sample_distance += thisdistance;
-                if (accumulated_sample_distance >= meters_between_samples) {
-                    thisone.miles = total_distance_traveled / 1609;
-                    route.downsampled.push(thisone);
-                    accumulated_sample_distance = 0;
-                    // if (self.options.debug) console.log([ 'downsample using this vertex', thisone ]);
-                }
+            accumulated_sample_distance += thisdistance;
+            if (accumulated_sample_distance >= meters_between_samples) {
+                thisone.miles = total_distance_traveled / 1609;
+                route.downsampled.push(thisone);
+                accumulated_sample_distance = 0;
+                // if (self.options.debug) console.log([ 'downsample using this vertex', thisone ]);
             }
         }
 
