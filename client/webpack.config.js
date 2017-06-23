@@ -7,18 +7,17 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 
 const extractSass = new ExtractTextPlugin({
-  filename: '[name].[chunkhash].css',
+  filename: '[name].[hash].css',
   disable: process.env.NODE_ENV === 'development'
 });
 
 module.exports = {
   entry: {
-    bundle: './src/index.js'
+    bundle: ['react-hot-loader/patch', './src/index.js']
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[chunkhash].js',
-    publicPath: '/'
+    filename: '[name].[hash].js',
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json', '.geojson']
@@ -39,19 +38,17 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: extractSass.extract({
-          use: [
-            {
-              loader: 'css-loader'
-            },
-            {
-              loader: 'sass-loader'
-            }
-          ],
-          fallback: [{
-            loader: 'style-loader'
-          }]
-        })
+        use: [
+          {
+            loader: 'style-loader' // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader' // translates CSS into CommonJS
+          },
+          {
+            loader: 'sass-loader' // compiles Sass to CSS
+          }
+        ]
       },
       {
         test: /\.(json|geojson)$/,
@@ -66,13 +63,17 @@ module.exports = {
   devServer: {
     compress: true,
     historyApiFallback: true,
+    hotOnly: true, // tell dev-server we're using HMR
     port: 8888,
     proxy: {
       '/signup*': 'http://127.0.0.1:5001'
     }
   },
   plugins: [
+    // use Sass
     extractSass,
+
+    // lint Sass
     new StyleLintPlugin({
       configFile: '.stylelintrc.json',
       files: '**/*.scss',
@@ -80,13 +81,27 @@ module.exports = {
       quiet: false,
       syntax: 'scss'
     }),
+
+    // make our NODE_ENV available
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
+
+    // enable HMR globally
+    new webpack.HotModuleReplacementPlugin(),
+
+    // print more readable module names in the browser console on HMR updates
+    new webpack.NamedModulesPlugin(),
+
+    // use our index.html file
     new HTMLWebpackPlugin({
       template: 'src/index.html'
     }),
+
+    // notifications on updates
     new WebpackNotifierPlugin({ alwaysNotify: true }),
+
+    // codesplitting output files
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module) {

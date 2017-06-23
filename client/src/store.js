@@ -10,15 +10,15 @@ function makeStore(initialState) {
     rootReducer,
     initialState,
     compose(
-      responsiveStoreEnhancer, // throttle time
+      responsiveStoreEnhancer,
       applyMiddleware(...middleware)
     )
   );
 
   if (module.hot) {
     // enable hot module replacement
-    module.hot.accept('./reducers/index.js', () => {
-      const nextReducer = System.import('./reducers/index.js');
+    module.hot.accept('./reducers', () => {
+      const nextReducer = System.import('./reducers/index.js').default;
       store.replaceReducer(nextReducer);
     });
   }

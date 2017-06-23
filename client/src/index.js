@@ -1,24 +1,23 @@
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { AppContainer } from 'react-hot-loader';
 
 import '../scss/main.scss'; // tell webpack to use our scss
-import store from './store'; // default redux store
-import AppConnected from './containers/AppConnected';
-import CueSheet from './views/CueSheet';
-import NotFound from './views/404';
+import App from './App';
 
-render(
-  <Provider store={store}>
-    <Router>
-      <Switch>
-        <Route exact path="/" component={AppConnected} />
-        <Route path="/cuesheet" component={CueSheet} />
-        <Route component={NotFound} />
-      </Switch>
-    </Router>
-  </Provider>,
-  document.getElementById('root')
-);
+const renderApp = () => {
+  render(
+    <AppContainer>
+      <App />
+    </AppContainer>,
+    document.getElementById('root')
+  );
+};
+
+renderApp(App);
+
+// Hot Module Replacement API
+if (module.hot) {
+  module.hot.accept('./App', () => renderApp(App));
+}

@@ -27343,6 +27343,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
  * Gregor Allensworth   gregor@greeninfo.org
  * apololgies in advance for it not being a proper ES6 class
  * See API.md for API documentation
+ * other references include Gregor The Map Guy postings in 2012
+ * http://gregorthemapguy.blogspot.com/2012/08/turning-directions-for-every-segment.html
  */
 
 var ROUTER = {
@@ -27440,7 +27442,9 @@ var ROUTER = {
                         route.start_segment = start_segment;
                         route.target_segment = target_segment;
 
-                        route = self.routeDecorate(route);
+                        // hand off to various postprocess and cleanup steps
+                        route = self.routeCleanup(route);
+                        route = self.routeDownsample(route);
                         route = self.routeSerialize(route);
                         success_callback(route);
                     } catch (errmsg) {
@@ -27646,8 +27650,7 @@ var ROUTER = {
                 // this makes the vertices truly sequential along the route, which is relevant to:
                 // - generating elevation profile charts, as one would want the elevations in sequence
                 // - filling in gaps, by fudging the starting and ending points so they have the same vertex
-                // - generating turning directions, where one lines changes into the next
-                // http://gregorthemapguy.blogspot.com/2012/08/turning-directions-for-every-segment.html
+                // - generating turning directions, where one line makes a transition into the next
                 var dx11 = here.firstpoint.distance(nextsegment.firstpoint);
                 var dx22 = here.lastpoint.distance(nextsegment.lastpoint);
                 var dx12 = here.firstpoint.distance(nextsegment.lastpoint);
@@ -27714,7 +27717,7 @@ var ROUTER = {
     // flip segments end-to-end so they have a consistent sequence
     // give each segment a "transition" object describing the turn and the transition
     //
-    routeDecorate: function routeDecorate(route) {
+    routeCleanup: function routeCleanup(route) {
         var self = this;
 
         // tip: Point.clone() does not work, thus the use of gfactory
@@ -27838,7 +27841,86 @@ var ROUTER = {
     },
 
     //
-    // internal / utility function: given a completed and decorated route from routeDecorate()
+    // internal / utility function: given a completed and decorated route from routeCleanup()
+    // create a "downsampled" version of the route suitable for an elevation profile
+    // 15,000 vertices is more than any API will accept, and also means a 15000px-wide chart which would be silly
+    // pick out X number of vertices spaced more-or-less evenly over the route, and those would be used by the caller for elevation profiles or the like
+    //
+    // return is the same route object, now decorated with a .downsampled property
+    // this is an array of coordinate objects, each of which has .lat and .lng properties
+    //
+    routeDownsample: function routeDownsample(route) {
+        var self = this;
+        var howmanysamples = 400;
+        route.downsampled = [];
+
+        // compile the straight list of vertices from all steps
+        // return is an array of JSTS Coordinate objects, so we can use .distance() to generate a balanced sample
+        // later on, we'll translate these into simple lat-lng objects for the caller
+        var allvertices = [].concat.apply([], route.map(function (thisstep) {
+            return thisstep.geom.geometries[0].points.coordinates;
+        }));
+        if (self.options.debug) console.log(['downsample collected vertices', allvertices]);
+
+        // the Haversine formula to find distance (in meters) between two lat-lon pairs -- why is this not in JSTS?
+        function deg2rad(angle) {
+            return angle * 0.017453292519943295; // (angle / 180) * Math.PI;
+        }
+        function getLatLonPairDistance(lat1, lon1, lat2, lon2) {
+            var R = 6371;
+            var dLat = deg2rad(lat2 - lat1);
+            var dLon = deg2rad(lon2 - lon1);
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c * 1000; // Distance in meters
+            return d;
+        }
+
+        // if the vertex length is already under our threshold, we have a sample already!
+        if (allvertices.length <= howmanysamples) {
+            route.downsampled = allvertices;
+        } else {
+            // what we want is a sample evenly-balanced along the .total_meters of the whole route
+            var meters_between_samples = Math.round(route.total_meters / howmanysamples);
+            if (self.options.debug) console.log(['downsample total/points/interval', route.total_meters, howmanysamples, meters_between_samples]);
+
+            var total_distance_traveled = 0;
+            var accumulated_sample_distance = 0;
+            for (var i = 1, l = allvertices.length - 1; i <= l; i++) {
+                var thisone = allvertices[i];
+                var prevone = allvertices[i - 1];
+                var thisdistance = getLatLonPairDistance(thisone.y, thisone.x, prevone.y, prevone.x);
+
+                total_distance_traveled += thisdistance; // log the total distance we have come; sample points are saved with this as their X axis in miles
+
+                accumulated_sample_distance += thisdistance;
+                if (accumulated_sample_distance >= meters_between_samples) {
+                    thisone.miles = total_distance_traveled / 1609;
+                    route.downsampled.push(thisone);
+                    accumulated_sample_distance = 0;
+                    // if (self.options.debug) console.log([ 'downsample using this vertex', thisone ]);
+                }
+            }
+        }
+
+        // convert those coordinates back to proper Point objects so they can be serialized later; right now they're raw Coordinate items
+        // add to them some easy-access attributes which will be used by callers, in postprocessing, in serialization, ...
+        var gfactory = new jsts.geom.GeometryFactory();
+        route.downsampled = route.downsampled.map(function (samplepoint) {
+            var pointobject = gfactory.createPoint(samplepoint);
+            pointobject.lat = samplepoint.y;
+            pointobject.lng = samplepoint.x;
+            pointobject.miles = samplepoint.miles;
+            return pointobject;
+        });
+
+        // all set, hand back the modified route object
+        if (self.options.debug) console.log(['downsample done: ', route.downsampled]);
+        return route;
+    },
+
+    //
+    // internal / utility function: given a completed and decorated route from routeCleanup()
     // serialize the sequence of linestrings into a GeoJSON document, ready for consumption
     //
     routeSerialize: function routeSerialize(route) {
@@ -27859,16 +27941,23 @@ var ROUTER = {
                 startpoint_meters: route.closest_distance_start,
                 endpoint_meters: route.closest_distance_end
             },
+            downsampled: route.downsampled.map(function (samplepoint) {
+                var feature = wktwriter.write(samplepoint);
+                feature.properties = {
+                    lat: parseFloat(samplepoint.lat.toFixed(5)),
+                    lng: parseFloat(samplepoint.lng.toFixed(5)),
+                    miles: parseFloat(samplepoint.miles.toFixed(2))
+                };
+                return feature;
+            }),
             features: route.map(function (routestep) {
                 var feature = wktwriter.write(routestep.geom);
-
                 feature.properties = {
                     id: routestep.id,
                     title: routestep.title,
                     length: routestep.meters,
                     transition: routestep.transition
                 };
-
                 return feature;
             })
         };
