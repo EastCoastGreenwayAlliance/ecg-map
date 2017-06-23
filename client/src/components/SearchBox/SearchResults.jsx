@@ -22,6 +22,7 @@ class SearchResults extends Component {
     routeSearchRequest: PropTypes.func.isRequired,
     routeSearchSuccess: PropTypes.func.isRequired,
     routeSearchError: PropTypes.func.isRequired,
+    geocodeRequested: PropTypes.bool,
     geocodeError: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object
@@ -44,7 +45,7 @@ class SearchResults extends Component {
   componentWillReceiveProps(nextProps) {
     const { geocodeResult, startLocation, endLocation } = nextProps;
 
-    if (!isEqual(geocodeResult, this.props.geocodeResult)) {
+    if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
       // We received a geocode result from the user, so show the geocode result
       // and nearest ECG route segment node
       // CODE SPLITTING NOTE: if our geoRouter object hasn't been loaded yet,
@@ -82,6 +83,14 @@ class SearchResults extends Component {
       endLocation.coordinates[1],
       route => self.props.routeSearchSuccess(route),
       error => self.props.routeSearchError(error)
+    );
+  }
+
+  showLocatingMsg() {
+    return (
+      <div className="search-results__ui">
+        <p>Searching...</p>
+      </div>
     );
   }
 
@@ -166,7 +175,7 @@ class SearchResults extends Component {
     return (
       <div className="search-results__ui search-results__start">
         <p>
-          { ' The nearest Greenway location is '}
+          { `The nearest Greenway location to ${geocodeResult.addressFormatted} is `}
           <span className="bold">{`${metersToMiles(startLocation.distance)} miles`}</span>
           { ' away.' }
         </p>
@@ -195,12 +204,12 @@ class SearchResults extends Component {
   }
 
   showEndOptions() {
-    const { endLocation, acceptRoutingLocation } = this.props;
+    const { endLocation, acceptRoutingLocation, geocodeResult } = this.props;
 
     return (
       <div className="search-results__ui search-results__end">
         <p>
-          { ' The nearest Greenway location is '}
+          { `The nearest Greenway location to ${geocodeResult.addressFormatted} is `}
           <span className="bold">{`${metersToMiles(endLocation.distance)} miles`}</span>
           { ' away.' }
         </p>
@@ -266,7 +275,11 @@ class SearchResults extends Component {
 
   renderSearchResultsStep() {
     // handles which step of the Search UX Flow to display using application state
-    const { geocodeError, startLocation, endLocation } = this.props;
+    const { geocodeError, geocodeRequested, startLocation, endLocation } = this.props;
+
+    if (geocodeRequested || startLocation.isFetching || endLocation.isFetching) {
+      return this.showLocatingMsg();
+    }
 
     if (geocodeError) {
       return this.handleGeocodeError();

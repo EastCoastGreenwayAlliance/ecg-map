@@ -14,9 +14,10 @@ const defaultState = {
 
 const parseGeocodeResult = (result) => {
   const { formatted_address, geometry } = result;
+  const addressLabel = formatted_address.replace(/,\s+(USA|Canada|Mexico)\s*$/, '');
 
   return {
-    addressFormatted: formatted_address,
+    addressFormatted: addressLabel,
     coordinates: [geometry.location.lat, geometry.location.lng],
   };
 };
@@ -27,7 +28,8 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         isFetching: true,
-        searchTerm: action.searchTerm
+        searchTerm: action.searchTerm,
+        result: null
       };
 
     case LOCATION_GEOCODE_SUCCESS:

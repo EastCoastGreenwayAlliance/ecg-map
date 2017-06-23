@@ -98,7 +98,7 @@ class LeafletMap extends Component {
   componentWillReceiveProps(nextProps) {
     const { geocodeResult, startLocation, endLocation, route } = nextProps;
 
-    if (!isEqual(geocodeResult, this.props.geocodeResult)) {
+    if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
       this.displayGeocodeResult(geocodeResult);
     }
 
