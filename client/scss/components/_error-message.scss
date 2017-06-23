@@ -1,0 +1,9 @@
+.ErrorMessage {
+  background: #fff;
+  color: red;
+  border-top: 2px solid $grey;
+
+  &:only-child {
+    border: none;
+  }
+}

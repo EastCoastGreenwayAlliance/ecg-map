@@ -5,8 +5,13 @@ import isEqual from 'lodash/isEqual';
 import { cartoUser, cartoTables } from '../../common/config';
 import { loadGeoRouter } from '../../common/api';
 
-// helper function to convert meters to miles
-const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
+// helper components
+import LoadingMsg from './LoadingMsg';
+import ErrorMsg from './ErrorMsg';
+import StartOptions from './StartOptions';
+import StartAcceptedOptions from './StartAcceptedOptions';
+import EndLocationOptions from './EndLocationOptions';
+import EndAcceptedOptions from './EndAcceptedOptions';
 
 /** Class that handles:
   - logic for selecting a portion of the ECG route
@@ -22,7 +27,7 @@ class SearchResults extends Component {
     routeSearchRequest: PropTypes.func.isRequired,
     routeSearchSuccess: PropTypes.func.isRequired,
     routeSearchError: PropTypes.func.isRequired,
-    geocodeRequested: PropTypes.bool,
+    geocodeIsFetching: PropTypes.bool,
     geocodeError: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object
@@ -86,35 +91,6 @@ class SearchResults extends Component {
     );
   }
 
-  showLocatingMsg() {
-    return (
-      <div className="search-results__ui">
-        <p>Searching...</p>
-      </div>
-    );
-  }
-
-  handleGeocodeError() {
-    const { geocodeError } = this.props;
-    let errorMsg;
-
-    if (typeof geocodeError === 'string') {
-      errorMsg = geocodeError;
-    }
-
-    if (typeof geocodeError === 'object') {
-      errorMsg = geocodeError.message ?
-        `${geocodeError.message}, please try again.` :
-        'Something went wrong, please try again.';
-    }
-
-    return (
-      <div className="search-results__ui search-results__error-msg">
-        <p>{ errorMsg }</p>
-      </div>
-    );
-  }
-
   handleGeocodeResult(result) {
     const { coordinates } = result;
     const { startLocation, endLocation, nearestSegmentRequest } = this.props;
@@ -168,137 +144,33 @@ class SearchResults extends Component {
     this.props.nearestSegmentError(error);
   }
 
-  showStartOptions() {
-    const { geocodeResult, startLocation, acceptRoutingLocation } = this.props;
-    const directionsURL = `https://www.google.com/maps/dir/?api=1&origin=${geocodeResult.coordinates}&destination=${startLocation.coordinates}`;
-
-    return (
-      <div className="search-results__ui search-results__start">
-        <p>
-          { `The nearest Greenway location to ${geocodeResult.addressFormatted} is `}
-          <span className="bold">{`${metersToMiles(startLocation.distance)} miles`}</span>
-          { ' away.' }
-        </p>
-        <button className="center green" tabIndex="0" onClick={() => window.open(directionsURL)}>
-          Get Directions to the Greenway
-        </button>
-        <button className="center blue" tabIndex="0" onClick={() => acceptRoutingLocation('START')}>
-          Use this Greenway location as your starting point
-        </button>
-      </div>
-    );
-  }
-
-  showPostStartOptions() {
-    return (
-      <div className="search-results__ui search-results__post-start">
-        <p>Search End Point or:</p>
-        <button className="center blue" tabIndex="0" onClick={() => {}}>
-          View North Cues
-        </button>
-        <button className="center blue" tabIndex="0" onClick={() => {}}>
-          View South Cues
-        </button>
-      </div>
-    );
-  }
-
-  showEndOptions() {
-    const { endLocation, acceptRoutingLocation, geocodeResult } = this.props;
-
-    return (
-      <div className="search-results__ui search-results__end">
-        <p>
-          { `The nearest Greenway location to ${geocodeResult.addressFormatted} is `}
-          <span className="bold">{`${metersToMiles(endLocation.distance)} miles`}</span>
-          { ' away.' }
-        </p>
-        <button className="center blue" tabIndex="0" onClick={() => acceptRoutingLocation('END')}>
-          Use this Greenway location as your end point
-        </button>
-      </div>
-    );
-  }
-
-  showPostEndOptions() {
-    const { route } = this.props;
-    const { isLoadingRoute, error } = route;
-    let errorMsg;
-
-    if (error && typeof error === 'string') {
-      errorMsg = error;
-    }
-
-    if (error && error.message) {
-      errorMsg = error.message;
-    }
-
-    function loadingMessage() {
-      if (isLoadingRoute) {
-        return (
-          <div className="route-loading-msg">
-            <p>Calculating Route...</p>
-          </div>
-        );
-      }
-      return null;
-    }
-
-    function errorMessage() {
-      if (errorMsg) {
-        return (
-          <div className="route-error-msg">
-            <p>Sorry, there was an error:</p>
-            <p className="red">{ errorMsg }</p>
-          </div>
-        );
-      }
-
-      return null;
-    }
-
-    return (
-      <div className="search-results__ui search-results__post-end">
-        <div className="start-description">
-          <img alt="start-icon" className="map-marker" src="assets/icons/icon-map-marker-green@2x.png" />
-          <p>Starting Location</p>
-        </div>
-        <div className="end-description">
-          <img alt="start-icon" className="map-marker" src="assets/icons/icon-map-marker-red@2x.png" />
-          <p>Ending Location</p>
-        </div>
-        { loadingMessage() }
-        { errorMessage() }
-      </div>
-    );
-  }
-
   renderSearchResultsStep() {
     // handles which step of the Search UX Flow to display using application state
-    const { geocodeError, geocodeRequested, startLocation, endLocation } = this.props;
+    const { geocodeError, geocodeResult, geocodeIsFetching, startLocation,
+      endLocation, acceptRoutingLocation, route } = this.props;
 
-    if (geocodeRequested || startLocation.isFetching || endLocation.isFetching) {
-      return this.showLocatingMsg();
+    if (geocodeIsFetching || startLocation.isFetching || endLocation.isFetching) {
+      return <LoadingMsg message={'Searching...'} />;
     }
 
     if (geocodeError) {
-      return this.handleGeocodeError();
+      return <ErrorMsg error={geocodeError} />;
     }
 
     if (startLocation.distance && !startLocation.accepted) {
-      return this.showStartOptions();
+      return <StartOptions {...{ geocodeResult, startLocation, acceptRoutingLocation }} />;
     }
 
     if (startLocation.accepted && !endLocation.coordinates.length) {
-      return this.showPostStartOptions();
+      return <StartAcceptedOptions />;
     }
 
     if (endLocation.coordinates.length && !endLocation.accepted) {
-      return this.showEndOptions();
+      return <EndLocationOptions {...{ endLocation, geocodeResult, acceptRoutingLocation }} />;
     }
 
     if (endLocation.accepted && startLocation.accepted) {
-      return this.showPostEndOptions();
+      return <EndAcceptedOptions {...{ route }} />;
     }
 
     return null;

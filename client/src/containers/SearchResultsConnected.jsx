@@ -16,7 +16,7 @@ const mapStateToProps = ({ geocoding, routing }) => {
   const { error, result, isFetching } = geocoding;
   const { endLocation, startLocation, route } = routing;
   return {
-    geocodeRequested: isFetching,
+    geocodeIsFetching: isFetching,
     geocodeError: error,
     geocodeResult: result,
     endLocation,

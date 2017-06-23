@@ -1,0 +1,8 @@
+.LoadingMessage {
+  background: #fff;
+  border-top: 2px solid $grey;
+
+  &:only-child {
+    border: none;
+  }
+}

@@ -56,49 +56,4 @@
       }
     }
   }
-
-  .search-results__ui {
-    background-color: #fff;
-  }
-
-  .search-results__error-msg {
-    color: red;
-  }
-
-  .search-results__post-end {
-    .start-description,
-    .end-description,
-    .route-loading-msg,
-    .route-error-msg {
-      padding: 10px;
-    }
-
-    .start-description {
-      border-bottom: 2px solid $grey;
-    }
-
-    .route-loading-msg,
-    .route-error-msg {
-      border-top: 2px solid $grey;
-    }
-
-    img.map-marker {
-      width: 19px;
-      height: 23.5px;
-      display: inline-block;
-      margin: 0 10px 0 0;
-      vertical-align: middle;
-    }
-
-    p {
-      display: inline-block;
-      padding: 0;
-      margin: 0;
-      border: none;
-
-      &.error {
-        color: red;
-      }
-    }
-  }
 }

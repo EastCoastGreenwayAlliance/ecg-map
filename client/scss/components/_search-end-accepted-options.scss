@@ -1,0 +1,32 @@
+.SearchEndAcceptedOptions {
+  background: #fff;
+
+  .start-description,
+  .end-description {
+    padding: 10px;
+  }
+
+  .start-description {
+    border-bottom: 2px solid $grey;
+  }
+
+  .route-loading-msg,
+  .route-error-msg {
+    border-top: 2px solid $grey;
+  }
+
+  img.map-marker {
+    width: 19px;
+    height: 23.5px;
+    display: inline-block;
+    margin: 0 10px 0 0;
+    vertical-align: middle;
+  }
+
+  p {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+}

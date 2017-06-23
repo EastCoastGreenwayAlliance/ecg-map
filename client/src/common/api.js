@@ -48,3 +48,6 @@ export const loadGeoRouter = callback =>
   import('../../lib/ecgClientRouter')
     .then(response => callback(null, response))
     .catch(error => callback(error));
+
+// helper function to convert meters to miles
+export const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
