@@ -167,7 +167,6 @@ class LeafletMap extends Component {
     };
 
     // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
-    // this creates the crash data tile layer & utf grid for Leaflet
     cartodb.createLayer(self.map, layerSource, options)
       .addTo(self.map, 5) // 2nd param is layer z-index
       .on('done', (layer) => {
@@ -270,6 +269,9 @@ class LeafletMap extends Component {
       return;
     }
     this.searchResults.addLayer(L.geoJson(routeGeoJson));
+    this.map.fitBounds(this.searchResults.getBounds(), {
+      padding: [50, 50]
+    });
   }
 
   render() {
