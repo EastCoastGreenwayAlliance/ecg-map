@@ -1,5 +1,6 @@
 // Redux Action Creators for ECG Routing / Directions
 import {
+  REQUEST_ROUTING_LOCATION,
   ACCEPT_ROUTING_LOCATION,
   SET_ROUTING_LOCATION,
   CANCEL_ROUTING_LOCATION,
@@ -9,13 +10,19 @@ import {
   ROUTE_SEARCH_ERROR,
 } from '../common/actionTypes';
 
+// Requesting the nearest ECG segment node / coordinate
+export const nearestSegmentRequest = step => ({
+  type: REQUEST_ROUTING_LOCATION,
+  step
+});
 
+// Errored on locating the nearest ECG segment node / coordinate
 export const nearestSegmentError = error => ({
   ROUTING_LOCATION_ERROR,
   error
 });
 
-// app displays current routing location
+// set the current routing location after a successful request
 // @param { array } coords: lat, lng for start location
 // @param { string } step: either START or END
 export const setRoutingLocation = (coords, distance, step) => ({
@@ -25,7 +32,7 @@ export const setRoutingLocation = (coords, distance, step) => ({
   step,
 });
 
-// user accepts the current routing location
+// user accepts / confirms the current routing location
 // @param { string } step: either START or END
 export const acceptRoutingLocation = step => ({
   type: ACCEPT_ROUTING_LOCATION,

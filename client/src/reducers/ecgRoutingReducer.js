@@ -1,5 +1,6 @@
 // Redux Reducer that handles geographic routing / directions for the ECG
 import {
+  REQUEST_ROUTING_LOCATION,
   ACCEPT_ROUTING_LOCATION,
   SET_ROUTING_LOCATION,
   CANCEL_ROUTING_LOCATION,
@@ -39,6 +40,29 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
 
+    case REQUEST_ROUTING_LOCATION:
+      if (action.step === 'START') {
+        return {
+          ...state,
+          startLocation: {
+            ...state.startLocation,
+            _isFetching: true,
+          }
+        };
+      }
+
+      if (action.step === 'END') {
+        return {
+          ...state,
+          endLocation: {
+            ...state.endLocation,
+            _isFetching: true,
+          }
+        };
+      }
+
+      break;
+
     case SET_ROUTING_LOCATION:
       if (action.step === 'START') {
         return {
@@ -47,6 +71,7 @@ export default (state = defaultState, action) => {
             ...state.startLocation,
             coordinates: action.coords,
             distance: action.distance,
+            _isFetching: false,
           }
         };
       }
@@ -58,6 +83,7 @@ export default (state = defaultState, action) => {
             ...state.endLocation,
             coordinates: action.coords,
             distance: action.distance,
+            _isFetching: false,
           }
         };
       }
@@ -123,7 +149,8 @@ export default (state = defaultState, action) => {
           ...state,
           startLocation: {
             ...state.startLocation,
-            error: action.error
+            error: action.error,
+            _isFetching: false,
           }
         };
       }
@@ -133,7 +160,8 @@ export default (state = defaultState, action) => {
           ...state,
           endLocation: {
             ...state.endLocation,
-            error: action.error
+            error: action.error,
+            _isFetching: false,
           }
         };
       }

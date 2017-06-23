@@ -14,6 +14,7 @@ const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
   - displaying geo-routing results */
 class SearchResults extends Component {
   static propTypes = {
+    nearestSegmentRequest: PropTypes.func.isRequired,
     nearestSegmentError: PropTypes.func.isRequired,
     setRoutingLocation: PropTypes.func.isRequired,
     acceptRoutingLocation: PropTypes.func.isRequired,
@@ -107,7 +108,7 @@ class SearchResults extends Component {
 
   handleGeocodeResult(result) {
     const { coordinates } = result;
-    const { startLocation, endLocation } = this.props;
+    const { startLocation, endLocation, nearestSegmentRequest } = this.props;
     const self = this;
 
     if (!coordinates || !coordinates.length) return;
@@ -117,6 +118,8 @@ class SearchResults extends Component {
     if (!startLocation.accepted && !endLocation.accepted) {
       const lat = coordinates[0];
       const lng = coordinates[1];
+
+      nearestSegmentRequest('START');
 
       this.geoRouter.findNearestSegmentToLatLng(lat, lng,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'START'),
@@ -132,6 +135,8 @@ class SearchResults extends Component {
     if (startLocation.accepted && !endLocation.accepted) {
       const lat = coordinates[0];
       const lng = coordinates[1];
+
+      nearestSegmentRequest('END');
 
       this.geoRouter.findNearestSegmentToLatLng(lat, lng,
         closestSegment => self.handleGeoRoutingSuccess(closestSegment, 'END'),

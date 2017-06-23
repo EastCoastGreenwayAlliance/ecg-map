@@ -1,5 +1,6 @@
 export fetchLocationGeocode, { locationGeocodeError } from './geocodeActions';
 export {
+  nearestSegmentRequest,
   nearestSegmentError,
   setRoutingLocation,
   acceptRoutingLocation,

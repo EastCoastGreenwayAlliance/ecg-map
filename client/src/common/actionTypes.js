@@ -5,11 +5,13 @@ export const LOCATION_GEOCODE_REQUEST = 'LOCATION_GEOCODE_REQUEST';
 export const LOCATION_GEOCODE_SUCCESS = 'LOCATION_GEOCODE_SUCCESS';
 export const LOCATION_GEOCODE_ERROR = 'LOCATION_GEOCODE_ERROR';
 
-// UX flow for accepting, setting, or canceling a routing location (start or end)
-export const SET_ROUTING_LOCATION = 'SET_ROUTING_LOCATION';
-export const ACCEPT_ROUTING_LOCATION = 'ACCEPT_ROUTING_LOCATION';
-export const CANCEL_ROUTING_LOCATION = 'CANCEL_ROUTING_LOCATION';
-export const ROUTING_LOCATION_ERROR = 'ROUTING_LOCATION_ERROR';
+// UX flow for selecting a ECG Route start and end location:
+// requesting, setting, accepting, canceling, and erroring
+export const REQUEST_ROUTING_LOCATION = 'REQUEST_ROUTING_LOCATION'; // request nearest segment node
+export const SET_ROUTING_LOCATION = 'SET_ROUTING_LOCATION'; // nearest segment node found
+export const ACCEPT_ROUTING_LOCATION = 'ACCEPT_ROUTING_LOCATION'; // user confirms nearest segment node
+export const CANCEL_ROUTING_LOCATION = 'CANCEL_ROUTING_LOCATION'; // user cancels current routing step
+export const ROUTING_LOCATION_ERROR = 'ROUTING_LOCATION_ERROR'; // nearest segment node errored
 
 // the actual route search between two locations
 export const ROUTE_SEARCH_REQUEST = 'ROUTE_SEARCH_REQUEST';
