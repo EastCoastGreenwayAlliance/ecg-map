@@ -133,7 +133,7 @@ class LeafletMap extends Component {
   }
 
   initMap() {
-    const { onMapMove } = this.props;
+    const { onMapMove, route, startLocation, endLocation } = this.props;
     this.map = L.map('map', this.mapOptions);
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
@@ -153,8 +153,15 @@ class LeafletMap extends Component {
     this.initCartoLayer();
 
     // for debugging...
-    window.map = this.map;
-    window.searchResults = this.searchResults;
+    // window.map = this.map;
+    // window.searchResults = this.searchResults;
+
+    // if the app state already has routing data, make sure to add it to the map
+    // and set the map view to it
+    if (route.response && startLocation.coordinates && endLocation.coordinates) {
+      this.zoomRouteExtent(startLocation, endLocation);
+      this.renderRouteHighlight(route.response);
+    }
   }
 
   initCartoLayer() {
