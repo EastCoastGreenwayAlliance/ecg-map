@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import store from './store'; // default redux store
 import HomeConnected from './containers/HomeConnected';
-import CueSheet from './views/CueSheet';
+import CueSheetConnected from './containers/CueSheetConnected';
 import NotFound from './views/404';
 
 const App = () => (
@@ -12,7 +12,7 @@ const App = () => (
     <Router>
       <Switch>
         <Route exact path="/" component={HomeConnected} />
-        <Route path="/cuesheet" component={CueSheet} />
+        <Route path="/cuesheet" component={CueSheetConnected} />
         <Route component={NotFound} />
       </Switch>
     </Router>

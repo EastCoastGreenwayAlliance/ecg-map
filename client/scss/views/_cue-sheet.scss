@@ -1,6 +1,31 @@
 .CueSheet {
   .cues-container {
-    text-align: center;
     padding: 25px;
+    width: 500px;
+    margin: 0 auto;
+
+    h3 {
+      text-align: left;
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    li {
+      text-align: left;
+    }
+
+    p {
+      margin: 0;
+
+      &:first-child {
+        display: inline-block;
+      }
+
+      &:last-child {
+        margin-left: 20px;
+      }
+    }
   }
 }
