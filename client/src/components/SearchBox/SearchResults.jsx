@@ -27,6 +27,7 @@ class SearchResults extends Component {
     routeSearchRequest: PropTypes.func.isRequired,
     routeSearchSuccess: PropTypes.func.isRequired,
     routeSearchError: PropTypes.func.isRequired,
+    fetchElevationData: PropTypes.func.isRequired,
     geocodeIsFetching: PropTypes.bool,
     geocodeError: PropTypes.oneOfType([
       PropTypes.string,
@@ -47,8 +48,17 @@ class SearchResults extends Component {
     this.geoRouter = undefined;
   }
 
+  componentDidMount() {
+    const { route } = this.props;
+
+    // our app state was hydrated with route data, get the elevation data
+    if (route.response && route.response.downsampled) {
+      this.getElevationData(route.response.downsampled);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
-    const { geocodeResult, startLocation, endLocation } = nextProps;
+    const { geocodeResult, startLocation, endLocation, route } = nextProps;
 
     if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
       // We received a geocode result from the user, so show the geocode result
@@ -72,6 +82,24 @@ class SearchResults extends Component {
     if (startLocation.accepted && endLocation.accepted && !this.props.endLocation.accepted) {
       this.getRoute(startLocation, endLocation);
     }
+
+    // we successfully retrieved a route, now get elevation data
+    if (route.response && route.response.downsampled &&
+      !isEqual(route.response, this.props.route.response)) {
+      this.getElevationData(route.response.downsampled);
+    }
+  }
+
+  getElevationData(downsampled) {
+    const path = downsampled.map((feature) => {
+      const { coordinates } = feature;
+      return {
+        lat: coordinates[1],
+        lng: coordinates[0]
+      };
+    });
+
+    this.props.fetchElevationData(path);
   }
 
   getRoute(startLocation, endLocation) {

@@ -1,4 +1,4 @@
-// Connects the part of the application state with the SearchResults component
+// Connects parts of the application state with the SearchResults component
 // see http://redux.js.org/docs/basics/UsageWithReact.html
 import { connect } from 'react-redux';
 
@@ -12,6 +12,7 @@ import {
   routeSearchRequest,
   routeSearchSuccess,
   routeSearchError,
+  fetchElevationData,
 } from '../actions';
 
 const mapStateToProps = ({ geocoding, routing }) => {
@@ -36,4 +37,5 @@ export default connect(mapStateToProps, {
   routeSearchRequest,
   routeSearchSuccess,
   routeSearchError,
+  fetchElevationData,
 })(SearchResults);
