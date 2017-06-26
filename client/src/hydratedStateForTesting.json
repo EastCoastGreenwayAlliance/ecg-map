@@ -1,0 +1,3095 @@
+{
+	"startLocation": {
+		"accepted": true,
+		"coordinates": [41.3094740397772, -72.9270509903761],
+		"distance": 149.144727502,
+		"error": null,
+		"positionText": "start",
+		"_isFetching": false
+	},
+	"endLocation": {
+		"accepted": true,
+		"coordinates": [41.7637227804237, -72.6852924897589],
+		"distance": 16.613228367,
+		"error": null,
+		"positionText": "end",
+		"_isFetching": false
+	},
+	"route": {
+		"isLoadingRoute": false,
+		"response": {
+			"type": "FeatureCollection",
+			"properties": {
+				"total_meters": 90233,
+				"startpoint_wanted": {
+					"type": "Point",
+					"coordinates": [-72.9270509903761, 41.3094740397772]
+				},
+				"endpoint_wanted": {
+					"type": "Point",
+					"coordinates": [-72.6852924897589, 41.7637227804237]
+				},
+				"startpoint_trail": {
+					"type": "Point",
+					"coordinates": [-72.9255708633104, 41.3117345893026]
+				},
+				"endpoint_trail": {
+					"type": "Point",
+					"coordinates": [-72.6852924897589, 41.7637227804237]
+				},
+				"startpoint_meters": 279.733813344,
+				"endpoint_meters": 0.000036828
+			},
+			"downsampled": [{
+				"type": "Point",
+				"coordinates": [-72.9255708633104, 41.3117345893026],
+				"properties": {
+					"lat": 41.31173,
+					"lng": -72.92557,
+					"miles": 0.18
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9250328632325, 41.3137985893624],
+				"properties": {
+					"lat": 41.3138,
+					"lng": -72.92503,
+					"miles": 0.32
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9267088627538, 41.3154285887198],
+				"properties": {
+					"lat": 41.31543,
+					"lng": -72.92671,
+					"miles": 0.47
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9279348614034, 41.3176255884607],
+				"properties": {
+					"lat": 41.31763,
+					"lng": -72.92793,
+					"miles": 0.64
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9290998611071, 41.3202415882926],
+				"properties": {
+					"lat": 41.32024,
+					"lng": -72.9291,
+					"miles": 0.83
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.930077860351, 41.3222705876384],
+				"properties": {
+					"lat": 41.32227,
+					"lng": -72.93008,
+					"miles": 0.98
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9310298603251, 41.3244975869749],
+				"properties": {
+					"lat": 41.3245,
+					"lng": -72.93103,
+					"miles": 1.14
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9318118602642, 41.326455587139],
+				"properties": {
+					"lat": 41.32646,
+					"lng": -72.93181,
+					"miles": 1.28
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9329958595175, 41.3287035864593],
+				"properties": {
+					"lat": 41.3287,
+					"lng": -72.933,
+					"miles": 1.45
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9345828574837, 41.3341165859226],
+				"properties": {
+					"lat": 41.33412,
+					"lng": -72.93458,
+					"miles": 1.83
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9346048588106, 41.3362765847914],
+				"properties": {
+					"lat": 41.33628,
+					"lng": -72.9346,
+					"miles": 1.98
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9339828586755, 41.3399815846291],
+				"properties": {
+					"lat": 41.33998,
+					"lng": -72.93398,
+					"miles": 2.24
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.933424858213, 41.342301583528],
+				"properties": {
+					"lat": 41.3423,
+					"lng": -72.93342,
+					"miles": 2.41
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9320518588329, 41.3445735833366],
+				"properties": {
+					"lat": 41.34457,
+					"lng": -72.93205,
+					"miles": 2.58
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9243478602514, 41.35742758024],
+				"properties": {
+					"lat": 41.35743,
+					"lng": -72.92435,
+					"miles": 3.55
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9163878620707, 41.3703435775682],
+				"properties": {
+					"lat": 41.37034,
+					"lng": -72.91639,
+					"miles": 4.54
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9123318633137, 41.3726295769574],
+				"properties": {
+					"lat": 41.37263,
+					"lng": -72.91233,
+					"miles": 4.83
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9099498644009, 41.3744815765282],
+				"properties": {
+					"lat": 41.37448,
+					"lng": -72.90995,
+					"miles": 5.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9126538639665, 41.3760915762969],
+				"properties": {
+					"lat": 41.37609,
+					"lng": -72.91265,
+					"miles": 5.19
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9147998623202, 41.3806805756913],
+				"properties": {
+					"lat": 41.38068,
+					"lng": -72.9148,
+					"miles": 5.59
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9155508615259, 41.3923035737265],
+				"properties": {
+					"lat": 41.3923,
+					"lng": -72.91555,
+					"miles": 6.39
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9131898618106, 41.4019295719675],
+				"properties": {
+					"lat": 41.40193,
+					"lng": -72.91319,
+					"miles": 7.07
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9113018622437, 41.4049555705722],
+				"properties": {
+					"lat": 41.40496,
+					"lng": -72.9113,
+					"miles": 7.3
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9081048625517, 41.4087695699291],
+				"properties": {
+					"lat": 41.40877,
+					"lng": -72.9081,
+					"miles": 7.61
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9065168624783, 41.412004569616],
+				"properties": {
+					"lat": 41.412,
+					"lng": -72.90652,
+					"miles": 7.88
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9039638640514, 41.4139995694345],
+				"properties": {
+					"lat": 41.414,
+					"lng": -72.90396,
+					"miles": 8.07
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9036628634532, 41.4164935679611],
+				"properties": {
+					"lat": 41.41649,
+					"lng": -72.90366,
+					"miles": 8.25
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9048648633424, 41.4198895678558],
+				"properties": {
+					"lat": 41.41989,
+					"lng": -72.90486,
+					"miles": 8.49
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9054438633824, 41.4220455676071],
+				"properties": {
+					"lat": 41.42205,
+					"lng": -72.90544,
+					"miles": 8.65
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9064738621659, 41.4241695674786],
+				"properties": {
+					"lat": 41.42417,
+					"lng": -72.90647,
+					"miles": 8.81
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9091778609536, 41.4265345668291],
+				"properties": {
+					"lat": 41.42653,
+					"lng": -72.90918,
+					"miles": 9.03
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9093918615693, 41.428770566163],
+				"properties": {
+					"lat": 41.42877,
+					"lng": -72.90939,
+					"miles": 9.19
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.90814786135, 41.4312805661191],
+				"properties": {
+					"lat": 41.43128,
+					"lng": -72.90815,
+					"miles": 9.37
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9091348615963, 41.4339995650678],
+				"properties": {
+					"lat": 41.434,
+					"lng": -72.90913,
+					"miles": 9.57
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.90924186084, 41.4366535647658],
+				"properties": {
+					"lat": 41.43665,
+					"lng": -72.90924,
+					"miles": 9.76
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9107658605614, 41.4385995640645],
+				"properties": {
+					"lat": 41.4386,
+					"lng": -72.91077,
+					"miles": 9.91
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9122678595923, 41.4403375639242],
+				"properties": {
+					"lat": 41.44034,
+					"lng": -72.91227,
+					"miles": 10.06
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9131258592988, 41.4423965636152],
+				"properties": {
+					"lat": 41.4424,
+					"lng": -72.91313,
+					"miles": 10.21
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9135978586513, 41.444841563698],
+				"properties": {
+					"lat": 41.44484,
+					"lng": -72.9136,
+					"miles": 10.38
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9155938575215, 41.4496505624504],
+				"properties": {
+					"lat": 41.44965,
+					"lng": -72.91559,
+					"miles": 10.73
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.915314857377, 41.4518055617023],
+				"properties": {
+					"lat": 41.45181,
+					"lng": -72.91531,
+					"miles": 10.88
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9160658576553, 41.4544915617398],
+				"properties": {
+					"lat": 41.45449,
+					"lng": -72.91607,
+					"miles": 11.07
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9166658572902, 41.4567905611642],
+				"properties": {
+					"lat": 41.45679,
+					"lng": -72.91667,
+					"miles": 11.23
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9178038568459, 41.458817561233],
+				"properties": {
+					"lat": 41.45882,
+					"lng": -72.9178,
+					"miles": 11.38
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9182418562347, 41.4615125606606],
+				"properties": {
+					"lat": 41.46151,
+					"lng": -72.91824,
+					"miles": 11.57
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9229188545675, 41.471075558869],
+				"properties": {
+					"lat": 41.47108,
+					"lng": -72.92292,
+					"miles": 12.27
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9239638542639, 41.4736235577843],
+				"properties": {
+					"lat": 41.47362,
+					"lng": -72.92396,
+					"miles": 12.46
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9224988540774, 41.4779845571469],
+				"properties": {
+					"lat": 41.47798,
+					"lng": -72.9225,
+					"miles": 12.77
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9190808542334, 41.4850945553809],
+				"properties": {
+					"lat": 41.48509,
+					"lng": -72.91908,
+					"miles": 13.3
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9144348551218, 41.4908925547774],
+				"properties": {
+					"lat": 41.49089,
+					"lng": -72.91443,
+					"miles": 13.77
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9137558558463, 41.4931205539118],
+				"properties": {
+					"lat": 41.49312,
+					"lng": -72.91376,
+					"miles": 13.93
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9145546745252, 41.4984731127946],
+				"properties": {
+					"lat": 41.49847,
+					"lng": -72.91455,
+					"miles": 14.3
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9139998553994, 41.5013105520034],
+				"properties": {
+					"lat": 41.50131,
+					"lng": -72.914,
+					"miles": 14.52
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9140078549653, 41.5046225519472],
+				"properties": {
+					"lat": 41.50462,
+					"lng": -72.91401,
+					"miles": 14.75
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9123748560381, 41.5074105513167],
+				"properties": {
+					"lat": 41.50741,
+					"lng": -72.91237,
+					"miles": 14.96
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9110978560558, 41.5091955506404],
+				"properties": {
+					"lat": 41.5092,
+					"lng": -72.9111,
+					"miles": 15.14
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9104868553788, 41.5147955494797],
+				"properties": {
+					"lat": 41.5148,
+					"lng": -72.91049,
+					"miles": 15.53
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9105718560165, 41.5176385488202],
+				"properties": {
+					"lat": 41.51764,
+					"lng": -72.91057,
+					"miles": 15.73
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9106688547229, 41.5203385485651],
+				"properties": {
+					"lat": 41.52034,
+					"lng": -72.91067,
+					"miles": 15.91
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9107228547756, 41.5255995478998],
+				"properties": {
+					"lat": 41.5256,
+					"lng": -72.91072,
+					"miles": 16.28
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9097028551233, 41.527944547409],
+				"properties": {
+					"lat": 41.52794,
+					"lng": -72.9097,
+					"miles": 16.45
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9074398553545, 41.5304265469082],
+				"properties": {
+					"lat": 41.53043,
+					"lng": -72.90744,
+					"miles": 16.66
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9044358566927, 41.5337275454827],
+				"properties": {
+					"lat": 41.53373,
+					"lng": -72.90444,
+					"miles": 16.93
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9026648575534, 41.5357195451797],
+				"properties": {
+					"lat": 41.53572,
+					"lng": -72.90266,
+					"miles": 17.1
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9008198574655, 41.5389235448225],
+				"properties": {
+					"lat": 41.53892,
+					"lng": -72.90082,
+					"miles": 17.34
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8999508569906, 41.5429785434071],
+				"properties": {
+					"lat": 41.54298,
+					"lng": -72.89995,
+					"miles": 17.62
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9000148577218, 41.5451545431932],
+				"properties": {
+					"lat": 41.54515,
+					"lng": -72.90001,
+					"miles": 17.77
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9006158566101, 41.5482065430963],
+				"properties": {
+					"lat": 41.54821,
+					"lng": -72.90062,
+					"miles": 17.99
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9013458562898, 41.5521805422853],
+				"properties": {
+					"lat": 41.55218,
+					"lng": -72.90135,
+					"miles": 18.26
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9019458560239, 41.5542365421182],
+				"properties": {
+					"lat": 41.55424,
+					"lng": -72.90195,
+					"miles": 18.41
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9024608556078, 41.5572865409188],
+				"properties": {
+					"lat": 41.55729,
+					"lng": -72.90246,
+					"miles": 18.62
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9032852834738, 41.5622517042833],
+				"properties": {
+					"lat": 41.56225,
+					"lng": -72.90329,
+					"miles": 18.97
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9028558548643, 41.5644795397722],
+				"properties": {
+					"lat": 41.56448,
+					"lng": -72.90286,
+					"miles": 19.12
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9009028555911, 41.5707505382498],
+				"properties": {
+					"lat": 41.57075,
+					"lng": -72.9009,
+					"miles": 19.57
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.9000328558233, 41.5735815382912],
+				"properties": {
+					"lat": 41.57358,
+					"lng": -72.90003,
+					"miles": 19.77
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8987098552459, 41.5779565374566],
+				"properties": {
+					"lat": 41.57796,
+					"lng": -72.89871,
+					"miles": 20.08
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8976388554774, 41.5813265362992],
+				"properties": {
+					"lat": 41.58133,
+					"lng": -72.89764,
+					"miles": 20.32
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.895803856796, 41.5842575356911],
+				"properties": {
+					"lat": 41.58426,
+					"lng": -72.8958,
+					"miles": 20.54
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8938098562259, 41.5861345355067],
+				"properties": {
+					"lat": 41.58613,
+					"lng": -72.89381,
+					"miles": 20.71
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.891777856749, 41.5881055352968],
+				"properties": {
+					"lat": 41.58811,
+					"lng": -72.89178,
+					"miles": 20.88
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8892918574598, 41.5916555341184],
+				"properties": {
+					"lat": 41.59166,
+					"lng": -72.88929,
+					"miles": 21.16
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8873548582985, 41.5944455331127],
+				"properties": {
+					"lat": 41.59445,
+					"lng": -72.88735,
+					"miles": 21.38
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.883658859234, 41.5997765328572],
+				"properties": {
+					"lat": 41.59978,
+					"lng": -72.88366,
+					"miles": 21.79
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8805238598891, 41.6043485315229],
+				"properties": {
+					"lat": 41.60435,
+					"lng": -72.88052,
+					"miles": 22.15
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8780678597084, 41.611718530027],
+				"properties": {
+					"lat": 41.61172,
+					"lng": -72.87807,
+					"miles": 22.68
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8744808613435, 41.6133005298148],
+				"properties": {
+					"lat": 41.6133,
+					"lng": -72.87448,
+					"miles": 22.94
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8733648609523, 41.6157065289176],
+				"properties": {
+					"lat": 41.61571,
+					"lng": -72.87336,
+					"miles": 23.12
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.869695862798, 41.6166975282489],
+				"properties": {
+					"lat": 41.6167,
+					"lng": -72.8697,
+					"miles": 23.35
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8665528635172, 41.6178495281101],
+				"properties": {
+					"lat": 41.61785,
+					"lng": -72.86655,
+					"miles": 23.54
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8630658647476, 41.6186475281469],
+				"properties": {
+					"lat": 41.61865,
+					"lng": -72.86307,
+					"miles": 23.73
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8603418655316, 41.6187995275464],
+				"properties": {
+					"lat": 41.6188,
+					"lng": -72.86034,
+					"miles": 23.87
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8570468664077, 41.6193295275661],
+				"properties": {
+					"lat": 41.61933,
+					"lng": -72.85705,
+					"miles": 24.04
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8524918685264, 41.6195205276007],
+				"properties": {
+					"lat": 41.61952,
+					"lng": -72.85249,
+					"miles": 24.28
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8475098701879, 41.6202755271888],
+				"properties": {
+					"lat": 41.62028,
+					"lng": -72.84751,
+					"miles": 24.54
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.845846869563, 41.6231485268659],
+				"properties": {
+					"lat": 41.62315,
+					"lng": -72.84585,
+					"miles": 24.82
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8457778698888, 41.6259715264196],
+				"properties": {
+					"lat": 41.62597,
+					"lng": -72.84578,
+					"miles": 25.02
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8464488690213, 41.6280275258433],
+				"properties": {
+					"lat": 41.62803,
+					"lng": -72.84645,
+					"miles": 25.16
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8457548692385, 41.6304875248104],
+				"properties": {
+					"lat": 41.63049,
+					"lng": -72.84575,
+					"miles": 25.34
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8462428697248, 41.6328605250152],
+				"properties": {
+					"lat": 41.63286,
+					"lng": -72.84624,
+					"miles": 25.51
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8471738691947, 41.637880523868],
+				"properties": {
+					"lat": 41.63788,
+					"lng": -72.84717,
+					"miles": 25.86
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8475778678686, 41.6416615229501],
+				"properties": {
+					"lat": 41.64166,
+					"lng": -72.84758,
+					"miles": 26.13
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8480178127581, 41.6482979421634],
+				"properties": {
+					"lat": 41.6483,
+					"lng": -72.84802,
+					"miles": 26.59
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8486888667942, 41.6503405215738],
+				"properties": {
+					"lat": 41.65034,
+					"lng": -72.84869,
+					"miles": 26.73
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8515848666146, 41.6501235212117],
+				"properties": {
+					"lat": 41.65012,
+					"lng": -72.85158,
+					"miles": 26.88
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8554368654841, 41.6497065220972],
+				"properties": {
+					"lat": 41.64971,
+					"lng": -72.85544,
+					"miles": 27.09
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8601599149516, 41.6502338102987],
+				"properties": {
+					"lat": 41.65023,
+					"lng": -72.86016,
+					"miles": 27.33
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8579918642962, 41.6522555213351],
+				"properties": {
+					"lat": 41.65226,
+					"lng": -72.85799,
+					"miles": 27.58
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.856290864923, 41.6534255212143],
+				"properties": {
+					"lat": 41.65343,
+					"lng": -72.85629,
+					"miles": 27.75
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8543838652019, 41.6554435206703],
+				"properties": {
+					"lat": 41.65544,
+					"lng": -72.85438,
+					"miles": 27.92
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8541398651252, 41.6575995203154],
+				"properties": {
+					"lat": 41.6576,
+					"lng": -72.85414,
+					"miles": 28.08
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8513778660134, 41.658381519907],
+				"properties": {
+					"lat": 41.65838,
+					"lng": -72.85138,
+					"miles": 28.23
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8489978663434, 41.6617795188741],
+				"properties": {
+					"lat": 41.66178,
+					"lng": -72.849,
+					"miles": 28.5
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8471208670812, 41.6664945181368],
+				"properties": {
+					"lat": 41.66649,
+					"lng": -72.84712,
+					"miles": 28.84
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8466498669226, 41.6687035177263],
+				"properties": {
+					"lat": 41.6687,
+					"lng": -72.84665,
+					"miles": 29.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8591698627928, 41.6727105179878],
+				"properties": {
+					"lat": 41.67271,
+					"lng": -72.85917,
+					"miles": 29.71
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8542598640378, 41.6829075154706],
+				"properties": {
+					"lat": 41.68291,
+					"lng": -72.85426,
+					"miles": 30.46
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8525678642395, 41.6863745151489],
+				"properties": {
+					"lat": 41.68637,
+					"lng": -72.85257,
+					"miles": 30.72
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8513618637209, 41.6883635142668],
+				"properties": {
+					"lat": 41.68836,
+					"lng": -72.85136,
+					"miles": 30.87
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8493388651653, 41.6922715130867],
+				"properties": {
+					"lat": 41.69227,
+					"lng": -72.84934,
+					"miles": 31.16
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8523388637977, 41.692151513642],
+				"properties": {
+					"lat": 41.69215,
+					"lng": -72.85234,
+					"miles": 31.31
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.856368861627, 41.6932515137562],
+				"properties": {
+					"lat": 41.69325,
+					"lng": -72.85637,
+					"miles": 31.54
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8594388610733, 41.6941615131996],
+				"properties": {
+					"lat": 41.69416,
+					"lng": -72.85944,
+					"miles": 31.71
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8622988600546, 41.6944615138196],
+				"properties": {
+					"lat": 41.69446,
+					"lng": -72.8623,
+					"miles": 31.86
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8638488595271, 41.6954215131523],
+				"properties": {
+					"lat": 41.69542,
+					"lng": -72.86385,
+					"miles": 32.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8636188592338, 41.6977015127299],
+				"properties": {
+					"lat": 41.6977,
+					"lng": -72.86362,
+					"miles": 32.17
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8622888598473, 41.6994015121762],
+				"properties": {
+					"lat": 41.6994,
+					"lng": -72.86229,
+					"miles": 32.32
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.861468859754, 41.7012815123615],
+				"properties": {
+					"lat": 41.70128,
+					"lng": -72.86147,
+					"miles": 32.48
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8607388601607, 41.7036015112357],
+				"properties": {
+					"lat": 41.7036,
+					"lng": -72.86074,
+					"miles": 32.65
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8600888607777, 41.7064465112867],
+				"properties": {
+					"lat": 41.70645,
+					"lng": -72.86009,
+					"miles": 32.85
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.860290860465, 41.7087125106158],
+				"properties": {
+					"lat": 41.70871,
+					"lng": -72.86029,
+					"miles": 33.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8627128587816, 41.7172465091255],
+				"properties": {
+					"lat": 41.71725,
+					"lng": -72.86271,
+					"miles": 33.61
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8627898589905, 41.7208945083744],
+				"properties": {
+					"lat": 41.72089,
+					"lng": -72.86279,
+					"miles": 33.86
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8628078587106, 41.723115507714],
+				"properties": {
+					"lat": 41.72312,
+					"lng": -72.86281,
+					"miles": 34.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.862970857932, 41.7284625073815],
+				"properties": {
+					"lat": 41.72846,
+					"lng": -72.86297,
+					"miles": 34.38
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.860318857734, 41.7376875052944],
+				"properties": {
+					"lat": 41.73769,
+					"lng": -72.86032,
+					"miles": 35.12
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8589938582772, 41.745313503596],
+				"properties": {
+					"lat": 41.74531,
+					"lng": -72.85899,
+					"miles": 35.65
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8572928589922, 41.7547535014421],
+				"properties": {
+					"lat": 41.75475,
+					"lng": -72.85729,
+					"miles": 36.31
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8501558602864, 41.7671684991009],
+				"properties": {
+					"lat": 41.76717,
+					"lng": -72.85016,
+					"miles": 37.25
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.845469860681, 41.7751434977181],
+				"properties": {
+					"lat": 41.77514,
+					"lng": -72.84547,
+					"miles": 37.85
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8416388614851, 41.7850604952411],
+				"properties": {
+					"lat": 41.78506,
+					"lng": -72.84164,
+					"miles": 38.56
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8399018618431, 41.7899844948383],
+				"properties": {
+					"lat": 41.78998,
+					"lng": -72.8399,
+					"miles": 38.91
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8388608618358, 41.792792494138],
+				"properties": {
+					"lat": 41.79279,
+					"lng": -72.83886,
+					"miles": 39.11
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.838420861952, 41.7953034930202],
+				"properties": {
+					"lat": 41.7953,
+					"lng": -72.83842,
+					"miles": 39.29
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8355668625325, 41.8006224922186],
+				"properties": {
+					"lat": 41.80062,
+					"lng": -72.83557,
+					"miles": 39.68
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8351808620289, 41.8029884913448],
+				"properties": {
+					"lat": 41.80299,
+					"lng": -72.83518,
+					"miles": 39.86
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8355458619762, 41.8050294916777],
+				"properties": {
+					"lat": 41.80503,
+					"lng": -72.83555,
+					"miles": 40.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8354278627682, 41.8070284907884],
+				"properties": {
+					"lat": 41.80703,
+					"lng": -72.83543,
+					"miles": 40.16
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8378628614017, 41.8081324908387],
+				"properties": {
+					"lat": 41.80813,
+					"lng": -72.83786,
+					"miles": 40.31
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8374658608099, 41.8111474903914],
+				"properties": {
+					"lat": 41.81115,
+					"lng": -72.83747,
+					"miles": 40.52
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8350588624843, 41.8114034904156],
+				"properties": {
+					"lat": 41.8114,
+					"lng": -72.83506,
+					"miles": 40.66
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8332598631224, 41.812706489757],
+				"properties": {
+					"lat": 41.81271,
+					"lng": -72.83326,
+					"miles": 40.81
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8341508618361, 41.8145534895155],
+				"properties": {
+					"lat": 41.81455,
+					"lng": -72.83415,
+					"miles": 40.96
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.83366786262, 41.8163364891228],
+				"properties": {
+					"lat": 41.81634,
+					"lng": -72.83367,
+					"miles": 41.1
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8299768638344, 41.8157294895634],
+				"properties": {
+					"lat": 41.81573,
+					"lng": -72.82998,
+					"miles": 41.3
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8272088640581, 41.8162164884874],
+				"properties": {
+					"lat": 41.81622,
+					"lng": -72.82721,
+					"miles": 41.45
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8261028648572, 41.8184784881075],
+				"properties": {
+					"lat": 41.81848,
+					"lng": -72.8261,
+					"miles": 41.62
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8237678652828, 41.8238994877877],
+				"properties": {
+					"lat": 41.8239,
+					"lng": -72.82377,
+					"miles": 42.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8183518662439, 41.8362864846122],
+				"properties": {
+					"lat": 41.83629,
+					"lng": -72.81835,
+					"miles": 42.91
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.812965867145, 41.8486834826595],
+				"properties": {
+					"lat": 41.84868,
+					"lng": -72.81297,
+					"miles": 43.82
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.811304153373, 41.847078204614],
+				"properties": {
+					"lat": 41.84708,
+					"lng": -72.8113,
+					"miles": 43.97
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8087518690004, 41.8467624822969],
+				"properties": {
+					"lat": 41.84676,
+					"lng": -72.80875,
+					"miles": 44.14
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8030078705013, 41.8484444817483],
+				"properties": {
+					"lat": 41.84844,
+					"lng": -72.80301,
+					"miles": 44.46
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.8001468706348, 41.8471854818239],
+				"properties": {
+					"lat": 41.84719,
+					"lng": -72.80015,
+					"miles": 44.64
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.798482871689, 41.8452784821271],
+				"properties": {
+					"lat": 41.84528,
+					"lng": -72.79848,
+					"miles": 44.8
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7950578732698, 41.8448324820071],
+				"properties": {
+					"lat": 41.84483,
+					"lng": -72.79506,
+					"miles": 44.99
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7914568744204, 41.8424854823971],
+				"properties": {
+					"lat": 41.84249,
+					"lng": -72.79146,
+					"miles": 45.24
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.788709875048, 41.8393884829884],
+				"properties": {
+					"lat": 41.83939,
+					"lng": -72.78871,
+					"miles": 45.49
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7863978758895, 41.8381984831718],
+				"properties": {
+					"lat": 41.8382,
+					"lng": -72.7864,
+					"miles": 45.64
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7835528766262, 41.8376184836138],
+				"properties": {
+					"lat": 41.83762,
+					"lng": -72.78355,
+					"miles": 45.79
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7805998784542, 41.8363254832143],
+				"properties": {
+					"lat": 41.83633,
+					"lng": -72.7806,
+					"miles": 45.98
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7742448809812, 41.831598484082],
+				"properties": {
+					"lat": 41.8316,
+					"lng": -72.77424,
+					"miles": 46.44
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7714518812032, 41.8299924846106],
+				"properties": {
+					"lat": 41.82999,
+					"lng": -72.77145,
+					"miles": 46.62
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7699034855644, 41.8281271475587],
+				"properties": {
+					"lat": 41.82813,
+					"lng": -72.7699,
+					"miles": 46.78
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7619458847104, 41.8291534844279],
+				"properties": {
+					"lat": 41.82915,
+					"lng": -72.76195,
+					"miles": 47.19
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7568568861588, 41.8307634835506],
+				"properties": {
+					"lat": 41.83076,
+					"lng": -72.75686,
+					"miles": 47.48
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7477548887058, 41.8302594833354],
+				"properties": {
+					"lat": 41.83026,
+					"lng": -72.74775,
+					"miles": 47.95
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7429338902694, 41.8306144829603],
+				"properties": {
+					"lat": 41.83061,
+					"lng": -72.74293,
+					"miles": 48.2
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7382188922989, 41.8309994827963],
+				"properties": {
+					"lat": 41.831,
+					"lng": -72.73822,
+					"miles": 48.45
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7348018932458, 41.8298084833222],
+				"properties": {
+					"lat": 41.82981,
+					"lng": -72.7348,
+					"miles": 48.65
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7319388944363, 41.8283854837354],
+				"properties": {
+					"lat": 41.82839,
+					"lng": -72.73194,
+					"miles": 48.82
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7296718952983, 41.8263944836248],
+				"properties": {
+					"lat": 41.82639,
+					"lng": -72.72967,
+					"miles": 49.01
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7261478968311, 41.8256924839135],
+				"properties": {
+					"lat": 41.82569,
+					"lng": -72.72615,
+					"miles": 49.2
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7210268985301, 41.8241274837303],
+				"properties": {
+					"lat": 41.82413,
+					"lng": -72.72103,
+					"miles": 49.48
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7181478997189, 41.8231914842788],
+				"properties": {
+					"lat": 41.82319,
+					"lng": -72.71815,
+					"miles": 49.65
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7149269006316, 41.8223134835488],
+				"properties": {
+					"lat": 41.82231,
+					"lng": -72.71493,
+					"miles": 49.84
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7088619019628, 41.8235254832476],
+				"properties": {
+					"lat": 41.82353,
+					"lng": -72.70886,
+					"miles": 50.16
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7086399030203, 41.8201364838437],
+				"properties": {
+					"lat": 41.82014,
+					"lng": -72.70864,
+					"miles": 50.43
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7088759026314, 41.8179194841499],
+				"properties": {
+					"lat": 41.81792,
+					"lng": -72.70888,
+					"miles": 50.58
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7089229024808, 41.8143424856351],
+				"properties": {
+					"lat": 41.81434,
+					"lng": -72.70892,
+					"miles": 50.83
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7084249037406, 41.8093514860471],
+				"properties": {
+					"lat": 41.80935,
+					"lng": -72.70842,
+					"miles": 51.17
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7077439037486, 41.8068204862825],
+				"properties": {
+					"lat": 41.80682,
+					"lng": -72.70774,
+					"miles": 51.35
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.707309903501, 41.8045234868429],
+				"properties": {
+					"lat": 41.80452,
+					"lng": -72.70731,
+					"miles": 51.51
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7068079041578, 41.8018264877564],
+				"properties": {
+					"lat": 41.80183,
+					"lng": -72.70681,
+					"miles": 51.71
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7065779038831, 41.7990044884429],
+				"properties": {
+					"lat": 41.799,
+					"lng": -72.70658,
+					"miles": 51.9
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7068689046314, 41.7969684888323],
+				"properties": {
+					"lat": 41.79697,
+					"lng": -72.70687,
+					"miles": 52.04
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7053619050937, 41.7918204891721],
+				"properties": {
+					"lat": 41.79182,
+					"lng": -72.70536,
+					"miles": 52.41
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.708285905001, 41.7914084896069],
+				"properties": {
+					"lat": 41.79141,
+					"lng": -72.70829,
+					"miles": 52.56
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.709417903907, 41.790024490143],
+				"properties": {
+					"lat": 41.79002,
+					"lng": -72.70942,
+					"miles": 52.72
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7077009054424, 41.7875694902235],
+				"properties": {
+					"lat": 41.78757,
+					"lng": -72.7077,
+					"miles": 52.92
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7069459048629, 41.784870490381],
+				"properties": {
+					"lat": 41.78487,
+					"lng": -72.70695,
+					"miles": 53.11
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7089599040453, 41.7839644911861],
+				"properties": {
+					"lat": 41.78396,
+					"lng": -72.70896,
+					"miles": 53.27
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7094179051772, 41.7805584914513],
+				"properties": {
+					"lat": 41.78056,
+					"lng": -72.70942,
+					"miles": 53.5
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7098599047103, 41.7780824923802],
+				"properties": {
+					"lat": 41.77808,
+					"lng": -72.70986,
+					"miles": 53.68
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7115739055618, 41.7736964933315],
+				"properties": {
+					"lat": 41.7737,
+					"lng": -72.71157,
+					"miles": 53.99
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7118319044371, 41.7715914932771],
+				"properties": {
+					"lat": 41.77159,
+					"lng": -72.71183,
+					"miles": 54.14
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7110579049548, 41.7662224941363],
+				"properties": {
+					"lat": 41.76622,
+					"lng": -72.71106,
+					"miles": 54.52
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.709974904986, 41.762903495193],
+				"properties": {
+					"lat": 41.7629,
+					"lng": -72.70997,
+					"miles": 54.75
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7094639060551, 41.7603704954076],
+				"properties": {
+					"lat": 41.76037,
+					"lng": -72.70946,
+					"miles": 54.93
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7065719065698, 41.7607334949275],
+				"properties": {
+					"lat": 41.76073,
+					"lng": -72.70657,
+					"miles": 55.08
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.7021549081566, 41.7610914954965],
+				"properties": {
+					"lat": 41.76109,
+					"lng": -72.70215,
+					"miles": 55.31
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.6995299093156, 41.7620984949489],
+				"properties": {
+					"lat": 41.7621,
+					"lng": -72.69953,
+					"miles": 55.46
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.6936329105904, 41.7633804944419],
+				"properties": {
+					"lat": 41.76338,
+					"lng": -72.69363,
+					"miles": 55.78
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.6879179129896, 41.763903494318],
+				"properties": {
+					"lat": 41.7639,
+					"lng": -72.68792,
+					"miles": 56.08
+				}
+			}, {
+				"type": "Point",
+				"coordinates": [-72.6851969132147, 41.7653534940767],
+				"properties": {
+					"lat": 41.76535,
+					"lng": -72.6852,
+					"miles": 56.35
+				}
+			}],
+			"features": [{
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9225938637038, 41.3104725896142],
+						[-72.9239508633773, 41.3110655899023],
+						[-72.9255708633104, 41.3117345893026]
+					]
+				],
+				"properties": {
+					"id": 657804,
+					"title": "Grove Street",
+					"length": 285,
+					"transition": {
+						"lat": 41.3117345893026,
+						"lng": -72.9255708633104,
+						"title": "Turn right onto Prospect Street",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9255708633104, 41.3117345893026],
+						[-72.9255388627068, 41.3119635896543],
+						[-72.9250328632325, 41.3137985893624]
+					]
+				],
+				"properties": {
+					"id": 657791,
+					"title": "Prospect Street",
+					"length": 235,
+					"transition": {
+						"lat": 41.3137985893624,
+						"lng": -72.9250328632325,
+						"title": "Turn left onto Canal Street",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9250328632325, 41.3137985893624],
+						[-72.9252598628608, 41.3138575890692],
+						[-72.9253758626361, 41.3139205886389],
+						[-72.9267568626115, 41.3152275892123]
+					]
+				],
+				"properties": {
+					"id": 657790,
+					"title": "Canal Street",
+					"length": 218,
+					"transition": {
+						"lat": 41.3152275892123,
+						"lng": -72.9267568626115,
+						"title": "Continue onto Farmington Canal Heritage Trail",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9267568626115, 41.3152275892123],
+						[-72.9267088627538, 41.3154285887198],
+						[-72.9271378622905, 41.3160415886979],
+						[-72.9273998615017, 41.3165425888382],
+						[-72.9279348614034, 41.3176255884607],
+						[-72.9290998611071, 41.3202415882926],
+						[-72.9296728608577, 41.3216065879263],
+						[-72.930077860351, 41.3222705876384],
+						[-72.9302378602731, 41.3228905874409],
+						[-72.9305338600241, 41.3233745875196],
+						[-72.9310298603251, 41.3244975869749],
+						[-72.9312578600913, 41.3251775873853],
+						[-72.9316388596507, 41.3258395867266],
+						[-72.9317868604129, 41.3262585865168],
+						[-72.9318118602642, 41.326455587139],
+						[-72.9319798604219, 41.3268685868083],
+						[-72.9326098599415, 41.3283495868751],
+						[-72.9329958595175, 41.3287035864593],
+						[-72.9329738597236, 41.3290095866011],
+						[-72.9334248596158, 41.3302185859022],
+						[-72.9345828574837, 41.3341165859226],
+						[-72.9347118579963, 41.3357285852239]
+					]
+				],
+				"properties": {
+					"id": 659383,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 2407,
+					"transition": {
+						"lat": 41.3357285852239,
+						"lng": -72.9347118579963,
+						"title": "Continue onto Farmington Canal Heritage Trail",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9347118579963, 41.3357285852239],
+						[-72.9346048588106, 41.3362765847914],
+						[-72.9345188586122, 41.3371625849987],
+						[-72.9339828586755, 41.3399815846291],
+						[-72.933424858213, 41.342301583528],
+						[-72.9320518588329, 41.3445735833366],
+						[-72.9243478602514, 41.35742758024],
+						[-72.9163878620707, 41.3703435775682],
+						[-72.9161088620397, 41.3704235781434],
+						[-72.9154648626158, 41.3701825778947],
+						[-72.915249862988, 41.3702945774326],
+						[-72.9145208626625, 41.3704395772287],
+						[-72.9123318633137, 41.3726295769574],
+						[-72.911580864185, 41.3730485773528],
+						[-72.9113238641478, 41.3730965769859],
+						[-72.9099498644009, 41.3744815765282],
+						[-72.910035864401, 41.3746745764707],
+						[-72.9126538639665, 41.3760915762969],
+						[-72.9132118635776, 41.376220576559],
+						[-72.9137268630021, 41.376139576358],
+						[-72.9143278626853, 41.3763005770069],
+						[-72.9145208631706, 41.3766555766603],
+						[-72.9147998623202, 41.3806805756913],
+						[-72.9155508615259, 41.3923035737265],
+						[-72.9154648611575, 41.3935275733658],
+						[-72.9131898618106, 41.4019295719675],
+						[-72.9128468616862, 41.4028145711638],
+						[-72.9113018622437, 41.4049555705722],
+						[-72.9081048625517, 41.4087695699291],
+						[-72.908018862841, 41.4090275697498],
+						[-72.9081258626205, 41.4091715703332],
+						[-72.9084048620299, 41.409268570279],
+						[-72.9085338623805, 41.4094935703859],
+						[-72.9065168624783, 41.412004569616],
+						[-72.9058088633415, 41.4122455696114],
+						[-72.9045428635052, 41.413211568956],
+						[-72.9039638640514, 41.4139995694345],
+						[-72.9035768634196, 41.4151265689928],
+						[-72.9035558640509, 41.4158825686154],
+						[-72.9036628634532, 41.4164935679611],
+						[-72.9038558638219, 41.4170735682178],
+						[-72.9048648633424, 41.4198895678558],
+						[-72.9052508633735, 41.4205165674821],
+						[-72.9052298625155, 41.4210475673395],
+						[-72.9050148629734, 41.4214175672101],
+						[-72.9053148627919, 41.4217075670641],
+						[-72.9054438633824, 41.4220455676071],
+						[-72.9059158622619, 41.4227375670734],
+						[-72.9064738621659, 41.4241695674786],
+						[-72.9067098626168, 41.424571567118],
+						[-72.907203862504, 41.4251185674218],
+						[-72.9079548613978, 41.4254725666916],
+						[-72.9091778609536, 41.4265345668291],
+						[-72.9094138615566, 41.4270975666296],
+						[-72.9095638615553, 41.4276125664087],
+						[-72.9095638612731, 41.4281755665789],
+						[-72.9093918615693, 41.428770566163],
+						[-72.90814786135, 41.4312805661191],
+						[-72.9081048613079, 41.4318915659825],
+						[-72.9082118607755, 41.4323585658322],
+						[-72.9085768613495, 41.4329375653662],
+						[-72.9091348615963, 41.4339995650678],
+						[-72.9092848611166, 41.4347875652512],
+						[-72.90924186084, 41.4366535647658],
+						[-72.9094348605095, 41.4371685644031],
+						[-72.9097998609828, 41.4377955647123],
+						[-72.9107658605614, 41.4385995640645],
+						[-72.9122678595923, 41.4403375639242],
+						[-72.9126538592151, 41.4410935640179],
+						[-72.9131258592988, 41.4423965636152],
+						[-72.9133828594626, 41.4440365635762],
+						[-72.9135978586513, 41.444841563698],
+						[-72.9155938575215, 41.4496505624504],
+						[-72.9155718583882, 41.4501805620143],
+						[-72.9152928578239, 41.4512265619843],
+						[-72.915314857377, 41.4518055617023],
+						[-72.9154428580046, 41.4528025619213],
+						[-72.9160658576553, 41.4544915617398],
+						[-72.916408857087, 41.4560995612399],
+						[-72.9166658572902, 41.4567905611642],
+						[-72.9178038568459, 41.458817561233],
+						[-72.9179538562863, 41.4597815608091]
+					]
+				],
+				"properties": {
+					"id": 687084,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 15361,
+					"transition": {
+						"lat": 41.4597815608091,
+						"lng": -72.9179538562863,
+						"title": "Continue onto Farmington Canal Heritage Trail",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9179538562863, 41.4597815608091],
+						[-72.9179668570213, 41.4598525608905],
+						[-72.9182418562347, 41.4615125606606],
+						[-72.9184858560307, 41.4620695597589],
+						[-72.919088855696, 41.4629355596588],
+						[-72.9229188545675, 41.471075558869],
+						[-72.9236658539303, 41.4726855586402],
+						[-72.9239638542639, 41.4736235577843],
+						[-72.924009853497, 41.4742305580648],
+						[-72.923902853405, 41.4749785578045],
+						[-72.9237428541355, 41.4755345575028],
+						[-72.9224988540774, 41.4779845571469],
+						[-72.9221708538016, 41.4780755569042],
+						[-72.9221788544188, 41.4781445576624],
+						[-72.9222778543271, 41.4783425575305],
+						[-72.9222548536128, 41.4784305571287],
+						[-72.9190808542334, 41.4850945553809],
+						[-72.9180888547826, 41.4863915553474],
+						[-72.9144348551218, 41.4908925547774],
+						[-72.9139618555234, 41.4919495542827],
+						[-72.9137558558463, 41.4931205539118],
+						[-72.9138318561068, 41.4942915535092],
+						[-72.9145546745252, 41.4984731127946],
+						[-72.9144742053011, 41.4987075899664]
+					]
+				],
+				"properties": {
+					"id": 687082,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 4645,
+					"transition": {
+						"lat": 41.4987075899664,
+						"lng": -72.9144742053011,
+						"title": "Continue onto Willow Street",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9144742053011, 41.4987075899664],
+						[-72.9141138555876, 41.4987505533269],
+						[-72.9138398548622, 41.4998115529529],
+						[-72.9139998553994, 41.5013105520034],
+						[-72.914106855491, 41.5032755518302],
+						[-72.9140078549653, 41.5046225519472],
+						[-72.9136028558409, 41.505697551382],
+						[-72.9123748560381, 41.5074105513167],
+						[-72.9123108554766, 41.5074435515539],
+						[-72.9129108556643, 41.5077495509645]
+					]
+				],
+				"properties": {
+					"id": 687074,
+					"title": "Willow Street",
+					"length": 1039,
+					"transition": {
+						"lat": 41.5077495509645,
+						"lng": -72.9129108556643,
+						"title": "Turn right onto Farmington Canal Heritage Trail (ECG)",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9129108556643, 41.5077495509645],
+						[-72.9110978560558, 41.5091955506404],
+						[-72.9107118562311, 41.5096615503469],
+						[-72.9104538561243, 41.5106175506418],
+						[-72.9104868553788, 41.5147955494797],
+						[-72.9105718560165, 41.5176385488202],
+						[-72.9106688547229, 41.5203385485651],
+						[-72.9107228547756, 41.5255995478998],
+						[-72.9102288552959, 41.5270055477386],
+						[-72.9097028551233, 41.527944547409],
+						[-72.9074398553545, 41.5304265469082],
+						[-72.9044358566927, 41.5337275454827],
+						[-72.9026648575534, 41.5357195451797],
+						[-72.9015708570393, 41.5372775447375],
+						[-72.9008198574655, 41.5389235448225],
+						[-72.900368856958, 41.5400955446867],
+						[-72.8999508569906, 41.5429785434071],
+						[-72.9000148577218, 41.5451545431932],
+						[-72.9006158566101, 41.5482065430963],
+						[-72.9013458562898, 41.5521805422853],
+						[-72.9019458560239, 41.5542365421182],
+						[-72.9024608556078, 41.5572865409188],
+						[-72.9028478556481, 41.5587075411704],
+						[-72.9032852834738, 41.5622517042833],
+						[-72.9032803053162, 41.5622849568461]
+					]
+				],
+				"properties": {
+					"id": 1122492,
+					"title": "Farmington Canal Heritage Trail (ECG)",
+					"length": 6425,
+					"transition": {
+						"lat": 41.5622849568461,
+						"lng": -72.9032803053162,
+						"title": "Continue onto Farmington Canal Heritage Trail",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.9032803053162, 41.5622849568461],
+						[-72.903268450037, 41.5623641482284],
+						[-72.9032602935821, 41.5624186264881],
+						[-72.9032158550724, 41.5631765398264],
+						[-72.9028558548643, 41.5644795397722],
+						[-72.9009028555911, 41.5707505382498],
+						[-72.9000328558233, 41.5735815382912],
+						[-72.8995048556722, 41.5753955380275],
+						[-72.8987098552459, 41.5779565374566],
+						[-72.8980988561968, 41.5797735365651],
+						[-72.8976388554774, 41.5813265362992],
+						[-72.8969268563332, 41.5828185362066],
+						[-72.895803856796, 41.5842575356911],
+						[-72.8938098562259, 41.5861345355067],
+						[-72.8921848572244, 41.5877515349917],
+						[-72.891777856749, 41.5881055352968],
+						[-72.8892918574598, 41.5916555341184],
+						[-72.8884238578219, 41.5929335339572],
+						[-72.8873548582985, 41.5944455331127],
+						[-72.883658859234, 41.5997765328572],
+						[-72.8833808596335, 41.5998655326281],
+						[-72.8833978587061, 41.6000495325304],
+						[-72.8805238598891, 41.6043485315229],
+						[-72.879820859999, 41.6058985311763],
+						[-72.8780678597084, 41.611718530027],
+						[-72.8778388596172, 41.6129395297743]
+					]
+				],
+				"properties": {
+					"id": 659377,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 6130,
+					"transition": {
+						"lat": 41.6129395297743,
+						"lng": -72.8778388596172,
+						"title": "Turn right onto Curtis Street",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8778388596172, 41.6129395297743],
+						[-72.8775168606519, 41.6130355294314],
+						[-72.8744808613435, 41.6133005298148]
+					]
+				],
+				"properties": {
+					"id": 657732,
+					"title": "Curtis Street",
+					"length": 282,
+					"transition": {
+						"lat": 41.6133005298148,
+						"lng": -72.8744808613435,
+						"title": "Turn left onto North Main Street / Route 10",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8744808613435, 41.6133005298148],
+						[-72.8740618611306, 41.6138055292996],
+						[-72.8736828618006, 41.6148735295878],
+						[-72.8733648609523, 41.6157065289176],
+						[-72.873332861344, 41.6164125292855]
+					]
+				],
+				"properties": {
+					"id": 657731,
+					"title": "North Main Street / Route 10",
+					"length": 366,
+					"transition": {
+						"lat": 41.6164125292855,
+						"lng": -72.873332861344,
+						"title": "Turn right onto Flanders Street",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.873332861344, 41.6164125292855],
+						[-72.8716418620148, 41.6167095285799],
+						[-72.869695862798, 41.6166975282489],
+						[-72.8692078633147, 41.6167705283403],
+						[-72.868406862511, 41.6170375288113],
+						[-72.8674298635189, 41.6175565287806],
+						[-72.8665528635172, 41.6178495281101],
+						[-72.8630658647476, 41.6186475281469],
+						[-72.8603418655316, 41.6187995275464],
+						[-72.8570468664077, 41.6193295275661],
+						[-72.8524918685264, 41.6195205276007],
+						[-72.8508898687192, 41.6199365278837],
+						[-72.8475098701879, 41.6202755271888],
+						[-72.8456628701018, 41.6205315269626],
+						[-72.8456388704321, 41.6205505272948]
+					]
+				],
+				"properties": {
+					"id": 687071,
+					"title": "Flanders Street",
+					"length": 2363,
+					"transition": {
+						"lat": 41.6205505272948,
+						"lng": -72.8456388704321,
+						"title": "Turn left onto Flanders Road",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8456388704321, 41.6205505272948],
+						[-72.8456478704408, 41.6205965272272],
+						[-72.845846869563, 41.6231485268659],
+						[-72.8456408697695, 41.6244185264791],
+						[-72.8457778698888, 41.6259715264196],
+						[-72.8459378703195, 41.6268025259977],
+						[-72.8464488690213, 41.6280275258433],
+						[-72.846502869682, 41.6283445252885],
+						[-72.8464108696558, 41.6286915253408],
+						[-72.8458158691324, 41.6294775256075],
+						[-72.8457548692385, 41.6304875248104],
+						[-72.8458158702584, 41.6307205248496],
+						[-72.8462808693679, 41.6313575246767],
+						[-72.8463958689024, 41.6316895248007],
+						[-72.8462428697248, 41.6328605250152],
+						[-72.8462048693421, 41.6339665242531],
+						[-72.8471738691947, 41.637880523868],
+						[-72.8475778678686, 41.6416615229501],
+						[-72.8480178127581, 41.6482979421634],
+						[-72.8484473023428, 41.6501432759705],
+						[-72.8484628673592, 41.6502195217374]
+					]
+				],
+				"properties": {
+					"id": 687070,
+					"title": "Flanders Road",
+					"length": 3368,
+					"transition": {
+						"lat": 41.6502195217374,
+						"lng": -72.8484628673592,
+						"title": "Bear left onto Shuttle Meadow Road",
+						"code": "LS"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8484628673592, 41.6502195217374],
+						[-72.8484653586004, 41.6502208558135],
+						[-72.8486888667942, 41.6503405215738],
+						[-72.8491608675852, 41.6503645212632],
+						[-72.8515848666146, 41.6501235212117],
+						[-72.8554368654841, 41.6497065220972],
+						[-72.8601599149516, 41.6502338102987],
+						[-72.8603618635439, 41.6520635212547]
+					]
+				],
+				"properties": {
+					"id": 657728,
+					"title": "Shuttle Meadow Road",
+					"length": 981,
+					"transition": {
+						"lat": 41.6520635212547,
+						"lng": -72.8603618635439,
+						"title": "Turn sharply right onto Pavano Drive",
+						"code": "RH"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8603618635439, 41.6520635212547],
+						[-72.8579918642962, 41.6522555213351],
+						[-72.8581555438342, 41.6531994079632]
+					]
+				],
+				"properties": {
+					"id": 657726,
+					"title": "Pavano Drive",
+					"length": 197,
+					"transition": {
+						"lat": 41.6531994079632,
+						"lng": -72.8581555438342,
+						"title": "Continue onto Pickney Ave / Acadia Ave",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8581555438342, 41.6531994079632],
+						[-72.8581598646682, 41.6532125210256],
+						[-72.856290864923, 41.6534255212143],
+						[-72.8558488648608, 41.6536055215443],
+						[-72.8543838652019, 41.6554435206703],
+						[-72.8545358648526, 41.6570915203984],
+						[-72.8544368653071, 41.6574195206474],
+						[-72.8541398651252, 41.6575995203154],
+						[-72.8525218655216, 41.6578435204653],
+						[-72.8513778660134, 41.658381519907],
+						[-72.8511948659019, 41.6585455203911],
+						[-72.8509658660879, 41.658880519945],
+						[-72.8489978663434, 41.6617795188741],
+						[-72.8486308665727, 41.6634205191789],
+						[-72.8471208670812, 41.6664945181368],
+						[-72.8474868674211, 41.6666525180755]
+					]
+				],
+				"properties": {
+					"id": 687069,
+					"title": "Pickney Ave / Acadia Ave",
+					"length": 1922,
+					"transition": {
+						"lat": 41.6666525180755,
+						"lng": -72.8474868674211,
+						"title": "Continue onto Meriline Avenue",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8474868674211, 41.6666525180755],
+						[-72.8466498669226, 41.6687035177263]
+					]
+				],
+				"properties": {
+					"id": 657720,
+					"title": "Meriline Avenue",
+					"length": 240,
+					"transition": {
+						"lat": 41.6687035177263,
+						"lng": -72.8466498669226,
+						"title": "Turn left onto Woodford Avenue",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8466498669226, 41.6687035177263],
+						[-72.8591698627928, 41.6727105179878]
+					]
+				],
+				"properties": {
+					"id": 657719,
+					"title": "Woodford Avenue",
+					"length": 1128,
+					"transition": {
+						"lat": 41.6727105179878,
+						"lng": -72.8591698627928,
+						"title": "Turn right onto Farmington Avenue",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8591698627928, 41.6727105179878],
+						[-72.8542598640378, 41.6829075154706],
+						[-72.8525678642395, 41.6863745151489],
+						[-72.8513618637209, 41.6883635142668],
+						[-72.8493388651653, 41.6922715130867]
+					]
+				],
+				"properties": {
+					"id": 657718,
+					"title": "Farmington Avenue",
+					"length": 2336,
+					"transition": {
+						"lat": 41.6922715130867,
+						"lng": -72.8493388651653,
+						"title": "Turn sharply left onto Northwest Drive",
+						"code": "LH"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8493388651653, 41.6922715130867],
+						[-72.8495988643092, 41.6923215138234],
+						[-72.8500488642525, 41.6923515131951],
+						[-72.8506288637852, 41.6923415135928],
+						[-72.8509588645183, 41.6923115138762],
+						[-72.8514888640315, 41.6922115136186],
+						[-72.8518388639826, 41.6921615137628],
+						[-72.8523388637977, 41.692151513642],
+						[-72.8525588637333, 41.6921615138068],
+						[-72.8528388638194, 41.6922015136431],
+						[-72.8531888635257, 41.692281513404],
+						[-72.856368861627, 41.6932515137562],
+						[-72.8576288622828, 41.6936315136923],
+						[-72.858858860819, 41.6940115137184],
+						[-72.8594388610733, 41.6941615131996],
+						[-72.8598788609118, 41.6942415130305],
+						[-72.8606088605444, 41.6943315129784],
+						[-72.8622988600546, 41.6944615138196],
+						[-72.8636088600296, 41.6945515135353],
+						[-72.8641058598754, 41.694566513878]
+					]
+				],
+				"properties": {
+					"id": 938630,
+					"title": "Northwest Drive",
+					"length": 1269,
+					"transition": {
+						"lat": 41.694566513878,
+						"lng": -72.8641058598754,
+						"title": "Turn right onto Johnson Avenue",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8641058598754, 41.694566513878],
+						[-72.8640288600148, 41.6948915136411],
+						[-72.8639388592886, 41.6951015132133],
+						[-72.8638488595271, 41.6954215131523],
+						[-72.8638288597255, 41.6957115134811],
+						[-72.8638588601006, 41.696001513509],
+						[-72.863938859419, 41.6964515127319],
+						[-72.8639388594295, 41.6966915130516],
+						[-72.8638788600751, 41.6970415129009],
+						[-72.8636188592338, 41.6977015127299],
+						[-72.8635488599271, 41.698041512689],
+						[-72.8636088600824, 41.6982815127233],
+						[-72.8635988602057, 41.6983115129531]
+					]
+				],
+				"properties": {
+					"id": 938629,
+					"title": "Johnson Avenue",
+					"length": 426,
+					"transition": {
+						"lat": 41.6983115129531,
+						"lng": -72.8635988602057,
+						"title": "Turn right onto Hyde Road",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8635988602057, 41.6983115129531],
+						[-72.8629388601939, 41.698551512376],
+						[-72.8628988598834, 41.6985715124469],
+						[-72.8627288600627, 41.6987615130707],
+						[-72.8624588596231, 41.6991615123986],
+						[-72.8622888598473, 41.6994015121762],
+						[-72.8620788602102, 41.6995915128797],
+						[-72.8617488607678, 41.6997915124559],
+						[-72.8611688603015, 41.7000115123216],
+						[-72.8611888608703, 41.7000815123983]
+					]
+				],
+				"properties": {
+					"id": 938628,
+					"title": "Hyde Road",
+					"length": 295,
+					"transition": {
+						"lat": 41.7000815123983,
+						"lng": -72.8611888608703,
+						"title": "Turn left onto New Britain Avenue",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8611888608703, 41.7000815123983],
+						[-72.861468859754, 41.7012815123615],
+						[-72.8615188605684, 41.701561511878],
+						[-72.8615388602521, 41.7018015117065],
+						[-72.8615188604846, 41.7019615122231],
+						[-72.8614588596927, 41.7021515119376],
+						[-72.861208860702, 41.7026815117284],
+						[-72.8609288608255, 41.7032015115712],
+						[-72.8607388601607, 41.7036015112357],
+						[-72.8604988600885, 41.7041215118605],
+						[-72.8604338599119, 41.704222511629]
+					]
+				],
+				"properties": {
+					"id": 938626,
+					"title": "New Britain Avenue",
+					"length": 481,
+					"transition": {
+						"lat": 41.704222511629,
+						"lng": -72.8604338599119,
+						"title": "Continue onto New Britain Avenue",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8604338599119, 41.704222511629],
+						[-72.8600888607777, 41.7064465112867],
+						[-72.860090860324, 41.7076265106475],
+						[-72.860290860465, 41.7087125106158],
+						[-72.8605748601406, 41.7098485105419],
+						[-72.8627128587816, 41.7172465091255],
+						[-72.8627898589905, 41.7208945083744],
+						[-72.8628078587106, 41.723115507714],
+						[-72.8629578577233, 41.7234995080256],
+						[-72.862970857932, 41.7284625073815],
+						[-72.8620348590731, 41.7279995067239]
+					]
+				],
+				"properties": {
+					"id": 657715,
+					"title": "New Britain Avenue",
+					"length": 2738,
+					"transition": {
+						"lat": 41.7279995067239,
+						"lng": -72.8620348590731,
+						"title": "Continue onto Farmington Canal Heritage Trail",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8620348590731, 41.7279995067239],
+						[-72.860318857734, 41.7376875052944],
+						[-72.8589938582772, 41.745313503596],
+						[-72.8572928589922, 41.7547535014421],
+						[-72.856970858569, 41.7550095017434],
+						[-72.8569928585281, 41.7554735017886],
+						[-72.8501558602864, 41.7671684991009],
+						[-72.845469860681, 41.7751434977181],
+						[-72.8416388614851, 41.7850604952411],
+						[-72.8399018618431, 41.7899844948383],
+						[-72.8388608618358, 41.792792494138],
+						[-72.838420861952, 41.7953034930202],
+						[-72.8355668625325, 41.8006224922186],
+						[-72.8356990511294, 41.8011493931882]
+					]
+				],
+				"properties": {
+					"id": 659375,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 8540,
+					"transition": {
+						"lat": 41.8011493931882,
+						"lng": -72.8356990511294,
+						"title": "Continue onto Security Drive",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8356990511294, 41.8011493931882],
+						[-72.8358898618611, 41.8012144923531],
+						[-72.8354318623751, 41.8020004919112],
+						[-72.8352718630279, 41.8023824915105],
+						[-72.8351808620289, 41.8029884913448],
+						[-72.8352718629558, 41.8037094916038],
+						[-72.8353098628258, 41.8037334913968]
+					]
+				],
+				"properties": {
+					"id": 687068,
+					"title": "Security Drive",
+					"length": 311,
+					"transition": {
+						"lat": 41.8037334913968,
+						"lng": -72.8353098628258,
+						"title": "Continue onto Security Drive sidepath",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8353098628258, 41.8037334913968],
+						[-72.835620862337, 41.8046934916357],
+						[-72.8355458619762, 41.8050294916777],
+						[-72.8350849148331, 41.8058849822755],
+						[-72.8349558627158, 41.8061244910213],
+						[-72.8349448628863, 41.8064684913052],
+						[-72.8351168616781, 41.8067724913197],
+						[-72.8354278627682, 41.8070284907884],
+						[-72.8355577160623, 41.8071029117451],
+						[-72.8356508598612, 41.8071562939913],
+						[-72.8364468621767, 41.8076124911744],
+						[-72.83676546243, 41.8077369615842],
+						[-72.837347861902, 41.8079644908066],
+						[-72.8378628614017, 41.8081324908387]
+					]
+				],
+				"properties": {
+					"id": 687065,
+					"title": "Security Drive sidepath",
+					"length": 631,
+					"transition": {
+						"lat": 41.8081324908387,
+						"lng": -72.8378628614017,
+						"title": "Turn right onto Darling Drive sidepath",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8378628614017, 41.8081324908387],
+						[-72.837897958994, 41.8082344734725],
+						[-72.8378738609247, 41.8083644906213],
+						[-72.8377448613804, 41.8087644903811],
+						[-72.8377128612659, 41.8091474906651],
+						[-72.8377448613002, 41.8098194906034],
+						[-72.8374658608099, 41.8111474903914]
+					]
+				],
+				"properties": {
+					"id": 687066,
+					"title": "Darling Drive sidepath",
+					"length": 191,
+					"transition": {
+						"lat": 41.8111474903914,
+						"lng": -72.8374658608099,
+						"title": "Bear right onto Climax Heights Road",
+						"code": "RS"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8374658608099, 41.8111474903914],
+						[-72.8374078611524, 41.811167489767],
+						[-72.8372328608747, 41.8112934897481],
+						[-72.8365688618189, 41.8114414900156],
+						[-72.8360348611855, 41.8118004897634],
+						[-72.8355388624922, 41.8116214899266],
+						[-72.8353098622828, 41.8114684901227],
+						[-72.8350588624843, 41.8114034904156],
+						[-72.8345248625903, 41.8114114904929],
+						[-72.834440861881, 41.8113954904118]
+					]
+				],
+				"properties": {
+					"id": 687062,
+					"title": "Climax Heights Road",
+					"length": 286,
+					"transition": {
+						"lat": 41.8113954904118,
+						"lng": -72.834440861881,
+						"title": "Turn left onto Farmington Canal Heritage Trail",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.834440861881, 41.8113954904118],
+						[-72.8342578625197, 41.811682489995],
+						[-72.8340438621389, 41.8118984903839],
+						[-72.8334538621068, 41.81236248971],
+						[-72.8332598631224, 41.812706489757],
+						[-72.8331098629891, 41.81319448947],
+						[-72.8331318630341, 41.8136104894098],
+						[-72.8333248628625, 41.814009489616],
+						[-72.8336678618444, 41.8143054890482],
+						[-72.8341508618361, 41.8145534895155],
+						[-72.8344298618806, 41.8148174896214],
+						[-72.8345258620967, 41.8151454893171],
+						[-72.8344508617574, 41.8155454890754],
+						[-72.8340118621795, 41.8160324893754],
+						[-72.83366786262, 41.8163364891228],
+						[-72.8328738628889, 41.8162404894129],
+						[-72.8321018625014, 41.8159364893261],
+						[-72.8313828632042, 41.8157454892743],
+						[-72.8299768638344, 41.8157294895634]
+					]
+				],
+				"properties": {
+					"id": 687061,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 968,
+					"transition": {
+						"lat": 41.8157294895634,
+						"lng": -72.8299768638344,
+						"title": "Continue onto Farmington Canal Heritage Trail",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8299768638344, 41.8157294895634],
+						[-72.8297088635327, 41.8157054887531],
+						[-72.8295908642808, 41.8155534888087],
+						[-72.8291188639235, 41.815553489418],
+						[-72.8272088640581, 41.8162164884874]
+					]
+				],
+				"properties": {
+					"id": 687059,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 255,
+					"transition": {
+						"lat": 41.8162164884874,
+						"lng": -72.8272088640581,
+						"title": "Bear left onto Farmington Canal Heritage Trail",
+						"code": "LS"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8272088640581, 41.8162164884874],
+						[-72.8261028648572, 41.8184784881075],
+						[-72.8237678652828, 41.8238994877877],
+						[-72.8183518662439, 41.8362864846122],
+						[-72.812965867145, 41.8486834826595],
+						[-72.8127658664593, 41.8487324820052]
+					]
+				],
+				"properties": {
+					"id": 659376,
+					"title": "Farmington Canal Heritage Trail",
+					"length": 3835,
+					"transition": {
+						"lat": 41.8487324820052,
+						"lng": -72.8127658664593,
+						"title": "Turn sharply right onto Hopmeadow Street",
+						"code": "RH"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8127658664593, 41.8487324820052],
+						[-72.8125938674728, 41.8487724821732],
+						[-72.8117988673459, 41.847818482566],
+						[-72.811304153373, 41.847078204614],
+						[-72.8111384529451, 41.8464167181225],
+						[-72.8111248676879, 41.8463884823378]
+					]
+				],
+				"properties": {
+					"id": 657709,
+					"title": "Hopmeadow Street",
+					"length": 311,
+					"transition": {
+						"lat": 41.8463884823378,
+						"lng": -72.8111248676879,
+						"title": "Turn left onto Route 185",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.8111248676879, 41.8463884823378],
+						[-72.8111237480102, 41.8463886591622],
+						[-72.8087518690004, 41.8467624822969],
+						[-72.8030078705013, 41.8484444817483],
+						[-72.8022748705205, 41.8484784822948],
+						[-72.8016568705147, 41.8483414817363],
+						[-72.8012298701792, 41.8481584820434],
+						[-72.8001468706348, 41.8471854818239],
+						[-72.798482871689, 41.8452784821271],
+						[-72.7980028716013, 41.8450034826185],
+						[-72.7974608720831, 41.8448324828267],
+						[-72.7950578732698, 41.8448324820071],
+						[-72.7945158736448, 41.8446564822618],
+						[-72.7941038739335, 41.8444124823336],
+						[-72.7914568744204, 41.8424854823971],
+						[-72.7902278750279, 41.8412844829457],
+						[-72.788709875048, 41.8393884829884],
+						[-72.7876648756709, 41.8386784831447],
+						[-72.7863978758895, 41.8381984831718],
+						[-72.7835528766262, 41.8376184836138],
+						[-72.7823618778173, 41.8375234835569],
+						[-72.7814928774592, 41.837141482842],
+						[-72.7805998784542, 41.8363254832143],
+						[-72.7801568780479, 41.8357074839146],
+						[-72.7796158788466, 41.8351544835342],
+						[-72.7790588791638, 41.8346884839437],
+						[-72.7742448809812, 41.831598484082],
+						[-72.772825880705, 41.8307324844346],
+						[-72.7714518812032, 41.8299924846106],
+						[-72.7711848820916, 41.8297754849195],
+						[-72.7703918815397, 41.8288364840657],
+						[-72.7699034855644, 41.8281271475587],
+						[-72.7698878820503, 41.8281044848754]
+					]
+				],
+				"properties": {
+					"id": 687058,
+					"title": "Route 185",
+					"length": 4438,
+					"transition": {
+						"lat": 41.8281044848754,
+						"lng": -72.7698878820503,
+						"title": "Turn left onto Rt 178",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7698878820503, 41.8281044848754],
+						[-72.7690408826301, 41.8281844847697],
+						[-72.7619458847104, 41.8291534844279],
+						[-72.7606338849731, 41.8294624842073],
+						[-72.7602138850323, 41.8295734844842],
+						[-72.7568568861588, 41.8307634835506],
+						[-72.7559648865721, 41.830977483343],
+						[-72.7555448865022, 41.8310224832263],
+						[-72.754308886741, 41.830999483385],
+						[-72.7477548887058, 41.8302594833354],
+						[-72.7472898892961, 41.8302364839128],
+						[-72.7461528895862, 41.8302444833098],
+						[-72.7429338902694, 41.8306144829603],
+						[-72.7382188922989, 41.8309994827963],
+						[-72.7374938925201, 41.8309614827202],
+						[-72.7374248931363, 41.8309494829423]
+					]
+				],
+				"properties": {
+					"id": 687057,
+					"title": "Rt 178",
+					"length": 2742,
+					"transition": {
+						"lat": 41.8309494829423,
+						"lng": -72.7374248931363,
+						"title": "Continue onto Park Avenue",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7374248931363, 41.8309494829423],
+						[-72.7370538931145, 41.8308404834579],
+						[-72.7348018932458, 41.8298084833222],
+						[-72.7329278940395, 41.8288034829296],
+						[-72.7319388944363, 41.8283854837354],
+						[-72.7312208944924, 41.8280844833065],
+						[-72.7309178946992, 41.8278674832812],
+						[-72.7296718952983, 41.8263944836248],
+						[-72.729019895524, 41.8261934839767],
+						[-72.7278188965828, 41.8260084834001],
+						[-72.7271218962452, 41.825934483865],
+						[-72.7261478968311, 41.8256924839135],
+						[-72.7210268985301, 41.8241274837303],
+						[-72.7197078982498, 41.8238864837519],
+						[-72.7190008991889, 41.8237434835583],
+						[-72.7186638995086, 41.8236024834594],
+						[-72.7181478997189, 41.8231914842788],
+						[-72.7176428997022, 41.8227734844093],
+						[-72.7171148999222, 41.8224974838871],
+						[-72.7164078993081, 41.8222794841694],
+						[-72.7160818998709, 41.8222464839207],
+						[-72.7149269006316, 41.8223134835488],
+						[-72.7134889003416, 41.8224544836959],
+						[-72.7123769014007, 41.8225964840356],
+						[-72.7088619019628, 41.8235254832476],
+						[-72.7085589017803, 41.8235494835283],
+						[-72.7082899027913, 41.8235164839108]
+					]
+				],
+				"properties": {
+					"id": 657859,
+					"title": "Park Avenue",
+					"length": 2731,
+					"transition": {
+						"lat": 41.8235164839108,
+						"lng": -72.7082899027913,
+						"title": "Turn right onto School Street",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7082899027913, 41.8235164839108],
+						[-72.7086399030203, 41.8201364838437],
+						[-72.7088759026314, 41.8179194841499],
+						[-72.709144901997, 41.81645548499],
+						[-72.7089229024808, 41.8143424856351],
+						[-72.7084249037406, 41.8093514860471],
+						[-72.7083459040017, 41.808824485962],
+						[-72.7077439037486, 41.8068204862825]
+					]
+				],
+				"properties": {
+					"id": 657858,
+					"title": "School Street",
+					"length": 1879,
+					"transition": {
+						"lat": 41.8068204862825,
+						"lng": -72.7077439037486,
+						"title": "Continue onto Granby Street",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7077439037486, 41.8068204862825],
+						[-72.7073299042234, 41.8051314869878],
+						[-72.7073099032823, 41.8048964870373],
+						[-72.707309903501, 41.8045234868429],
+						[-72.7074339039798, 41.8035154875075],
+						[-72.7074339036205, 41.8030664870939],
+						[-72.7072869043917, 41.8026624871921],
+						[-72.7068079041578, 41.8018264877564],
+						[-72.7065159043241, 41.8000124879133],
+						[-72.7065779038831, 41.7990044884429],
+						[-72.7068689046314, 41.7969684888323],
+						[-72.7053619050937, 41.7918204891721]
+					]
+				],
+				"properties": {
+					"id": 657856,
+					"title": "Granby Street",
+					"length": 1708,
+					"transition": {
+						"lat": 41.7918204891721,
+						"lng": -72.7053619050937,
+						"title": "Turn right onto Plainfield Street",
+						"code": "RT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7053619050937, 41.7918204891721],
+						[-72.7061369054375, 41.7916774892752],
+						[-72.7071359047541, 41.7915224894629],
+						[-72.7075289042755, 41.7914564895705],
+						[-72.7079099048408, 41.7914364894461],
+						[-72.708285905001, 41.7914084896069],
+						[-72.7084869042602, 41.7914454897085],
+						[-72.7093319040396, 41.7915724896759]
+					]
+				],
+				"properties": {
+					"id": 657855,
+					"title": "Plainfield Street",
+					"length": 334,
+					"transition": {
+						"lat": 41.7915724896759,
+						"lng": -72.7093319040396,
+						"title": "Turn left onto Mark Twain Drive",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7093319040396, 41.7915724896759],
+						[-72.7095679036487, 41.7907124900813],
+						[-72.709417903907, 41.790024490143],
+						[-72.7092269038202, 41.7895374895347],
+						[-72.709005903784, 41.7891874903255],
+						[-72.7085939048315, 41.7886874903074],
+						[-72.7077009054424, 41.7875694902235],
+						[-72.7073579048458, 41.7870564903398],
+						[-72.7072179055754, 41.7865764904487],
+						[-72.7069459048629, 41.784870490381],
+						[-72.7086559042429, 41.7849444909009]
+					]
+				],
+				"properties": {
+					"id": 687055,
+					"title": "Mark Twain Drive",
+					"length": 798,
+					"transition": {
+						"lat": 41.7849444909009,
+						"lng": -72.7086559042429,
+						"title": "Continue onto Scarborough Street",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7086559042429, 41.7849444909009],
+						[-72.7087309051715, 41.7848484912167],
+						[-72.7087689042314, 41.7847614907617],
+						[-72.7088229043161, 41.7844334904542],
+						[-72.7089599040453, 41.7839644911861],
+						[-72.709150905064, 41.783144490915],
+						[-72.7092499050517, 41.7824384917169],
+						[-72.7094179051772, 41.7805584914513],
+						[-72.7096079051466, 41.7792534922398],
+						[-72.7098599047103, 41.7780824923802],
+						[-72.7100279046049, 41.7774724924956],
+						[-72.7103639047267, 41.7764384926046],
+						[-72.7103079042218, 41.7763284926725]
+					]
+				],
+				"properties": {
+					"id": 687054,
+					"title": "Scarborough Street",
+					"length": 978,
+					"transition": {
+						"lat": 41.7763284926725,
+						"lng": -72.7103079042218,
+						"title": "Continue onto Whitney Street",
+						"code": "ST"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7103079042218, 41.7763284926725],
+						[-72.7115739055618, 41.7736964933315],
+						[-72.7117369046673, 41.773241493002],
+						[-72.7117829046549, 41.7730074929628],
+						[-72.7118099046834, 41.7727354930123],
+						[-72.7118319044371, 41.7715914932771],
+						[-72.7118099043738, 41.7712554933871],
+						[-72.7118849048534, 41.7697104943323],
+						[-72.7110579049548, 41.7662224941363],
+						[-72.709974904986, 41.762903495193],
+						[-72.7094639060551, 41.7603704954076],
+						[-72.7094559058055, 41.7603514954058]
+					]
+				],
+				"properties": {
+					"id": 687052,
+					"title": "Whitney Street",
+					"length": 1828,
+					"transition": {
+						"lat": 41.7603514954058,
+						"lng": -72.7094559058055,
+						"title": "Turn left onto Capitol Avenue",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.7094559058055, 41.7603514954058],
+						[-72.7076479068846, 41.7606144956573],
+						[-72.7065719065698, 41.7607334949275],
+						[-72.7021549081566, 41.7610914954965],
+						[-72.6995299093156, 41.7620984949489],
+						[-72.6980879095607, 41.7622324950936],
+						[-72.6936329105904, 41.7633804944419],
+						[-72.6879179129896, 41.763903494318],
+						[-72.6853089132573, 41.7634034941659],
+						[-72.6853099137637, 41.7634254944865]
+					]
+				],
+				"properties": {
+					"id": 687051,
+					"title": "Capitol Avenue",
+					"length": 2063,
+					"transition": {
+						"lat": 41.7634254944865,
+						"lng": -72.6853099137637,
+						"title": "Turn left onto Hungerford Street",
+						"code": "LT"
+					}
+				}
+			}, {
+				"type": "MultiLineString",
+				"coordinates": [
+					[
+						[-72.6853099137637, 41.7634254944865],
+						[-72.6851969132147, 41.7653534940767],
+						[-72.6850359139388, 41.7655554938677],
+						[-72.684874913572, 41.765589493361],
+						[-72.6847139137037, 41.7656094935288]
+					]
+				],
+				"properties": {
+					"id": 657849,
+					"title": "Hungerford Street",
+					"length": 269,
+					"transition": {
+						"lat": 41.7656094935288,
+						"lng": -72.6847139137037,
+						"code": "AR",
+						"title": "Arrive"
+					}
+				}
+			}]
+		},
+		"error": null
+	}
+}
