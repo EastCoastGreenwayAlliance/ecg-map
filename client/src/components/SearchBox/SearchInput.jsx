@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-/** Class that handles location search */
+/** Class for displaying the Location Search text input and firing geocoding API
+    requests upon a search */
 class SearchInput extends Component {
   static propTypes = {
     fetchLocationGeocode: PropTypes.func,
@@ -44,7 +45,7 @@ class SearchInput extends Component {
       cancelRoutingLocation } = this.props;
     e.preventDefault();
 
-    // temporary logic to start over, this should be moved elsewhere
+    // temporary logic to start over, perhaps this should be moved elsewhere?
     if (startLocation.accepted && endLocation.accepted) {
       cancelRoutingLocation('DONE');
     }

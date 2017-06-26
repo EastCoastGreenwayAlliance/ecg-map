@@ -8,10 +8,10 @@ import { loadGeoRouter } from '../../common/api';
 // helper components
 import LoadingMsg from './LoadingMsg';
 import ErrorMsg from './ErrorMsg';
-import StartOptions from './StartOptions';
-import StartAcceptedOptions from './StartAcceptedOptions';
+import StartLocationOptions from './StartLocationOptions';
+import StartLocationAcceptedOptions from './StartLocationAcceptedOptions';
 import EndLocationOptions from './EndLocationOptions';
-import EndAcceptedOptions from './EndAcceptedOptions';
+import EndLocationAcceptedOptions from './EndLocationAcceptedOptions';
 
 /** Class that handles:
   - logic for selecting a portion of the ECG route
@@ -158,11 +158,11 @@ class SearchResults extends Component {
     }
 
     if (startLocation.distance && !startLocation.accepted) {
-      return <StartOptions {...{ geocodeResult, startLocation, acceptRoutingLocation }} />;
+      return <StartLocationOptions {...{ geocodeResult, startLocation, acceptRoutingLocation }} />;
     }
 
     if (startLocation.accepted && !endLocation.coordinates.length) {
-      return <StartAcceptedOptions />;
+      return <StartLocationAcceptedOptions />;
     }
 
     if (endLocation.coordinates.length && !endLocation.accepted) {
@@ -170,7 +170,7 @@ class SearchResults extends Component {
     }
 
     if (endLocation.accepted && startLocation.accepted) {
-      return <EndAcceptedOptions {...{ route }} />;
+      return <EndLocationAcceptedOptions {...{ route }} />;
     }
 
     return null;

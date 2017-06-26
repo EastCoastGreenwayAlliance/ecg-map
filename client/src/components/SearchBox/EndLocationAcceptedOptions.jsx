@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import LoadingMsg from './LoadingMsg';
 import ErrorMsg from './ErrorMsg';
 
-// Options to show the user after they've accepted the end location
-const EndAcceptedOptions = (props) => {
+// Options to show the user after they've accepted a end location
+const EndLocationAcceptedOptions = (props) => {
   const { route } = props;
   const { isLoadingRoute, error } = route;
 
@@ -43,8 +43,8 @@ const EndAcceptedOptions = (props) => {
   );
 };
 
-EndAcceptedOptions.propTypes = {
+EndLocationAcceptedOptions.propTypes = {
   route: PropTypes.object.isRequired,
 };
 
-export default EndAcceptedOptions;
+export default EndLocationAcceptedOptions;

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { metersToMiles } from '../../common/api';
 
-// Options to show the user after they've accepted the end location
+// Options to show user following a successful geocode of their search end location
 const EndLocationOptions = (props) => {
   const { endLocation, acceptRoutingLocation, geocodeResult } = props;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Options to show the user after they've accepted the start location
-const StartAcceptedOptions = () => (
+const StartLocationAcceptedOptions = () => (
   <div className="SearchStartAcceptedOptions">
     <p>Search End Point or:</p>
     <button className="center blue" tabIndex="0" onClick={() => {}}>
@@ -13,4 +13,4 @@ const StartAcceptedOptions = () => (
   </div>
 );
 
-export default StartAcceptedOptions;
+export default StartLocationAcceptedOptions;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Search Message to display during async geocoding & nearest ECG segment node
+// Loading message to show the user during async and computationally heavy tasks
 const LoadingMsg = (props) => {
   const { message } = props;
   return (

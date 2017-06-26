@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { metersToMiles } from '../../common/api';
 
 // Options to show user following a successful geocode of their search start location
-const StartOptions = (props) => {
+const StartLocationOptions = (props) => {
   const { geocodeResult, startLocation, acceptRoutingLocation } = props;
   const directionsURL = `https://www.google.com/maps/dir/?api=1&origin=${geocodeResult.coordinates}&destination=${startLocation.coordinates}`;
 
@@ -25,10 +25,10 @@ const StartOptions = (props) => {
   );
 };
 
-StartOptions.propTypes = {
+StartLocationOptions.propTypes = {
   geocodeResult: PropTypes.object,
   startLocation: PropTypes.object,
   acceptRoutingLocation: PropTypes.func.isRequired,
 };
 
-export default StartOptions;
+export default StartLocationOptions;
