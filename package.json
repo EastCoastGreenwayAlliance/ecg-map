@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
+    "dev": "foreman run node server.js",
     "install:client": "cd client && yarn && npm run build && cd ..",
     "heroku-postbuild": "npm run install:client"
   },
