@@ -11,3 +11,4 @@ export {
   routeSearchError,
 } from './ecgRoutingActions';
 export postMailchimpAPI from './mailchimpActions';
+export fetchElevationData from './elevationDataActions';

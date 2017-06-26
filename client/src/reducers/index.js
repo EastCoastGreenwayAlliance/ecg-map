@@ -5,6 +5,7 @@ import { createResponsiveStateReducer } from 'redux-responsive';
 import mailchimpReducer from './mailchimpReducer';
 import geocodeReducer from './geocodeReducer';
 import routingReducer from './ecgRoutingReducer';
+import elevationReducer from './elevationDataReducer';
 
 // breakpoints to match Skeleton CSS's
 const browser = createResponsiveStateReducer({
@@ -22,6 +23,7 @@ const browser = createResponsiveStateReducer({
 
 const rootReducer = combineReducers({
   browser,
+  elevation: elevationReducer,
   geocoding: geocodeReducer,
   mailchimp: mailchimpReducer,
   routing: routingReducer,

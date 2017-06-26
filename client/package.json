@@ -24,6 +24,7 @@
   "homepage": "https://github.com/EastCoastGreenwayAlliance/ecg-map#readme",
   "dependencies": {
     "babel-polyfill": "^6.23.0",
+    "google-maps": "^3.2.1",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
