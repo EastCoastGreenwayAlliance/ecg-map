@@ -1,3 +1,4 @@
+// Redux Reducers, for more info on Reducers see: http://redux.js.org/docs/basics/Reducers.html
 import { combineReducers } from 'redux';
 import { createResponsiveStateReducer } from 'redux-responsive';
 

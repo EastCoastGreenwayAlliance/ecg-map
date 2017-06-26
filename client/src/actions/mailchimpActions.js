@@ -1,3 +1,6 @@
+// Redux Action Creators to handle email signups with the Mailchimp API
+// Used with Redux Thunk, see: http://redux.js.org/docs/advanced/AsyncActions.html
+// See also the server.js in the root of this repo for how API POST requests are made
 import fetch from 'isomorphic-fetch';
 import {
   MAILCHIMP_POST_REQUEST,

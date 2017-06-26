@@ -1,4 +1,4 @@
-// Redux Reducer that handles geographic routing / directions for the ECG
+// Redux Reducer that stores app state relating to geographic routing for the ECG
 import {
   REQUEST_ROUTING_LOCATION,
   ACCEPT_ROUTING_LOCATION,

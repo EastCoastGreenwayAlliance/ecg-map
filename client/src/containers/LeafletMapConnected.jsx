@@ -1,3 +1,5 @@
+// Connects the part of the application state with the LeafletMap component
+// see http://redux.js.org/docs/basics/UsageWithReact.html
 import { connect } from 'react-redux';
 
 import LeafletMap from '../components/LeafletMap';

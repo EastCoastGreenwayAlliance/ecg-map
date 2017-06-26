@@ -1,13 +1,14 @@
 import { cartoUser, routeSegmentsFieldsVisible } from './config';
 import cartocss from '../common/cartocss';
 
+// App "API" functionality & logic stored in this module
+// helper fns
 const noop = () => ({});
-
 const isNumber = val => val && typeof val === 'number';
 
+// parses the URL hash to see if it contains zxy settings for the leaflet map
+// used to set the map's center and zoom on load
 export const parseURLHash = () => {
-  // parses the URL hash to see if it contains zxy settings for the leaflet map
-  // used to set the map's center and zoom on load
   const hash = window.location.hash;
   if (!hash.length) return noop();
 
@@ -35,6 +36,7 @@ export const cartoLayerSource = {
   }]
 };
 
+// enables the SQL to be changed for the Carto(db).JS layer source object
 export const configureLayerSource = (sql) => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;
@@ -44,6 +46,7 @@ export const configureLayerSource = (sql) => {
 export const cartoSQLQuery = query =>
   `https://${cartoUser}.carto.com/api/v2/sql?q=${query}`;
 
+// Asyncronously loads the code for geo routing
 export const loadGeoRouter = callback =>
   import('../../lib/ecgClientRouter')
     .then(response => callback(null, response))

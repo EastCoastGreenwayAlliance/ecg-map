@@ -4,6 +4,8 @@ import { cartoTables } from './config';
 
 const { route_segments } = cartoTables;
 
+// CartoCSS for styling the ECG Route
+// this is passed to Carto(db).JS' createLayer() method
 const cartocss = sls`
   /* color values */
   @casing_light: #FFF;

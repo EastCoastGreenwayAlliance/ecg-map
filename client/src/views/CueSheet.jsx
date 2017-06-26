@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { metersToMiles } from '../common/api';
 
+/** Class that handles displaying a list of turn by turn directions (cues)
+    to the user as a separate page so that they may print the list from their
+    browser */
 class CueSheet extends Component {
   static propTypes = {
     route: PropTypes.object,

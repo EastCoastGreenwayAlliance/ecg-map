@@ -1,4 +1,5 @@
-// Asyncronous Action Creators using Redux Thunk, see: http://redux.js.org/docs/advanced/AsyncActions.html
+// Asyncronous Action Creators to handle geocode requests
+// Used with Redux Thunk, see: http://redux.js.org/docs/advanced/AsyncActions.html
 import fetch from 'isomorphic-fetch';
 
 import { googleAPIKey } from '../common/config';

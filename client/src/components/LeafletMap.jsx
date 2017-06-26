@@ -18,6 +18,13 @@ L.Icon.Default.mergeOptions({
   shadowUrl: '/assets/icons/marker-shadow.png',
 });
 
+/** Class that integrates Leaflet.JS with React and handles:
+    - loading of basemap tiles & map interaction
+    - toggling of basemap style from Positron and satellite
+    - updating features to be shown on the map such as markers and the highlighted
+      portion of the ECG route after a successful search
+    - integrating Carto(db).JS for loading the ECG route as a tileLayer
+ */
 class LeafletMap extends Component {
   static propTypes = {
     lat: PropTypes.number.isRequired,
@@ -179,11 +186,12 @@ class LeafletMap extends Component {
       .on('done', (layer) => {
         self.cartoLayer = layer;
         layer.on('error', (error) => { throw error; });
-        // layer.on('loading', () => self.props.dataLoading(true));
-        // layer.on('load', () => self.props.dataLoading(false));
+
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
+
+        // TO DO?:
         // add tooltips to sublayer
           // self.initCartoSubLayerTooltips();
         // add infowindows to sublayer

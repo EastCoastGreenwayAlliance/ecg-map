@@ -1,4 +1,4 @@
-// Redux Reducer that handles making a request to the Google Geocoder API
+// Redux Reducer to store app state relating to geocode requests
 import {
   LOCATION_GEOCODE_REQUEST,
   LOCATION_GEOCODE_SUCCESS,
@@ -22,6 +22,11 @@ const parseGeocodeResult = (result) => {
   };
 };
 
+/*
+ * Geocoding Reducer
+ * @param {object} state: default reducer state
+ * @param {object} action: redux action creator
+*/
 export default (state = defaultState, action) => {
   switch (action.type) {
     case LOCATION_GEOCODE_REQUEST:

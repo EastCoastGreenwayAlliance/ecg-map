@@ -1,3 +1,4 @@
+// Redux reducer to store app state relating to a POST request to the Mailchimp API
 import {
   MAILCHIMP_POST_REQUEST,
   MAILCHIMP_POST_SUCESS,
@@ -10,6 +11,11 @@ const defaultState = {
   error: null,
 };
 
+/*
+ * Mailchimp Reducer
+ * @param {object} state: default reducer state
+ * @param {object} action: redux action creator
+*/
 export default (state = defaultState, action) => {
   switch (action.type) {
     case MAILCHIMP_POST_REQUEST:

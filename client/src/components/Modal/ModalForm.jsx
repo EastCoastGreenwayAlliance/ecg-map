@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 
 import { setStorageItem, getStorageItem } from '../../utils/localStorage';
 
+/** Class for displaying and handling of email signup form
+    - integrates with action creators for Mailchimp API POST request
+    - implements a "controlled form" component (logic for the form is handled by React, not the DOM)
+*/
 class ModalForm extends Component {
   static propTypes = {
     handleCloseModal: PropTypes.func.isRequired,

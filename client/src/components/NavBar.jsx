@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Functional component that displays the Navbar / Header
 const NavBar = (props) => {
   const { isMobile } = props;
 

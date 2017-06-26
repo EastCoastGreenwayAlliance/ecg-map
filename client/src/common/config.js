@@ -4,7 +4,7 @@ export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
 // CARTO account name (temporarily set to "greeninfo" until data is in order)
 export const cartoUser = 'niles';
 
-// CARTO tables (temporary tables for testing data in app)
+// CARTO tables
 export const cartoTables = {
   route_segments: 'ecg_route_lines_prod_2',
   cue_points: 'ecg_route_cues_prod',
@@ -28,4 +28,5 @@ export const routeSegmentFieldsSQL = [
   'pline_id',
 ];
 
+// lat lon bounds that limit panning within the map's geographic area
 export const maxGeoBounds = [[18.312811, -110.830078], [53.278353, -45.351563]];

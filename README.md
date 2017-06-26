@@ -1,6 +1,19 @@
 # East Coast Greenway: Map & Trip Planner
 
-Mobile friendly, Node.JS web application for the [East Coast Greenway](http://greenway.org) map and trip planner, developed by [GreenInfo Network](http://greeninfo.org).
+Mobile friendly web application for the [East Coast Greenway](http://greenway.org) map and trip planner, developed by [GreenInfo Network](http://greeninfo.org).
+
+Built with / runs on:
+
+- Node.JS
+- React v15.5.4
+- React Router v4.x
+- Redux v3.6.0
+- Webpack v2.6.1
+- Babel v6.x
+- ESLint
+- SASS
+- Yarn
+- Heroku
 
 ## Install Instructions
 Make sure you have NodeJS >= 6.9.x and NPM >= 3.10.x and Yarn >= 0.22 installed.
@@ -53,7 +66,18 @@ yarn add -D some-library
 
 The `-D` flag will save the dependency to `devDependencies` in `package.json`.
 
+### Install the Geo Routing Library
+Currently this app uses a custom library built on JSTS for handling geographic routing along the ECG. This library exists [in a separate repo](#) and will be open sourced following the launch of this project. To install or update it in the client folder:
+
+```bash
+cp ../path/to/ecg-map-router/dist/ecgClientRouter.js ./client/lib/ecgClientRouter.js
+```
+
+You shouldn't need to do this unless you are updating the ecgClientRouter, as the above code is checked into version control with this repo.
+
 ## Develop
+Note that [Foreman](https://www.theforeman.org/) is used to run the Node.JS server in a dev environment so that ENV variables may be accessed from a `.env` file.
+
 To develop the app locally, and to have Webpack bundle files, start the dev server, and watch for changes do:
 
 ```bash

@@ -9,7 +9,12 @@ import SearchBox from '../components/SearchBox';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
 import ModalContent from '../components/Modal';
 
-class App extends Component {
+/** Class that composes components to be shown on the default view / homepage
+    This component also handles:
+    - storing the map zoom and center in the URL hash
+    - opening and closing of the Modal
+*/
+class Home extends Component {
   static propTypes = {
     history: PropTypes.object, // via react-router
     location: PropTypes.object, // via react-router
@@ -45,7 +50,7 @@ class App extends Component {
     const { isMobile, mailchimp, postMailchimpAPI } = this.props;
 
     return (
-      <div className="App">
+      <div className="Home">
         <NavBar {...{ isMobile }} />
         <SearchBox />
         <LeafletMapConnected
@@ -73,4 +78,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;
