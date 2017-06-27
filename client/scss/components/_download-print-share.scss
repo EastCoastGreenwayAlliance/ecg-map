@@ -1,0 +1,59 @@
+.DownloadSharePrint {
+  position: absolute;
+  top: 290px;
+  left: 0;
+  right: 0;
+  z-index: 401;
+  background: #fff;
+
+  @media (#{$bp-larger-than-mobile}) {
+    top: 276px;
+    left: 10px;
+    right: initial;
+    width: 300px;
+    border: 0;
+  }
+
+  button {
+    margin: 0;
+    box-sizing: border-box;
+    width: 33%;
+    height: 52px;
+    display: inline-block;
+    border-bottom: none;
+
+    &.dps-download,
+    &.dps-share {
+      border-right: 1px solid $grey;
+    }
+
+    &.dps-download,
+    &.dps-share,
+    &.dps-print {
+      span {
+        width: 32.5px;
+        height: 32px;
+        display: block;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .dps-download {
+    span {
+      background: url('../assets/icons/button-download.svg') no-repeat;
+    }
+  }
+
+  .dps-share {
+    span {
+      background: url('../assets/icons/button-save.svg') no-repeat;
+    }
+  }
+
+  .dps-print {
+    span {
+      background: url('../assets/icons/button-print.svg') no-repeat;
+    }
+  }
+}

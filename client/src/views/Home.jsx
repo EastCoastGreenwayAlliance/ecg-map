@@ -6,6 +6,7 @@ import ReactModal from 'react-modal';
 // import components
 import NavBar from '../components/NavBar';
 import SearchBox from '../components/SearchBox';
+import DownloadSharePrintConnected from '../containers/DownloadSharePrintConnected';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
 import ModalContent from '../components/Modal';
 
@@ -53,6 +54,7 @@ class Home extends Component {
       <div className="Home">
         <NavBar {...{ isMobile }} />
         <SearchBox />
+        <DownloadSharePrintConnected />
         <LeafletMapConnected
           lat={36.897}
           lng={-74.619}

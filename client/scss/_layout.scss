@@ -9,3 +9,18 @@ div,
 span {
   box-sizing: border-box;
 }
+
+button {
+  // override Skeleton defaults
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0;
+  padding: 10px;
+  border: 0;
+  text-transform: none;
+  font-size: 1.4rem;
+  font-weight: normal;
+  line-height: normal;
+  white-space: normal;
+}
