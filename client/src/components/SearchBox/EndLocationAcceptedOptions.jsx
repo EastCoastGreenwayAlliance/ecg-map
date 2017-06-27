@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import LoadingMsg from './LoadingMsg';
 import ErrorMsg from './ErrorMsg';
@@ -33,9 +32,6 @@ const EndLocationAcceptedOptions = (props) => {
       <div className="end-description">
         <img alt="start-icon" className="map-marker" src="assets/icons/icon-map-marker-red@2x.png" />
         <p>Ending Location</p>
-      </div>
-      <div>
-        <Link to="/cuesheet">View Cues</Link>
       </div>
       { loadingMessage() }
       { errorMessage() }
