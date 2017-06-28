@@ -7,7 +7,6 @@ import middleware from './middleware';
 
 // saved sample application state for store.routing, for testing / feature development,
 // so that we don't have to manually go through the UX steps to get routing data
-// be sure to remove this when app is ready for production!
 import routingState from './hydratedStateForTesting.json';
 
 function makeStore(initialState) {
@@ -31,8 +30,8 @@ function makeStore(initialState) {
   return store;
 }
 
-const store = makeStore({ routing: routingState });
-// const store = makeStore({});
+const preloadedState = process.env.NODE_ENV === 'production' ? {} : { routing: routingState };
+const store = makeStore(preloadedState);
 
 // fire redux-responsive on window resize event
 window.addEventListener('resize', debounce(() =>
