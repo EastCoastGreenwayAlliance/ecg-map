@@ -1,7 +1,8 @@
 import {
   ELEVATION_DATA_REQUEST,
   ELEVATION_DATA_SUCCESS,
-  ELEVATION_DATA_ERROR
+  ELEVATION_DATA_ERROR,
+  ELEVATION_DATA_CLEAR,
 } from '../common/actionTypes';
 
 const defaultState = {
@@ -31,6 +32,9 @@ export default (state = defaultState, action) => {
         isFetching: false,
         error: action.error
       };
+
+    case ELEVATION_DATA_CLEAR:
+      return defaultState;
 
     default:
       return state;

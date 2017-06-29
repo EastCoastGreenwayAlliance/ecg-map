@@ -7,7 +7,8 @@ import { googleAPIKey } from '../common/config';
 import {
   ELEVATION_DATA_REQUEST,
   ELEVATION_DATA_SUCCESS,
-  ELEVATION_DATA_ERROR
+  ELEVATION_DATA_ERROR,
+  ELEVATION_DATA_CLEAR,
 } from '../common/actionTypes';
 
 // set our API Key
@@ -25,6 +26,11 @@ const elevationDataSuccess = json => ({
 const elevationDataError = error => ({
   type: ELEVATION_DATA_ERROR,
   error
+});
+
+// in the case of starting the search over, clear the existing elevation data
+export const elevationDataClear = () => ({
+  type: ELEVATION_DATA_CLEAR,
 });
 
 
