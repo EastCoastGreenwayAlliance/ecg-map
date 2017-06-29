@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import LoadingMsg from './LoadingMsg';
-import ErrorMsg from './ErrorMsg';
+import LoadingMsg from '../LoadingMsg';
+import ErrorMsg from '../ErrorMsg';
 
 // Options to show the user after they've accepted a end location
 const EndLocationAcceptedOptions = (props) => {

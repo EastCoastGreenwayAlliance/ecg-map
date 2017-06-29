@@ -6,8 +6,8 @@ import { cartoUser, cartoTables } from '../../common/config';
 import { loadGeoRouter } from '../../common/api';
 
 // helper components
-import LoadingMsg from './LoadingMsg';
-import ErrorMsg from './ErrorMsg';
+import LoadingMsg from '../LoadingMsg';
+import ErrorMsg from '../ErrorMsg';
 import StartLocationOptions from './StartLocationOptions';
 import StartLocationAcceptedOptions from './StartLocationAcceptedOptions';
 import EndLocationOptions from './EndLocationOptions';
