@@ -17,28 +17,41 @@ class CueSheet extends Component {
   renderCues() {
     const { route } = this.props;
     const { response } = route;
+    let cues = [];
 
     if (!response || !response.features || !response.features.length) return null;
 
-    return response.features.map((feature, idx) => {
-      const { properties } = feature;
+    cues.push(
+      <li key={0}>
+        <span className={'turn-icon'} />
+        <div>
+          <p style={{ margin: 0 }}>Starting on { response.features[0].properties.title }</p>
+          <p>{ metersToMiles(response.features[0].properties.length) } miles</p>
+        </div>
+      </li>
+    );
 
-      if (idx === 0) {
-        return (
-          <li key={properties.id}>
-            <p style={{ margin: 0 }}>Starting on { properties.title }</p>
-          </li>
-        );
-      }
+    cues = cues.concat(response.features.map((feature, idx, arr) => {
+      const { properties } = feature;
+      const nextSegment = arr[idx + 1];
 
       return (
         <li key={properties.id}>
-          { idx === 0 ? <p>Starting on { properties.title }</p> : null }
-          <p>{ properties.transition.title }</p>
-          <p>{ metersToMiles(properties.length) } miles</p>
+          <span className={`turn-icon turn-icon-${properties.transition.code}`} />
+          <div>
+            <p>
+              { properties.transition.title }
+            </p>
+            {
+              nextSegment ?
+                <p>{ metersToMiles(nextSegment.properties.length) } miles</p> : <p />
+            }
+          </div>
         </li>
       );
-    });
+    }));
+
+    return cues;
   }
 
   render() {
@@ -49,9 +62,9 @@ class CueSheet extends Component {
         <div className="cues-container">
           <h3>Cue Sheet</h3>
           <p><Link to="/">Back to Map</Link></p>
-          <ul>
+          <ol>
             { this.renderCues() }
-          </ul>
+          </ol>
           <p><Link to="/">Back to Map</Link></p>
         </div>
       </div>
