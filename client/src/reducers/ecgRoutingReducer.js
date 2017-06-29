@@ -162,6 +162,11 @@ export default (state = defaultState, action) => {
             ...state.endLocation,
             error: action.error,
             _isFetching: false,
+          },
+          route: {
+            isLoadingRoute: false,
+            response: null,
+            error: null,
           }
         };
       }
