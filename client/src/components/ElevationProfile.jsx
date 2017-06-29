@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
-import { extent, min } from 'd3-array';
+import { quantile, min, max, range } from 'd3-array';
 import { area, curveBasis } from 'd3-shape';
 import { axisBottom, axisLeft } from 'd3-axis';
 
@@ -133,13 +133,31 @@ class ElevationProfile extends Component {
     const chartMargins = {
       top: 20,
       right: 20,
-      bottom: 50,
+      bottom: 45,
       left: 50
     };
     const chartWidth = this.chartContainer.offsetWidth;
     const chartHeight = this.chartContainer.offsetHeight;
     const width = chartWidth - chartMargins.right - chartMargins.left;
     const height = chartHeight - chartMargins.top - chartMargins.bottom;
+
+    const minXValue = min(elevDataParsed, d => d.x);
+    const maxXValue = max(elevDataParsed, d => d.x);
+    const minYValue = 0;
+    const maxYValue = max(elevDataParsed, d => d.y);
+
+    // values for use with x-axis scale ticks
+    const quantilesX = range(0, 1.25, 0.25).map(value =>
+      quantile(elevDataParsed, value, d => d.x));
+
+    // values for use with y-axis scale ticks
+    const quantilesY = [
+      minYValue,
+      Math.round(maxYValue / 4),
+      Math.round(maxYValue / 2),
+      Math.round(maxYValue / 4) * 3,
+      maxYValue,
+    ];
 
     const svg = select(this.chartContainer).append('svg')
       .attr('height', chartHeight)
@@ -151,16 +169,16 @@ class ElevationProfile extends Component {
 
     const xScale = scaleLinear()
       .range([0, width])
-      .domain(extent(elevDataParsed, d => d.x));
+      .domain([minXValue, maxXValue]);
 
     const yScale = scaleLinear()
       .range([height, 0])
-      .domain(extent(elevDataParsed, d => d.y));
+      .domain([minYValue, maxYValue]);
 
     const areaFn = area()
       .curve(curveBasis)
       .x(d => xScale(d.x))
-      .y0(yScale(min(elevDataParsed, d => d.y)))
+      .y0(yScale(minYValue))
       .y1(d => yScale(d.y));
 
     g.append('path')
@@ -170,7 +188,7 @@ class ElevationProfile extends Component {
 
     g.append('g')
         .attr('transform', `translate(0, ${height})`)
-        .call(axisBottom(xScale))
+        .call(axisBottom(xScale).tickValues(quantilesX))
       .append('text')
         .attr('fill', '#333')
         .attr('y', 35)
@@ -178,14 +196,14 @@ class ElevationProfile extends Component {
         .text('Distance in miles');
 
     g.append('g')
-        .call(axisLeft(yScale))
+        .call(axisLeft(yScale).tickValues(quantilesY))
       .append('text')
         .attr('fill', '#333')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', -35)
-        .attr('x', -height / 3)
+        .attr('transform', 'rotate(90)')
+        .attr('y', 40)
+        .attr('x', height - 10)
         .attr('text-anchor', 'end')
-        .text('Height, in feet');
+        .text('Height in feet');
   }
 
   render() {
