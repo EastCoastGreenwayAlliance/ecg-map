@@ -1,5 +1,5 @@
 .ElevationProfile {
-  height: 175px;
+  height: 200px;
   position: absolute;
   top: 362px;
   left: 0;
@@ -13,12 +13,27 @@
     left: 10px;
     right: initial;
     width: 300px;
-    border: 0;
+    // border: 1px solid aqua;
   }
 
   .chart-container {
     position: relative;
     height: 100%;
     width: 100%;
+  }
+
+  // svg text
+  text {
+    font-family: $font-family;
+    font-size: 1rem;
+    fill: $dark-grey;
+
+    tspan {
+      font-weight: bold;
+    }
+
+    &.heading {
+      font-size: 1.2rem;
+    }
   }
 }
