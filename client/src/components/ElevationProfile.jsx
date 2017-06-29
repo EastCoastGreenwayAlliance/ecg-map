@@ -9,6 +9,7 @@ import { axisBottom, axisLeft } from 'd3-axis';
 
 class ElevationProfile extends Component {
   static propTypes = {
+    fetchElevationData: PropTypes.func.isRequired,
     elevData: PropTypes.array,
     error: PropTypes.oneOfType([
       PropTypes.object,
@@ -36,12 +37,35 @@ class ElevationProfile extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { elevData } = nextProps;
+  componentDidMount() {
+    const { route } = this.props;
 
+    // our app state was hydrated with route data, get the elevation data
+    if (route.response && route.response.downsampled) {
+      this.getElevationData(route.response.downsampled);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { elevData, route } = nextProps;
+
+    // we successfully retrieved a route, now get elevation data
+    if (route.response && route.response.downsampled &&
+      !isEqual(route.response, this.props.route.response)) {
+      this.getElevationData(route.response.downsampled);
+    }
+
+    // we recieved (new) elevation data, so parse / format it
     if (elevData && !isEqual(elevData, this.props.elevData)) {
       this.setState({
         elevDataParsed: this.parseElevData(nextProps),
+      });
+    }
+
+    // if we started over clear the parsed elevation data
+    if (!elevData && this.props.elevData) {
+      this.setState({
+        elevDataParsed: null
       });
     }
   }
@@ -50,6 +74,7 @@ class ElevationProfile extends Component {
     const { elevData } = nextProps;
     const { elevDataParsed } = nextState;
 
+    // only update this component when elevData or elevDataParsed changes
     if (!isEqual(elevData, this.props.elevData) ||
       !isEqual(elevDataParsed, this.state.elevDataParsed)
     ) {
@@ -62,12 +87,27 @@ class ElevationProfile extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { elevDataParsed } = this.state;
 
+    // we have parsed data now, so render the area chart!
     if (elevDataParsed && !prevState.elevDataParsed) {
       this.renderAreaChart();
     }
   }
 
+  getElevationData(downsampled) {
+    // format the downsampled route path so that it's acceptable for the elevation API
+    const path = downsampled.map((feature) => {
+      const { coordinates } = feature;
+      return {
+        lat: coordinates[1],
+        lng: coordinates[0]
+      };
+    });
+
+    this.props.fetchElevationData(path);
+  }
+
   parseElevData(props) {
+    // parse / format the elevation data response so that it's acceptable for a D3 area chart
     const { elevData, route } = props;
     const { response } = route;
     const { downsampled } = response;

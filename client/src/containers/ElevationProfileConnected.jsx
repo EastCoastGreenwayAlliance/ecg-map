@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import { fetchElevationData } from '../actions';
 import ElevationProfile from '../components/ElevationProfile';
 
 const mapStateToProps = ({ elevation, routing }) => {
@@ -14,4 +15,6 @@ const mapStateToProps = ({ elevation, routing }) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ElevationProfile);
+export default connect(mapStateToProps, {
+  fetchElevationData,
+})(ElevationProfile);

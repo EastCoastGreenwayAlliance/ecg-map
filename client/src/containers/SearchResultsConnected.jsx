@@ -12,7 +12,6 @@ import {
   routeSearchRequest,
   routeSearchSuccess,
   routeSearchError,
-  fetchElevationData,
 } from '../actions';
 
 const mapStateToProps = ({ geocoding, routing }) => {
@@ -37,5 +36,4 @@ export default connect(mapStateToProps, {
   routeSearchRequest,
   routeSearchSuccess,
   routeSearchError,
-  fetchElevationData,
 })(SearchResults);
