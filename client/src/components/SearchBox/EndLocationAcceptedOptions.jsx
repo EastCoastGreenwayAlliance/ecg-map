@@ -26,11 +26,31 @@ const EndLocationAcceptedOptions = (props) => {
   return (
     <div className="SearchEndAcceptedOptions">
       <div className="start-description">
-        <img alt="start-icon" className="map-marker" src="assets/icons/icon-map-marker-green@2x.png" />
+        <img
+          alt="start-icon"
+          className="map-marker"
+          ref={(_) => { this.img1 = _; }}
+          src="assets/icons/icon-search-marker-green.svg"
+          onError={() => {
+            // handles the SVG fallback
+            this.img1.src = '/assets/icons/icon-search-marker-green.png';
+            this.img1.onerror = null;
+          }}
+        />
         <p>Starting Location</p>
       </div>
       <div className="end-description">
-        <img alt="start-icon" className="map-marker" src="assets/icons/icon-map-marker-red@2x.png" />
+        <img
+          alt="start-icon"
+          className="map-marker"
+          ref={(_) => { this.img2 = _; }}
+          src="assets/icons/icon-search-marker-red.svg"
+          onError={() => {
+            // handles the SVG fallback
+            this.img2.src = '/assets/icons/icon-search-marker-red.png';
+            this.img2.onerror = null;
+          }}
+        />
         <p>Ending Location</p>
       </div>
       { loadingMessage() }
