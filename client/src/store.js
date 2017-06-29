@@ -9,11 +9,14 @@ import middleware from './middleware';
 // so that we don't have to manually go through the UX steps to get routing data
 import routingState from './hydratedStateForTesting.json';
 
+// enable redux dev tools: https://github.com/zalmoxisus/redux-devtools-extension
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 function makeStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
-    compose(
+    composeEnhancers(
       responsiveStoreEnhancer,
       applyMiddleware(...middleware)
     )
