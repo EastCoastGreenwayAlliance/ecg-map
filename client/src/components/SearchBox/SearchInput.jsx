@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
     requests upon a search */
 class SearchInput extends Component {
   static propTypes = {
-    fetchLocationGeocode: PropTypes.func,
-    cancelRoutingLocation: PropTypes.func,
+    fetchLocationGeocode: PropTypes.func.isRequired,
+    cancelRoutingLocation: PropTypes.func.isRequired,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
+    elevationDataClear: PropTypes.func.isRequired,
   }
 
   constructor() {
@@ -42,12 +43,13 @@ class SearchInput extends Component {
   handleSubmit(e) {
     const { searchAddress } = this.state;
     const { startLocation, endLocation, fetchLocationGeocode,
-      cancelRoutingLocation } = this.props;
+      cancelRoutingLocation, elevationDataClear } = this.props;
     e.preventDefault();
 
     // temporary logic to start over, perhaps this should be moved elsewhere?
     if (startLocation.accepted && endLocation.accepted) {
       cancelRoutingLocation('DONE');
+      elevationDataClear();
     }
 
     if (searchAddress && searchAddress.length) {

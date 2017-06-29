@@ -67,6 +67,10 @@ class ElevationProfile extends Component {
       this.setState({
         elevDataParsed: null
       });
+
+      // destroy the svg so we don't make another below it when updating,
+      // no d3 general update pattern used here yet
+      this.destroyChart();
     }
   }
 
@@ -120,6 +124,10 @@ class ElevationProfile extends Component {
     }));
   }
 
+  destroyChart() {
+    select('svg#elev-profile').remove();
+  }
+
   renderAreaChart() {
     const { elevDataParsed } = this.state;
     const chartMargins = {
@@ -135,7 +143,8 @@ class ElevationProfile extends Component {
 
     const svg = select(this.chartContainer).append('svg')
       .attr('height', chartHeight)
-      .attr('width', chartWidth);
+      .attr('width', chartWidth)
+      .attr('id', 'elev-profile');
 
     const g = svg.append('g')
       .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
@@ -180,11 +189,17 @@ class ElevationProfile extends Component {
   }
 
   render() {
-    return (
-      <div className="ElevationProfile">
-        <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
-      </div>
-    );
+    const { route } = this.props;
+
+    if (route && route.response && route.response.downsampled) {
+      return (
+        <div className="ElevationProfile">
+          <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
+        </div>
+      );
+    }
+
+    return null;
   }
 }
 
