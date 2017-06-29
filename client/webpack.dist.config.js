@@ -72,7 +72,6 @@ module.exports = {
       exclude: [/\.min\.js$/gi] // skip pre-minified libs && css
     }),
     extractSass,
-    new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
     new webpack.NoEmitOnErrorsPlugin(),
     new CompressionPlugin({
       asset: '[path].gz[query]',
