@@ -27,6 +27,8 @@
       a.leaflet-control-layers-toggle {
         width: 39px;
         height: 39px;
+
+        // png fallback in case browser doesn't support svg
         background: url('../assets/icons/button-basemap.png') no-repeat;
         background:
           url('../assets/icons/button-basemap.svg') no-repeat,
