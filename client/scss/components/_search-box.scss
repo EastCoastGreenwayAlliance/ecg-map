@@ -3,7 +3,7 @@
   top: $navbarHeightMobile;
   left: 0;
   right: 0;
-  width: 300px;
+  width: $left-ui-width-mobile;
   background: $transparent;
   z-index: 401;
   border-top: 1px solid $light-grey;
@@ -13,6 +13,7 @@
     top: $navbarHeight + 10px;
     left: 10px;
     right: initial;
+    width: $left-ui-width;
     border: 0;
   }
 }

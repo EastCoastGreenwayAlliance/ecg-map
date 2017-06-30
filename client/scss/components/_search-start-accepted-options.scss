@@ -1,3 +1,11 @@
 .SearchStartAcceptedOptions {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
   background: #fff;
+
+  @media (#{$bp-larger-than-mobile}) {
+    position: static;
+    bottom: initial;
+  }
 }

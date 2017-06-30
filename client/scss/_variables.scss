@@ -20,8 +20,10 @@ $route-yellow:       #ff0 !default; // public transit
 $route-grey:         #333 !default; // casing
 
 // component sizes
-$navbarHeight:        106px;
-$navbarHeightMobile:  62px;
-$searchboxHeightMobile: 45px;
-$mapHeight:           calc(100% - #{$navbarHeight});
-$mapHeightMobile:     calc(100% - #{$navbarHeightMobile} - #{$searchboxHeightMobile});
+$navbarHeight:              106px;
+$navbarHeightMobile:        62px;
+$left-ui-width:             300px;
+$left-ui-width-mobile:      100%;
+$searchboxHeightMobile:     45px;
+$mapHeight:                 calc(100% - #{$navbarHeight});
+$mapHeightMobile:           calc(100% - #{$navbarHeightMobile} - #{$searchboxHeightMobile});

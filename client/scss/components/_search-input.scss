@@ -1,14 +1,10 @@
 .SearchInput {
   form {
     margin-bottom: 0;
-
-    // @media (#{$bp-larger-than-mobile}) {
-    //   margin-bottom: 15px;
-    // }
   }
 
   input {
-    width: 100vw;
+    width: 100%;
     height: $searchboxHeightMobile;
     margin: 0;
     border: 0;

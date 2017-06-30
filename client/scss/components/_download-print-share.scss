@@ -1,12 +1,13 @@
 .DownloadSharePrint {
-  position: absolute;
-  top: 290px;
+  position: fixed;
   left: 0;
   right: 0;
+  bottom: 0;
   z-index: 401;
   background: #fff;
 
   @media (#{$bp-larger-than-mobile}) {
+    position: absolute;
     top: 276px;
     left: 10px;
     right: initial;
