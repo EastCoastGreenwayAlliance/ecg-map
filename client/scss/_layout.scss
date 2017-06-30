@@ -23,4 +23,20 @@ button {
   font-weight: normal;
   line-height: normal;
   white-space: normal;
+
+  &.center {
+    text-align: center;
+  }
+
+  &.green {
+    color: $green;
+  }
+
+  &.blue {
+    color: $blue;
+  }
+
+  &.red {
+    color: red;
+  }
 }

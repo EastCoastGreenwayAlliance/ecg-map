@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 
 // import components
+// note that most of these are connected components, from 'containers/' dir
 import NavBar from '../components/NavBar';
 import SearchBox from '../components/SearchBox';
 import DownloadSharePrintConnected from '../containers/DownloadSharePrintConnected';
+import StartRouteViewCuesConnected from '../containers/StartRouteViewCuesConnected';
 import ElevationProfileConnected from '../containers/ElevationProfileConnected';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
 import ModalContent from '../components/Modal';
@@ -57,6 +59,7 @@ class Home extends Component {
         <SearchBox />
         <DownloadSharePrintConnected />
         <ElevationProfileConnected />
+        <StartRouteViewCuesConnected {...{ isMobile }} />
         <LeafletMapConnected
           lat={36.897}
           lng={-74.619}
