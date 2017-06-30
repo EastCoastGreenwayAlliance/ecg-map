@@ -23,12 +23,15 @@
       z-index: 100 !important;
     }
 
-    // div.leaflet-top.leaflet-right {
-    //   top: 45px;
-    //
-    //   @media (#{$bp-larger-than-mobile}) {
-    //     top: 0;
-    //   }
-    // }
+    .leaflet-control-layers.leaflet-control {
+      a.leaflet-control-layers-toggle {
+        width: 39px;
+        height: 39px;
+        background: url('../assets/icons/button-basemap.png') no-repeat;
+        background:
+          url('../assets/icons/button-basemap.svg') no-repeat,
+          linear-gradient(transparent, transparent);
+      }
+    }
   }
 }
