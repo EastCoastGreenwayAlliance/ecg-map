@@ -138,9 +138,12 @@ class ElevationProfile extends Component {
     // calculates the accumulated uphill gain over the route
     parsed.elevGain = (() => {
       const gain = parsed.elev.reduce((acc, cur, idx, arr) => {
-        if (arr[idx - 1] && cur.y > arr[idx - 1].y) {
-          acc += cur.y;
+        const prev = arr[idx - 1];
+
+        if (prev && cur.y > prev.y) {
+          acc += cur.y - prev.y;
         }
+
         return acc;
       }, 0);
 
