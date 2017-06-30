@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import { Collapse } from 'react-collapse';
 import { select } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { quantile, min, max, range } from 'd3-array';
@@ -16,17 +17,23 @@ class ElevationProfile extends Component {
       PropTypes.string
     ]),
     isFetching: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     route: PropTypes.object,
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    const { isMobile } = props;
+
     this.state = {
       elevDataParsed: null,
+      isOpened: !isMobile,
     };
 
     this.chartContainer = null; // ref to our ElevationProfile component
     this.chartIsRendering = false; // boolean to keep React from unnecessarily rendering the chart
+    this.handleClick = this.handleClick.bind(this); // handles collapse for mobile
   }
 
   componentWillMount() {
@@ -76,11 +83,12 @@ class ElevationProfile extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const { elevData } = nextProps;
-    const { elevDataParsed } = nextState;
+    const { elevDataParsed, isOpened } = nextState;
 
     // only update this component when elevData or elevDataParsed changes
     if (!isEqual(elevData, this.props.elevData) ||
-      !isEqual(elevDataParsed, this.state.elevDataParsed)
+      !isEqual(elevDataParsed, this.state.elevDataParsed) ||
+      isOpened !== this.state.isOpened
     ) {
       return true;
     }
@@ -94,6 +102,7 @@ class ElevationProfile extends Component {
     // we have parsed data now, so render the area chart!
     if (elevDataParsed && !prevState.elevDataParsed) {
       this.renderAreaChart();
+      this.renderChartHeaderContents();
     }
   }
 
@@ -158,6 +167,17 @@ class ElevationProfile extends Component {
 
   destroyChart() {
     select('svg#elev-profile').remove();
+    select('.heading.total-dist').remove();
+    select('.heading.elev-gain').remove();
+  }
+
+  handleClick() {
+    const { isMobile } = this.props;
+    if (isMobile) {
+      this.setState({
+        isOpened: !this.state.isOpened,
+      });
+    }
   }
 
   renderAreaChart() {
@@ -165,7 +185,7 @@ class ElevationProfile extends Component {
 
     // margins to position the inner "g" group element
     const chartMargins = {
-      top: 40,
+      top: 20,
       right: 20,
       bottom: 45,
       left: 50
@@ -233,6 +253,7 @@ class ElevationProfile extends Component {
 
     // create the x axis and label
     g.append('g')
+        .classed('axis', true)
         .attr('transform', `translate(0, ${height})`)
         .call(axisBottom(xScale).tickValues(quantilesX))
       .append('text')
@@ -243,6 +264,7 @@ class ElevationProfile extends Component {
 
     // create the y axis and label
     g.append('g')
+        .classed('axis', true)
         .call(axisLeft(yScale).tickValues(quantilesY))
       .append('text')
         .attr('transform', 'rotate(90)')
@@ -250,37 +272,41 @@ class ElevationProfile extends Component {
         .attr('x', height - 30)
         .attr('text-anchor', 'end')
         .text('Height in feet');
+  }
+
+  renderChartHeaderContents() {
+    const { elevDataParsed } = this.state;
+    const { totalDistance, elevGain } = elevDataParsed;
+
+    // header for total distance & elevation gain labels
+    const header = select('.elev-prof--header');
 
     // text for total distance
-    g.append('g')
-      .append('text')
-        .classed('heading', true)
-        .attr('y', -20)
-        .attr('x', -40)
-        .text('Total dist:')
-      .append('tspan')
-        .text(` ${elevDataParsed.totalDistance} mi`);
+    header.append('p')
+        .classed('heading total-dist', true)
+        .html('Total dist:')
+      .append('span')
+        .html(` ${totalDistance} mi`);
 
     // text for total elevation gain
-    g.append('g')
-      .append('text')
-        .classed('heading', true)
-        .attr('y', -20)
-        .attr('x', 230)
-        .attr('text-anchor', 'end')
-        .attr('startOffset', '100%')
-        .text('Elev gain:')
-      .append('tspan')
-        .text(` ${elevDataParsed.elevGain} ft`);
+    header.append('p')
+        .classed('heading elev-gain', true)
+        .html('Elev gain:')
+      .append('span')
+        .html(` ${elevGain} ft`);
   }
 
   render() {
+    const { isOpened } = this.state;
     const { route } = this.props;
 
     if (route && route.response && route.response.downsampled) {
       return (
         <div className="ElevationProfile">
-          <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
+          <button onClick={this.handleClick} className="elev-prof--header" />
+          <Collapse isOpened={isOpened} fixedHeight={165}>
+            <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
+          </Collapse>
         </div>
       );
     }

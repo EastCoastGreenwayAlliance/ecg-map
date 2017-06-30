@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { fetchElevationData } from '../actions';
 import ElevationProfile from '../components/ElevationProfile';
 
-const mapStateToProps = ({ elevation, routing }) => {
+const mapStateToProps = ({ browser, elevation, routing }) => {
+  const { greaterThan } = browser;
   const { result, error, isFetching } = elevation;
   const { route } = routing;
 
   return {
+    isMobile: !greaterThan.small,
     elevData: result,
     route,
     error,

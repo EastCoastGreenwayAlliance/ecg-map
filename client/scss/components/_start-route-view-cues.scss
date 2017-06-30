@@ -1,0 +1,12 @@
+.StartRouteViewCues {
+  position: fixed;
+  bottom: 52px;
+  left: 0;
+  right: 0;
+  z-index: 401;
+  background: #fff;
+
+  button {
+    border-bottom: 1px solid $grey;
+  }
+}

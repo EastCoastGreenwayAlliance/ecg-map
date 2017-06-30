@@ -9,6 +9,7 @@
   @media (#{$bp-larger-than-mobile}) {
     position: absolute;
     top: 276px;
+    bottom: initial;
     left: 10px;
     right: initial;
     width: 300px;
