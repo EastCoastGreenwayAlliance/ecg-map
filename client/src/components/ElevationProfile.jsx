@@ -154,14 +154,14 @@ class ElevationProfile extends Component {
       const gain = parsed.elev.reduce((acc, cur, idx, arr) => {
         const prev = arr[idx - 1];
 
-        if (prev && cur.y > prev.y) {
-          acc += cur.y - prev.y;
+        if (prev && (cur.y > prev.y)) {
+          acc += (cur.y - prev.y);
         }
 
         return acc;
       }, 0);
 
-      const gainFeet = Math.round(gain * METERS_TO_FEET);
+      const gainFeet = Math.round(gain);
 
       // so that we have thousands separated by commas
       return gainFeet.toLocaleString();
@@ -289,28 +289,27 @@ class ElevationProfile extends Component {
     // text for total distance
     header.append('p')
         .classed('heading total-dist', true)
-        .html('Total dist:')
+        .html('Total Dist:')
       .append('span')
         .html(` ${totalDistance} mi`);
 
     // text for total elevation gain
     header.append('p')
         .classed('heading elev-gain', true)
-        .html('Elev gain:')
+        .html('Elev Gain:')
       .append('span')
         .html(` ${elevGain} ft`);
   }
 
   render() {
     const { isOpened } = this.state;
-    const { route } = this.props;
+    const { route, isFetching, error } = this.props;
 
-    if (route && route.response && route.response.downsampled) {
+    if (route.response && route.response.downsampled) {
       return (
         <div className="ElevationProfile">
           <button onClick={this.handleClick} className="elev-prof--header" />
           <Collapse isOpened={isOpened} fixedHeight={165}>
-            <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
             {
               isFetching &&
               <LoadingMsg message={'Loading elevation profile...'} />
@@ -319,6 +318,7 @@ class ElevationProfile extends Component {
               error &&
               <ErrorMsg {...{ error }} />
             }
+            <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
           </Collapse>
         </div>
       );
