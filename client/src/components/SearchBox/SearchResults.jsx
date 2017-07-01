@@ -75,6 +75,8 @@ class SearchResults extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    // only re-render the search box when certain parts change
+    // this could probably be more specific, where objects are being compared
     const { geocodeIsFetching, geocodeError, geocodeResult, endLocation,
       startLocation, route } = nextProps;
 
