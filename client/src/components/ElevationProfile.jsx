@@ -8,6 +8,9 @@ import { quantile, min, max, range } from 'd3-array';
 import { area, curveBasis } from 'd3-shape';
 import { axisBottom, axisLeft } from 'd3-axis';
 
+import LoadingMsg from './LoadingMsg';
+import ErrorMsg from './ErrorMsg';
+
 class ElevationProfile extends Component {
   static propTypes = {
     fetchElevationData: PropTypes.func.isRequired,
@@ -82,13 +85,15 @@ class ElevationProfile extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { elevData } = nextProps;
+    const { elevData, isFetching, error } = nextProps;
     const { elevDataParsed, isOpened } = nextState;
 
-    // only update this component when elevData or elevDataParsed changes
+    // only render this component when the following change
     if (!isEqual(elevData, this.props.elevData) ||
       !isEqual(elevDataParsed, this.state.elevDataParsed) ||
-      isOpened !== this.state.isOpened
+      isOpened !== this.state.isOpened ||
+      isFetching !== this.props.isFetching ||
+      !isEqual(error, this.props.error)
     ) {
       return true;
     }
@@ -306,6 +311,14 @@ class ElevationProfile extends Component {
           <button onClick={this.handleClick} className="elev-prof--header" />
           <Collapse isOpened={isOpened} fixedHeight={165}>
             <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
+            {
+              isFetching &&
+              <LoadingMsg message={'Loading elevation profile...'} />
+            }
+            {
+              error &&
+              <ErrorMsg {...{ error }} />
+            }
           </Collapse>
         </div>
       );

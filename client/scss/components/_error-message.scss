@@ -3,6 +3,10 @@
   color: red;
   border-top: 2px solid $grey;
 
+  p {
+    padding: 10px;
+  }
+
   &:only-child {
     border: none;
   }
