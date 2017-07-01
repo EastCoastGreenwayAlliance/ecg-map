@@ -16,6 +16,7 @@ const defaultState = {
     coordinates: [],
     distance: null,
     error: null,
+    isFetching: false,
     positionText: 'start',
   },
   endLocation: {
@@ -23,6 +24,7 @@ const defaultState = {
     coordinates: [],
     distance: null,
     error: null,
+    isFetching: false,
     positionText: 'end'
   },
   route: {
@@ -46,7 +48,7 @@ export default (state = defaultState, action) => {
           ...state,
           startLocation: {
             ...state.startLocation,
-            _isFetching: true,
+            isFetching: true,
           }
         };
       }
@@ -56,7 +58,7 @@ export default (state = defaultState, action) => {
           ...state,
           endLocation: {
             ...state.endLocation,
-            _isFetching: true,
+            isFetching: true,
           }
         };
       }
@@ -71,7 +73,7 @@ export default (state = defaultState, action) => {
             ...state.startLocation,
             coordinates: action.coords,
             distance: action.distance,
-            _isFetching: false,
+            isFetching: false,
           }
         };
       }
@@ -83,7 +85,7 @@ export default (state = defaultState, action) => {
             ...state.endLocation,
             coordinates: action.coords,
             distance: action.distance,
-            _isFetching: false,
+            isFetching: false,
           }
         };
       }
@@ -121,6 +123,7 @@ export default (state = defaultState, action) => {
             accepted: false,
             coordinates: [],
             placeName: '',
+            isFetching: false,
           }
         };
       }
@@ -132,6 +135,7 @@ export default (state = defaultState, action) => {
             accepted: false,
             coordinates: [],
             placeName: '',
+            isFetching: false,
           }
         };
       }
@@ -150,7 +154,7 @@ export default (state = defaultState, action) => {
           startLocation: {
             ...state.startLocation,
             error: action.error,
-            _isFetching: false,
+            isFetching: false,
           }
         };
       }
@@ -161,7 +165,7 @@ export default (state = defaultState, action) => {
           endLocation: {
             ...state.endLocation,
             error: action.error,
-            _isFetching: false,
+            isFetching: false,
           },
           route: {
             isLoadingRoute: false,

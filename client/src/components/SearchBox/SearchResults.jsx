@@ -74,6 +74,23 @@ class SearchResults extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps) {
+    const { geocodeIsFetching, geocodeError, geocodeResult, endLocation,
+      startLocation, route } = nextProps;
+
+    if (geocodeIsFetching !== this.props.geocodeIsFetching ||
+      !isEqual(geocodeError, this.props.geocodeError) ||
+      !isEqual(geocodeResult, this.props.geocodeResult) ||
+      !isEqual(endLocation, this.props.endLocation) ||
+      !isEqual(startLocation, this.props.startLocation ||
+      !isEqual(route, this.props.route))
+      ) {
+      return true;
+    }
+
+    return false;
+  }
+
   getRoute(startLocation, endLocation) {
     const self = this;
     // handles making the geo routing search request
@@ -104,6 +121,8 @@ class SearchResults extends Component {
       const lat = coordinates[0];
       const lng = coordinates[1];
 
+      // tell our app we are "fetching" the nearest ECG segment node, as its
+      // an async request & sometimes the routing calc takes a while
       nearestSegmentRequest('START');
 
       this.geoRouter.findNearestSegmentToLatLng(lat, lng,
@@ -121,6 +140,8 @@ class SearchResults extends Component {
       const lat = coordinates[0];
       const lng = coordinates[1];
 
+      // tell our app we are "fetching" the nearest ECG segment node, as its
+      // an async request & sometimes the routing calc takes a while
       nearestSegmentRequest('END');
 
       this.geoRouter.findNearestSegmentToLatLng(lat, lng,
