@@ -91,6 +91,13 @@ class LeafletMap extends Component {
       iconRetinaUrl: '/assets/icons/icon-map-marker-red.png'
     });
 
+    this.gpsIcon = new L.Icon({
+      iconUrl: '/assets/icons/youarehere.png',
+      iconSize: [25, 25],
+      iconAnchor: [12, 12],
+      popupAnchor: [12, -12]
+    });
+
     // reference to CARTO sublayer
     this.cartoSubLayer = null;
 
@@ -158,6 +165,19 @@ class LeafletMap extends Component {
     this.searchResults.addTo(this.map);
 
     this.initCartoLayer();
+
+    // start geolocation tracking, simply moving the marker but not otherwise affecting the map
+    this.map.locate({
+      watch: true,
+      enableHighAccuracy: true
+    });
+    this.gpsMarker = L.marker([0, 0], {
+      icon: this.gpsIcon,
+      title: 'You are Here'
+    }).bindPopup('You Are Here').addTo(this.map);
+    this.map.on('locationfound', (e) => {
+      this.gpsMarker.setLatLng(e.latlng);
+    });
 
     // for debugging...
     // window.map = this.map;
