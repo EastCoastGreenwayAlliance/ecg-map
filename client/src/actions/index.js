@@ -12,3 +12,4 @@ export {
 } from './ecgRoutingActions';
 export postMailchimpAPI from './mailchimpActions';
 export fetchElevationData, { elevationDataClear } from './elevationDataActions';
+export updateActiveTurning from './activeTurningActions';

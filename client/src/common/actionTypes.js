@@ -28,3 +28,6 @@ export const ELEVATION_DATA_REQUEST = 'ELEVATION_DATA_REQUEST';
 export const ELEVATION_DATA_SUCCESS = 'ELEVATION_DATA_SUCCESS';
 export const ELEVATION_DATA_ERROR = 'ELEVATION_DATA_ERROR';
 export const ELEVATION_DATA_CLEAR = 'ELEVATION_DATA_CLEAR';
+
+// a geolocation-driven update to a "your turn is coming up" display
+export const ACTIVETURNING_UPDATE = 'ACTIVETURNING_UPDATE';

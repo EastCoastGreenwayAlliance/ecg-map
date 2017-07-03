@@ -34,7 +34,8 @@ class LeafletMap extends Component {
     geocodeResult: PropTypes.object,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
-    route: PropTypes.object
+    route: PropTypes.object,
+    updateActiveTurning: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -101,8 +102,10 @@ class LeafletMap extends Component {
     // reference to CARTO sublayer
     this.cartoSubLayer = null;
 
-    // layer to store searchResults in when user is searching for a location
+    // layer to store searchResults (route, markers, etc) in when user is searching for a location
+    // and the subset of specifically the route segments
     this.searchResults = L.featureGroup();
+    this.searchRoute = undefined;
   }
 
   componentDidMount() {
@@ -147,11 +150,12 @@ class LeafletMap extends Component {
   }
 
   initMap() {
-    const { onMapMove, route, startLocation, endLocation } = this.props;
+    const { onMapMove, route, startLocation, endLocation, updateActiveTurning } = this.props;
     this.map = L.map('map', this.mapOptions);
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
     this.layersControl.addTo(this.map, { position: 'topright' });
+    L.control.scale().addTo(this.map);
 
     // update the URL hash with zoom, lat, lng
     this.map.on('moveend', (e) => {
@@ -176,7 +180,39 @@ class LeafletMap extends Component {
       title: 'You are Here'
     }).bindPopup('You Are Here').addTo(this.map);
     this.map.on('locationfound', (e) => {
+      // position the You Are Here marker
       this.gpsMarker.setLatLng(e.latlng);
+
+      // if there's a route, find where we are on it and the next cue point
+      // if we're too far off it, some wording changes (sort of an implicit disclaimer)
+      // and we may want to disable some of it if they're far enough off (TBD)
+      const activeTurningUpdate = {};
+      if (this.searchRoute) {
+        const segments = this.searchRoute.getLayers();
+        const nearline = L.GeometryUtil.closestLayerSnap(this.map, segments, e.latlng).layer;
+        const nearpoint = L.GeometryUtil.closest(this.map, nearline, e.latlng);
+        const nearmile = e.latlng.distanceTo(nearpoint) / 1609;
+        const nearname = nearline.properties.title;
+
+        if (nearmile > 0.05) { // meters to miles, 0.1mi = off route
+          activeTurningUpdate.onpath = false;
+          activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile.toFixed(1)} miles`;
+          activeTurningUpdate.transition_code = nearline.properties.transition.code;
+          activeTurningUpdate.transition_text = nearline.properties.transition.title;
+          activeTurningUpdate.distance = `${(nearline.length / 1609).toFixed(1)} mi`;
+        } else {
+          activeTurningUpdate.onpath = true;
+          activeTurningUpdate.currentplace = `On ${nearname}`;
+          activeTurningUpdate.transition_code = 'RT';
+          activeTurningUpdate.transition_text = 'Turn Right';
+          activeTurningUpdate.transition_code = nearline.properties.transition.code;
+          activeTurningUpdate.transition_text = nearline.properties.transition.title;
+          activeTurningUpdate.distance = `${(nearline.length / 1609).toFixed(1)} mi`;
+        }
+      }
+
+      // hand it off to redux for digestion
+      updateActiveTurning(activeTurningUpdate);
     });
 
     // for debugging...
@@ -306,7 +342,15 @@ class LeafletMap extends Component {
       // don't bother adding anything if no GeoJSON was returned from the router?
       return;
     }
-    this.searchResults.addLayer(L.geoJson(routeGeoJson));
+
+    // keep a reference to just the route sections; this.searchResults will have other markers
+    // and add .properties to the resulting L.linestring layers
+    this.searchRoute = L.geoJson(routeGeoJson, {
+      onEachFeature: (feature, layer) => {
+        layer.properties = feature.properties;
+      }
+    });
+    this.searchResults.addLayer(this.searchRoute);
     this.fitBoundsToSearchResults([50, 50]);
   }
 

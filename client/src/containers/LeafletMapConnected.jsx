@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import LeafletMap from '../components/LeafletMap';
 
+import { updateActiveTurning } from '../actions';
+
 const mapStateToProps = ({ geocoding, routing }) => {
   const { error, result } = geocoding;
   const { startLocation, endLocation, route } = routing;
@@ -17,4 +19,6 @@ const mapStateToProps = ({ geocoding, routing }) => {
   };
 };
 
-export default connect(mapStateToProps, null)(LeafletMap);
+export default connect(mapStateToProps, {
+  updateActiveTurning,
+})(LeafletMap);
