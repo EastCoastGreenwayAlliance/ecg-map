@@ -73,6 +73,23 @@ class SearchInput extends Component {
     return text;
   }
 
+  renderSuffixUI() {
+    // handles whether or not to show the cancel "x" or magnify glass after the input
+    const { startLocation, endLocation, cancelRoutingLocation, elevationDataClear } = this.props;
+
+    if (startLocation.coordinates.length || startLocation.accepted ||
+        endLocation.coordinates.length || endLocation.accepted) {
+      return (
+        <button
+          className="search-input-cancel"
+          onClick={() => { cancelRoutingLocation('DONE'); elevationDataClear(); }}
+        />
+      );
+    }
+
+    return <span className="search-input-magnify-glass" />;
+  }
+
   render() {
     const { searchAddress } = this.state;
     const { startLocation, endLocation } = this.props;
@@ -95,6 +112,9 @@ class SearchInput extends Component {
             value={searchAddress}
             onChange={this.handleChange}
           />
+          {
+            this.renderSuffixUI()
+          }
         </form>
       </div>
     );

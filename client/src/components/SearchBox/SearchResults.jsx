@@ -155,8 +155,6 @@ class SearchResults extends Component {
         }
       );
     }
-
-    // TO DO: implement cancel
   }
 
   handleGeoRoutingSuccess(closestSegment, step) {
