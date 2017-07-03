@@ -1,6 +1,6 @@
 .StartRouteViewCues {
   position: fixed;
-  bottom: 52px;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 401;
@@ -8,5 +8,9 @@
 
   button {
     border-bottom: 1px solid $grey;
+
+    &:last-child {
+      border: 0;
+    }
   }
 }

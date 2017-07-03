@@ -12,13 +12,17 @@ class DownloadSharePrint extends Component {
   static propTypes = {
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
-    route: PropTypes.object
+    route: PropTypes.object,
+    isMobile: PropTypes.bool.isRequired,
   }
 
   render() {
-    const { route } = this.props;
+    const { route, isMobile } = this.props;
 
     if (!route.response || !route.response.features) return null;
+
+    // don't show this component on mobile
+    if (isMobile) return null;
 
     return (
       <div className="DownloadSharePrint">
