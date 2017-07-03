@@ -33,6 +33,7 @@ class SearchResults extends Component {
       PropTypes.object
     ]),
     geocodeResult: PropTypes.object,
+    isMobile: PropTypes.bool.isRequired,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
     route: PropTypes.object,
@@ -169,7 +170,7 @@ class SearchResults extends Component {
 
   renderSearchResultsStep() {
     // handles which step of the Search UX Flow to display using application state
-    const { geocodeError, geocodeResult, geocodeIsFetching, startLocation,
+    const { geocodeError, geocodeResult, geocodeIsFetching, isMobile, startLocation,
       endLocation, acceptRoutingLocation, route } = this.props;
 
     if (geocodeIsFetching || startLocation.isFetching || endLocation.isFetching) {
@@ -192,7 +193,7 @@ class SearchResults extends Component {
       return <EndLocationOptions {...{ endLocation, geocodeResult, acceptRoutingLocation }} />;
     }
 
-    if (endLocation.accepted && startLocation.accepted) {
+    if (!isMobile && endLocation.accepted && startLocation.accepted) {
       return <EndLocationAcceptedOptions {...{ route }} />;
     }
 

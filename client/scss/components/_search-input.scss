@@ -1,16 +1,46 @@
 .SearchInput {
+  background: #fff;
+  border-bottom: 1px solid $dark-grey;
+
+  @media (#{$bp-larger-than-mobile}) {
+    border: 0;
+  }
+
   form {
     margin-bottom: 0;
   }
 
+  .search-input-icon {
+    width: 16px;
+    height: 19px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+
+    &.search-icon-end {
+      background: url('../assets/icons/icon-search-marker-red.png') no-repeat;
+      background:
+        url('../assets/icons/icon-search-marker-red.svg') no-repeat,
+        linear-gradient(transparent, transparent);
+    }
+
+    &.search-icon-start {
+      background: url('../assets/icons/icon-search-marker-green.png') no-repeat;
+      background:
+        url('../assets/icons/icon-search-marker-green.svg') no-repeat,
+        linear-gradient(transparent, transparent);
+    }
+  }
+
   input {
-    width: 100%;
+    width: calc(100% - 26px);
     height: $searchboxHeightMobile;
+    display: inline-block;
     margin: 0;
     border: 0;
 
     @media (#{$bp-larger-than-mobile}) {
-      width: 100%;
+      // width: 100%;
       height: auto;
     }
   }

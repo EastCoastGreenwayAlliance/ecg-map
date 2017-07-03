@@ -15,7 +15,7 @@ class SearchInput extends Component {
   constructor() {
     super();
     this.state = {
-      searchAddress: ''
+      searchAddress: '',
     };
     this.textInput = null; // ref to the text input
     this.handleChange = this.handleChange.bind(this);
@@ -45,6 +45,7 @@ class SearchInput extends Component {
     const { searchAddress } = this.state;
     const { startLocation, endLocation, fetchLocationGeocode,
       cancelRoutingLocation, elevationDataClear } = this.props;
+
     e.preventDefault();
 
     // unfocus the text input, closes keyboard on iOS devices
@@ -74,10 +75,19 @@ class SearchInput extends Component {
 
   render() {
     const { searchAddress } = this.state;
+    const { startLocation, endLocation } = this.props;
+
+    const searchIconClassName = () => {
+      const className = 'search-input-icon';
+      const state = !endLocation.accepted && !startLocation.accepted ?
+        'search-icon-start' : 'search-icon-end';
+      return `${className} ${state}`;
+    };
 
     return (
       <div className="SearchInput">
         <form onSubmit={this.handleSubmit}>
+          <span className={searchIconClassName()} />
           <input
             ref={(_) => { this.textInput = _; }}
             type="text"
