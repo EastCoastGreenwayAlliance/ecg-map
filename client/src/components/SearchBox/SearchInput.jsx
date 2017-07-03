@@ -17,6 +17,7 @@ class SearchInput extends Component {
     this.state = {
       searchAddress: ''
     };
+    this.textInput = null; // ref to the text input
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -45,6 +46,9 @@ class SearchInput extends Component {
     const { startLocation, endLocation, fetchLocationGeocode,
       cancelRoutingLocation, elevationDataClear } = this.props;
     e.preventDefault();
+
+    // unfocus the text input, closes keyboard on iOS devices
+    this.textInput.blur();
 
     // temporary logic to start over, perhaps this should be moved elsewhere?
     if (startLocation.accepted && endLocation.accepted) {
@@ -75,6 +79,7 @@ class SearchInput extends Component {
       <div className="SearchInput">
         <form onSubmit={this.handleSubmit}>
           <input
+            ref={(_) => { this.textInput = _; }}
             type="text"
             placeholder={this.renderPlaceholderText()}
             value={searchAddress}
