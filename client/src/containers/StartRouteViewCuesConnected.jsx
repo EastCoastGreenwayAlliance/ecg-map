@@ -6,12 +6,11 @@ import StartRouteViewCues from '../components/StartRouteViewCues';
 
 const mapStateToProps = ({ browser, routing }) => {
   const { greaterThan } = browser;
-  const { startLocation, endLocation } = routing;
+  const { route } = routing;
 
   return {
     isMobile: !greaterThan.small,
-    startLocation,
-    endLocation,
+    route,
   };
 };
 

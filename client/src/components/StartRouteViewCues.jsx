@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 // This UI only displays on mobile, it's purpose is to allow someone to
 // follow the ECG route while also viewing the next upcoming cue
 const StartRouteViewCues = (props) => {
-  const { isMobile, startLocation, endLocation } = props;
+  const { isMobile, route } = props;
 
-  if (isMobile && startLocation.accepted && endLocation.accepted) {
+  if (isMobile && route.response) {
     return (
       <div className="StartRouteViewCues">
         <button className="center blue" onClick={() => {}}>Start Route</button>
@@ -20,8 +20,7 @@ const StartRouteViewCues = (props) => {
 
 StartRouteViewCues.propTypes = {
   isMobile: PropTypes.bool.isRequired,
-  startLocation: PropTypes.object,
-  endLocation: PropTypes.object,
+  route: PropTypes.object,
 };
 
 export default StartRouteViewCues;
