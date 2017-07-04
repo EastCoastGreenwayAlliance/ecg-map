@@ -225,13 +225,21 @@ class ElevationProfile extends Component {
 
     // create the SVG element
     const svg = select(this.chartContainer).append('svg')
-      .attr('height', chartHeight)
-      .attr('width', chartWidth)
-      .attr('id', 'elev-profile');
+        .attr('height', chartHeight)
+        .attr('width', chartWidth)
+        .attr('id', 'elev-profile');
 
     // append the parent group element
     const g = svg.append('g')
-      .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
+        .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
+
+    g.append('clipPath')
+        .attr('id', 'chart-clip-path')
+      .append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', width)
+        .attr('height', height);
 
     // set x scale range and domain
     const xScale = scaleLinear()
@@ -254,6 +262,7 @@ class ElevationProfile extends Component {
     g.append('path')
       .datum(elevDataParsed.elev)
       .attr('fill', '#1482C5')
+      .attr('clip-path', 'url(#chart-clip-path)')
       .attr('d', areaFn);
 
     // create the x axis and label
