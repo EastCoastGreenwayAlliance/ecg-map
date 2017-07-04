@@ -112,10 +112,10 @@ class SearchInput extends Component {
             value={searchAddress}
             onChange={this.handleChange}
           />
-          {
-            this.renderSuffixUI()
-          }
         </form>
+        {
+          this.renderSuffixUI()
+        }
       </div>
     );
   }

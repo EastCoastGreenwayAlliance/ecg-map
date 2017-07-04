@@ -7,6 +7,8 @@
   }
 
   form {
+    width: calc(100% - 32px);
+    display: inline-block;
     margin-bottom: 0;
   }
 
@@ -38,6 +40,7 @@
     width: 18px;
     height: 18px;
     display: inline-block;
+    vertical-align: middle;
   }
 
   button.search-input-cancel {
@@ -48,7 +51,6 @@
   }
 
   .search-input-magnify-glass {
-    vertical-align: middle;
     background: url('../assets/icons/icon-magnify-glass.png') no-repeat;
     background:
       url('../assets/icons/icon-magnify-glass.svg') no-repeat,
@@ -56,7 +58,7 @@
   }
 
   input {
-    width: calc(100% - 26px - 32px);
+    width: calc(100% - 26px);
     height: $searchboxHeightMobile;
     display: inline-block;
     margin: 0;
