@@ -1,0 +1,24 @@
+.ActiveTurningReadout {
+  width: $left-ui-width-mobile;
+  position: fixed;
+  top: initial;
+  left: 50%;
+  right: 0;
+  bottom: 0;
+  z-index: 401;
+  padding: 0;
+  background: #fff;
+  border-top: 1px solid $grey;
+  border-bottom: 1px solid $grey;
+
+  @media (#{$bp-larger-than-mobile}) {
+    position: absolute;
+    top: 348px;
+    bottom: initial;
+    left: 10px;
+    right: initial;
+    width: $left-ui-width;
+    border: 0;
+    // border: 1px solid aqua;
+  }
+}
