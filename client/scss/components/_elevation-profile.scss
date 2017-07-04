@@ -50,6 +50,13 @@
     letter-spacing: normal;
     color: $font-color;
 
+    &.icon-chevron {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      background: url('../assets/icons/icon-chevron-left.svg') no-repeat;
+    }
+
     @media (#{$bp-larger-than-mobile}) {
       cursor: default;
     }
