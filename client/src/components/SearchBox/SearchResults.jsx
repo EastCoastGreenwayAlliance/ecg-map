@@ -86,7 +86,9 @@ class SearchResults extends Component {
       !isEqual(geocodeResult, this.props.geocodeResult) ||
       !isEqual(endLocation, this.props.endLocation) ||
       !isEqual(startLocation, this.props.startLocation ||
-      !isEqual(route, this.props.route))
+      !isEqual(route.response, this.props.route.response) ||
+      route.error !== this.props.route.error ||
+      route.isLoadingRoute !== this.props.route.isLoadingRoute)
       ) {
       return true;
     }
