@@ -60,6 +60,28 @@ class SearchInput extends Component {
     }
   }
 
+  handleSearchCancel() {
+    const { startLocation, endLocation, cancelRoutingLocation } = this.props;
+    // handles how the search is canceled based on the current app state
+    if (startLocation.coordinates.length && !endLocation.coordinates.length) {
+      // clear the starting point data
+      cancelRoutingLocation('START');
+    }
+
+    if (endLocation.coordinates.length && !endLocation.accepted) {
+      // clear the ending point data
+      cancelRoutingLocation('END');
+    }
+
+    if (startLocation.accepted && endLocation.accepted) {
+      // start over
+      cancelRoutingLocation('DONE');
+    }
+
+    // make sure to clear the search input
+    this.setState({ searchAddress: '' });
+  }
+
   renderPlaceholderText() {
     const { startLocation, endLocation } = this.props;
     let text = '';
@@ -73,14 +95,14 @@ class SearchInput extends Component {
 
   renderSuffixUI() {
     // handles whether or not to show the cancel "x" or magnify glass after the input
-    const { startLocation, endLocation, cancelRoutingLocation } = this.props;
+    const { startLocation, endLocation } = this.props;
 
     if (startLocation.coordinates.length || startLocation.accepted ||
         endLocation.coordinates.length || endLocation.accepted) {
       return (
         <button
           className="search-input-cancel"
-          onClick={() => { cancelRoutingLocation('DONE'); }}
+          onClick={() => this.handleSearchCancel()}
         />
       );
     }
