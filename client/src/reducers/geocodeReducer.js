@@ -2,7 +2,8 @@
 import {
   LOCATION_GEOCODE_REQUEST,
   LOCATION_GEOCODE_SUCCESS,
-  LOCATION_GEOCODE_ERROR
+  LOCATION_GEOCODE_ERROR,
+  LOCATION_GEOCODE_CLEAR,
 } from '../common/actionTypes';
 
 const defaultState = {
@@ -51,6 +52,9 @@ export default (state = defaultState, action) => {
         isFetching: false,
         error: action.error
       };
+
+    case LOCATION_GEOCODE_CLEAR:
+      return { ...defaultState };
 
     default:
       return state;

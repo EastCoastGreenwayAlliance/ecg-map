@@ -8,6 +8,7 @@ import {
   LOCATION_GEOCODE_REQUEST,
   LOCATION_GEOCODE_SUCCESS,
   LOCATION_GEOCODE_ERROR,
+  LOCATION_GEOCODE_CLEAR,
 } from '../common/actionTypes';
 
 // we are about to make a GET request to geocode a location
@@ -26,6 +27,11 @@ const locationGeocodeSuccess = json => ({
 export const locationGeocodeError = error => ({
   type: LOCATION_GEOCODE_ERROR,
   error
+});
+
+// user canceled the geo routing search process, reset the geocode state
+export const locationGeocodeClear = () => ({
+  type: LOCATION_GEOCODE_CLEAR,
 });
 
 /*
