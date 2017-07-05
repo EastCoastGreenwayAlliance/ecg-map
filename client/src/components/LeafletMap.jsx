@@ -193,13 +193,14 @@ class LeafletMap extends Component {
         const nearpoint = L.GeometryUtil.closest(this.map, nearline, e.latlng);
         const nearmile = e.latlng.distanceTo(nearpoint) / 1609;
         const nearname = nearline.properties.title;
+        const untilturn = nearline.properties.length / 1609; // distance to turn -- we wish
 
-        if (nearmile > 0.05) { // meters to miles, 0.1mi = off route
+        if (nearmile > 0.05) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
           activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile.toFixed(1)} miles`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${(nearline.length / 1609).toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
         } else {
           activeTurningUpdate.onpath = true;
           activeTurningUpdate.currentplace = `On ${nearname}`;
@@ -207,7 +208,7 @@ class LeafletMap extends Component {
           activeTurningUpdate.transition_text = 'Turn Right';
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${(nearline.length / 1609).toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
         }
       }
 

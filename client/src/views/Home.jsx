@@ -61,7 +61,7 @@ class Home extends Component {
         <SearchBox />
         <DownloadSharePrintConnected />
         <ElevationProfileConnected />
-        <ActiveTurningReadoutConnected nextStep={activeturning} />
+        <ActiveTurningReadoutConnected {...activeturning} />
         <StartRouteViewCuesConnected {...{ isMobile }} />
         <LeafletMapConnected
           lat={36.897}

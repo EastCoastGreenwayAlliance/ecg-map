@@ -13,9 +13,8 @@
 
   @media (#{$bp-larger-than-mobile}) {
     position: absolute;
-    top: 348px;
-    bottom: initial;
-    left: 10px;
+    bottom: 0;
+    left: 50%;
     right: initial;
     width: $left-ui-width;
     border: 0;
