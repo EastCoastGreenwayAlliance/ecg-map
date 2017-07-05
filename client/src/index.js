@@ -6,8 +6,6 @@ import { AppContainer } from 'react-hot-loader';
 import '../scss/main.scss'; // tell webpack to use our scss
 import App from './App';
 
-require('leaflet-geometryutil');
-
 const renderApp = () => {
   render(
     <AppContainer>

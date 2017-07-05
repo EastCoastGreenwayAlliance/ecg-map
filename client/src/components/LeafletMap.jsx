@@ -175,10 +175,12 @@ class LeafletMap extends Component {
       watch: true,
       enableHighAccuracy: true
     });
+
     this.gpsMarker = L.marker([0, 0], {
       icon: this.gpsIcon,
       title: 'You are Here'
     }).bindPopup('You Are Here').addTo(this.map);
+
     this.map.on('locationfound', (e) => {
       // position the You Are Here marker
       this.gpsMarker.setLatLng(e.latlng);
@@ -187,6 +189,7 @@ class LeafletMap extends Component {
       // if we're too far off it, some wording changes (sort of an implicit disclaimer)
       // and we may want to disable some of it if they're far enough off (TBD)
       const activeTurningUpdate = {};
+
       if (this.searchRoute) {
         const segments = this.searchRoute.getLayers();
         const nearline = L.GeometryUtil.closestLayerSnap(this.map, segments, e.latlng).layer;
