@@ -10,6 +10,8 @@ import {
   ROUTE_SEARCH_ERROR,
 } from '../common/actionTypes';
 
+import { locationGeocodeClear, elevationDataClear } from './index';
+
 // Requesting the nearest ECG segment node / coordinate
 export const nearestSegmentRequest = step => ({
   type: REQUEST_ROUTING_LOCATION,
@@ -40,11 +42,25 @@ export const acceptRoutingLocation = step => ({
 });
 
 // user cancels the current routing location
-// @param { string } step: either START or END
-export const cancelRoutingLocation = step => ({
-  type: CANCEL_ROUTING_LOCATION,
-  step,
-});
+// @param { string } step: either START, END, or DONE
+// this action also fires off other actions to clear the redux store containing
+// state for elevation data and geocoding
+export const cancelRoutingLocation = step => (dispatch, getState) => {
+  dispatch({
+    type: CANCEL_ROUTING_LOCATION,
+    step,
+  });
+
+  const elevationDataPresent = getState().elevation.result;
+  if (elevationDataPresent) {
+    dispatch(elevationDataClear());
+  }
+
+  const geocodeDataPresent = getState().geocoding.result;
+  if (geocodeDataPresent) {
+    dispatch(locationGeocodeClear());
+  }
+};
 
 // actions for describing the route search
 // happens after a user confirms their start and end locations

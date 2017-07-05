@@ -142,7 +142,7 @@ export default (state = defaultState, action) => {
 
       // user chooses to start over
       if (action.step === 'DONE') {
-        return defaultState;
+        return { ...defaultState };
       }
 
       break;
