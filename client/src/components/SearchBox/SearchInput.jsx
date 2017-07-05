@@ -9,7 +9,6 @@ class SearchInput extends Component {
     cancelRoutingLocation: PropTypes.func.isRequired,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
-    elevationDataClear: PropTypes.func.isRequired,
   }
 
   constructor() {
@@ -44,7 +43,7 @@ class SearchInput extends Component {
   handleSubmit(e) {
     const { searchAddress } = this.state;
     const { startLocation, endLocation, fetchLocationGeocode,
-      cancelRoutingLocation, elevationDataClear } = this.props;
+      cancelRoutingLocation } = this.props;
 
     e.preventDefault();
 
@@ -54,7 +53,6 @@ class SearchInput extends Component {
     // temporary logic to start over, perhaps this should be moved elsewhere?
     if (startLocation.accepted && endLocation.accepted) {
       cancelRoutingLocation('DONE');
-      elevationDataClear();
     }
 
     if (searchAddress && searchAddress.length) {
@@ -75,14 +73,14 @@ class SearchInput extends Component {
 
   renderSuffixUI() {
     // handles whether or not to show the cancel "x" or magnify glass after the input
-    const { startLocation, endLocation, cancelRoutingLocation, elevationDataClear } = this.props;
+    const { startLocation, endLocation, cancelRoutingLocation } = this.props;
 
     if (startLocation.coordinates.length || startLocation.accepted ||
         endLocation.coordinates.length || endLocation.accepted) {
       return (
         <button
           className="search-input-cancel"
-          onClick={() => { cancelRoutingLocation('DONE'); elevationDataClear(); }}
+          onClick={() => { cancelRoutingLocation('DONE'); }}
         />
       );
     }

@@ -8,7 +8,6 @@ import {
   setRoutingLocation,
   acceptRoutingLocation,
   cancelRoutingLocation,
-  elevationDataClear,
 } from '../actions/';
 
 const mapStateToProps = ({ routing }) => {
@@ -25,5 +24,4 @@ export default connect(mapStateToProps, {
   setRoutingLocation,
   acceptRoutingLocation,
   cancelRoutingLocation,
-  elevationDataClear,
 })(SearchInput);
