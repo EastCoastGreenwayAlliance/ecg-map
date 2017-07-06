@@ -6,11 +6,13 @@ import LeafletMap from '../components/LeafletMap';
 
 import { updateActiveTurning } from '../actions';
 
-const mapStateToProps = ({ geocoding, routing }) => {
+const mapStateToProps = ({ activeturning, geocoding, routing }) => {
+  const { enabled } = activeturning;
   const { error, result } = geocoding;
   const { startLocation, endLocation, route } = routing;
 
   return {
+    activeTurningEnabled: enabled,
     geocodeError: error,
     geocodeResult: result,
     startLocation,

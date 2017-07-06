@@ -27,6 +27,7 @@ L.Icon.Default.mergeOptions({
  */
 class LeafletMap extends Component {
   static propTypes = {
+    activeTurningEnabled: PropTypes.bool.isRequired,
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
@@ -120,7 +121,7 @@ class LeafletMap extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geocodeResult, startLocation, endLocation, route } = nextProps;
+    const { activeTurningEnabled, geocodeResult, startLocation, endLocation, route } = nextProps;
 
     /* Handles adding the geocode result, if there is one */
     if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
@@ -164,6 +165,15 @@ class LeafletMap extends Component {
     /* Handles displaying of selection portion of the route */
     if (route.response && !this.props.route.response) {
       this.renderRouteHighlight(route.response);
+    }
+
+    /* Handles enabling & disabling of "active turning" */
+    if (activeTurningEnabled && !this.props.activeTurningEnabled) {
+      this.enableActiveTurning();
+    }
+
+    if (!activeTurningEnabled && this.props.activeTurningEnabled) {
+      this.disableActiveTurning();
     }
   }
 
