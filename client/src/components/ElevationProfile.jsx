@@ -107,7 +107,6 @@ class ElevationProfile extends Component {
     // we have parsed data now, so render the area chart!
     if (elevDataParsed && !prevState.elevDataParsed) {
       this.renderAreaChart();
-      this.renderChartHeaderContents();
     }
   }
 
@@ -172,8 +171,6 @@ class ElevationProfile extends Component {
 
   destroyChart() {
     select('svg#elev-profile').remove();
-    select('.heading.total-dist').remove();
-    select('.heading.elev-gain').remove();
   }
 
   handleClick() {
@@ -225,13 +222,21 @@ class ElevationProfile extends Component {
 
     // create the SVG element
     const svg = select(this.chartContainer).append('svg')
-      .attr('height', chartHeight)
-      .attr('width', chartWidth)
-      .attr('id', 'elev-profile');
+        .attr('height', chartHeight)
+        .attr('width', chartWidth)
+        .attr('id', 'elev-profile');
 
     // append the parent group element
     const g = svg.append('g')
-      .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
+        .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
+
+    g.append('clipPath')
+        .attr('id', 'chart-clip-path')
+      .append('rect')
+        .attr('x', 0)
+        .attr('y', 0)
+        .attr('width', width)
+        .attr('height', height);
 
     // set x scale range and domain
     const xScale = scaleLinear()
@@ -252,9 +257,10 @@ class ElevationProfile extends Component {
 
     // create and append the path
     g.append('path')
-      .datum(elevDataParsed.elev)
-      .attr('fill', '#1482C5')
-      .attr('d', areaFn);
+        .datum(elevDataParsed.elev)
+        .attr('fill', '#1482C5')
+        .attr('clip-path', 'url(#chart-clip-path)')
+        .attr('d', areaFn);
 
     // create the x axis and label
     g.append('g')
@@ -280,25 +286,25 @@ class ElevationProfile extends Component {
   }
 
   renderChartHeaderContents() {
-    const { elevDataParsed } = this.state;
+    const { elevDataParsed, isOpened } = this.state;
+
+    if (!elevDataParsed) return null;
+
     const { totalDistance, elevGain } = elevDataParsed;
+    const { isMobile } = this.props;
+    const chevronStyle = {
+      display: isMobile ? 'block' : 'none',
+      transform: `${isOpened ? 'translate(5px, -8px)' : 'translateY(10px)'}
+        ${isOpened ? 'rotate(-90deg)' : 'rotate(90deg)'}`
+    };
 
-    // header for total distance & elevation gain labels
-    const header = select('.elev-prof--header');
-
-    // text for total distance
-    header.append('p')
-        .classed('heading total-dist', true)
-        .html('Total Dist:')
-      .append('span')
-        .html(` ${totalDistance} mi`);
-
-    // text for total elevation gain
-    header.append('p')
-        .classed('heading elev-gain', true)
-        .html('Elev Gain:')
-      .append('span')
-        .html(` ${elevGain} ft`);
+    return (
+      <button onClick={this.handleClick} className="elev-prof--header">
+        <p className="heading total-dist">Total Dist: <span>{totalDistance} mi</span></p>
+        <p className="heading icon-chevron" style={chevronStyle} />
+        <p className="heading elev-gain">Elev Gain: <span>{elevGain} ft</span></p>
+      </button>
+    );
   }
 
   render() {
@@ -308,7 +314,9 @@ class ElevationProfile extends Component {
     if (route.response && route.response.downsampled) {
       return (
         <div className="ElevationProfile">
-          <button onClick={this.handleClick} className="elev-prof--header" />
+          {
+            this.renderChartHeaderContents()
+          }
           <Collapse isOpened={isOpened} fixedHeight={165}>
             {
               isFetching &&

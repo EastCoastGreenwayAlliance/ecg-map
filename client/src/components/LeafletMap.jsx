@@ -122,13 +122,21 @@ class LeafletMap extends Component {
   componentWillReceiveProps(nextProps) {
     const { geocodeResult, startLocation, endLocation, route } = nextProps;
 
+    /* Handles adding the geocode result, if there is one */
     if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
       this.displayGeocodeResult(geocodeResult);
     }
 
-    if (!isEqual(startLocation.coordinates, this.props.startLocation.coordinates)) {
+    /* Handles START point rendering and canceling */
+    if (startLocation.coordinates.length &&
+      !isEqual(startLocation.coordinates, this.props.startLocation.coordinates)) {
       // handle displaying the start location of the ECG route
       this.displayNearestSegment(startLocation);
+    }
+
+    if (!startLocation.coordinates.length && this.props.startLocation.coordinates.length) {
+      // user canceled this part of the search, clear the map layers
+      this.searchResults.clearLayers();
     }
 
     if (startLocation.accepted && !this.props.startLocation.accepted) {
@@ -136,9 +144,16 @@ class LeafletMap extends Component {
       this.zoomToNearestSegment(startLocation);
     }
 
-    if (!isEqual(endLocation.coordinates, this.props.endLocation.coordinates)) {
+    /* Handles END point rendering and canceling */
+    if (endLocation.coordinates.length &&
+      !isEqual(endLocation.coordinates, this.props.endLocation.coordinates)) {
       // handle displaying the end location of the ECG route
       this.displayNearestSegment(endLocation);
+    }
+
+    if (!endLocation.coordinates.length && this.props.endLocation.coordinates.length) {
+      // user canceled this part of the search, clear the map layers
+      this.searchResults.clearLayers();
     }
 
     if (startLocation.accepted && endLocation.accepted && !this.props.endLocation.accepted) {
@@ -146,6 +161,7 @@ class LeafletMap extends Component {
       this.zoomRouteExtent(startLocation, endLocation);
     }
 
+    /* Handles displaying of selection portion of the route */
     if (route.response && !this.props.route.response) {
       this.renderRouteHighlight(route.response);
     }
@@ -178,8 +194,8 @@ class LeafletMap extends Component {
     this.initCartoLayer();
 
     // for debugging...
-    // window.map = this.map;
-    // window.searchResults = this.searchResults;
+    window.map = this.map;
+    window.searchResults = this.searchResults;
 
     // if the app state already has routing data, make sure to add it to the map
     // and set the map view to it
@@ -354,8 +370,8 @@ class LeafletMap extends Component {
   }
 
   zoomRouteExtent(startLocation, endLocation) {
-    // user has finished selecting their start and end, show the entire route
-    // TO DO: integrate route overlay
+    // user has finished selecting their start and end,
+    // add start and end points, then zoom the map extent
     this.searchResults.clearLayers();
     this.searchResults.addLayer(
       L.marker(startLocation.coordinates, {
@@ -372,7 +388,7 @@ class LeafletMap extends Component {
 
   renderRouteHighlight(routeGeoJson) {
     if (!routeGeoJson || !routeGeoJson.features || !routeGeoJson.features.length) {
-      // don't bother adding anything if no GeoJSON was returned from the router?
+      // don't try adding anything if no GeoJSON was returned from the router
       return;
     }
 

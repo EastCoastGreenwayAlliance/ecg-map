@@ -1,16 +1,71 @@
 .SearchInput {
+  background: #fff;
+  border-bottom: 1px solid $dark-grey;
+
+  @media (#{$bp-larger-than-mobile}) {
+    border: 0;
+  }
+
   form {
+    width: calc(100% - 32px);
+    display: inline-block;
     margin-bottom: 0;
   }
 
+  .search-icon-end,
+  .search-icon-start {
+    width: 16px;
+    height: 19px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+
+  .search-icon-end {
+    background: url('../assets/icons/icon-search-marker-red.png') no-repeat;
+    background:
+      url('../assets/icons/icon-search-marker-red.svg') no-repeat,
+      linear-gradient(transparent, transparent);
+  }
+
+  .search-icon-start {
+    background: url('../assets/icons/icon-search-marker-green.png') no-repeat;
+    background:
+      url('../assets/icons/icon-search-marker-green.svg') no-repeat,
+      linear-gradient(transparent, transparent);
+  }
+
+  .search-input-magnify-glass,
+  button.search-input-cancel {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  button.search-input-cancel {
+    background: url('../assets/icons/icon-close.png') no-repeat;
+    background:
+      url('../assets/icons/icon-close.svg') no-repeat,
+      linear-gradient(transparent, transparent);
+  }
+
+  .search-input-magnify-glass {
+    background: url('../assets/icons/icon-magnify-glass.png') no-repeat;
+    background:
+      url('../assets/icons/icon-magnify-glass.svg') no-repeat,
+      linear-gradient(transparent, transparent);
+  }
+
   input {
-    width: 100%;
+    width: calc(100% - 26px);
     height: $searchboxHeightMobile;
+    display: inline-block;
     margin: 0;
     border: 0;
 
     @media (#{$bp-larger-than-mobile}) {
-      width: 100%;
+      // width: 100%;
       height: auto;
     }
   }

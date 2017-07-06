@@ -25,23 +25,23 @@ ALTER TABLE ecg_route_lines ALTER COLUMN pline_id SET DEFAULT NEXTVAL('ecg_route
 CREATE UNIQUE INDEX ON ecg_route_lines(pline_id);
 
 -- delete the trigger if it already exists as we're replacing it
-DROP TRIGGER IF EXISTS ecg_new_route_segment ON ecg_route_lines;
+DROP TRIGGER IF EXISTS ecg_route_segment ON ecg_route_lines;
 
 -- create / replace the trigger's function
-CREATE OR REPLACE FUNCTION update_new_route_segment()
+CREATE OR REPLACE FUNCTION ecg_route_segment()
   RETURNS TRIGGER AS
-$BODY$
+$ecg_route_segment$
 BEGIN
-  NEW.datetime_created = CURRENT_DATE;
-  NEW.meters = ST_Length(NEW.the_geom::geography);
+  NEW.datetime_modified := current_timestamp;
+  NEW.meters := round(ST_Length(NEW.the_geom::geography));
   RETURN NEW;
 END;
-$BODY$
+$ecg_route_segment$
 LANGUAGE plpgsql;
 
 -- add the trigger to the db
-CREATE TRIGGER ecg_new_route_segment
-BEFORE INSERT
+CREATE TRIGGER ecg_route_segment
+BEFORE INSERT OR UPDATE
 ON ecg_route_lines
 FOR EACH ROW
-EXECUTE PROCEDURE update_new_route_segment();
+EXECUTE PROCEDURE ecg_route_segment();

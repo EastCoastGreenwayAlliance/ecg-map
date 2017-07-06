@@ -9,14 +9,14 @@ class SearchInput extends Component {
     cancelRoutingLocation: PropTypes.func.isRequired,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
-    elevationDataClear: PropTypes.func.isRequired,
   }
 
   constructor() {
     super();
     this.state = {
-      searchAddress: ''
+      searchAddress: '',
     };
+    this.textInput = null; // ref to the text input
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -43,18 +43,43 @@ class SearchInput extends Component {
   handleSubmit(e) {
     const { searchAddress } = this.state;
     const { startLocation, endLocation, fetchLocationGeocode,
-      cancelRoutingLocation, elevationDataClear } = this.props;
+      cancelRoutingLocation } = this.props;
+
     e.preventDefault();
+
+    // unfocus the text input, closes keyboard on iOS devices
+    this.textInput.blur();
 
     // temporary logic to start over, perhaps this should be moved elsewhere?
     if (startLocation.accepted && endLocation.accepted) {
       cancelRoutingLocation('DONE');
-      elevationDataClear();
     }
 
     if (searchAddress && searchAddress.length) {
       fetchLocationGeocode(searchAddress);
     }
+  }
+
+  handleSearchCancel() {
+    const { startLocation, endLocation, cancelRoutingLocation } = this.props;
+    // handles how the search is canceled based on the current app state
+    if (startLocation.coordinates.length && !endLocation.coordinates.length) {
+      // clear the starting point data
+      cancelRoutingLocation('START');
+    }
+
+    if (endLocation.coordinates.length && !endLocation.accepted) {
+      // clear the ending point data
+      cancelRoutingLocation('END');
+    }
+
+    if (startLocation.accepted && endLocation.accepted) {
+      // start over
+      cancelRoutingLocation('DONE');
+    }
+
+    // make sure to clear the search input
+    this.setState({ searchAddress: '' });
   }
 
   renderPlaceholderText() {
@@ -68,19 +93,49 @@ class SearchInput extends Component {
     return text;
   }
 
+  renderSuffixUI() {
+    // handles whether or not to show the cancel "x" or magnify glass after the input
+    const { startLocation, endLocation } = this.props;
+
+    if (startLocation.coordinates.length || startLocation.accepted ||
+        endLocation.coordinates.length || endLocation.accepted) {
+      return (
+        <button
+          className="search-input-cancel"
+          onClick={() => this.handleSearchCancel()}
+        />
+      );
+    }
+
+    return <span className="search-input-magnify-glass" />;
+  }
+
   render() {
     const { searchAddress } = this.state;
+    const { startLocation, endLocation } = this.props;
+
+    const searchIconClassName = () => {
+      const className = 'search-input-icon';
+      const state = !endLocation.accepted && !startLocation.accepted ?
+        'search-icon-start' : 'search-icon-end';
+      return `${className} ${state}`;
+    };
 
     return (
       <div className="SearchInput">
         <form onSubmit={this.handleSubmit}>
+          <span className={searchIconClassName()} />
           <input
+            ref={(_) => { this.textInput = _; }}
             type="text"
             placeholder={this.renderPlaceholderText()}
             value={searchAddress}
             onChange={this.handleChange}
           />
         </form>
+        {
+          this.renderSuffixUI()
+        }
       </div>
     );
   }

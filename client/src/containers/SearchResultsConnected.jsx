@@ -14,13 +14,16 @@ import {
   routeSearchError,
 } from '../actions';
 
-const mapStateToProps = ({ geocoding, routing }) => {
+const mapStateToProps = ({ browser, geocoding, routing }) => {
   const { error, result, isFetching } = geocoding;
   const { endLocation, startLocation, route } = routing;
+  const { greaterThan } = browser;
+
   return {
     geocodeIsFetching: isFetching,
     geocodeError: error,
     geocodeResult: result,
+    isMobile: !greaterThan.small,
     endLocation,
     startLocation,
     route

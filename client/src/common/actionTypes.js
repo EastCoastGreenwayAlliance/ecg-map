@@ -4,6 +4,7 @@
 export const LOCATION_GEOCODE_REQUEST = 'LOCATION_GEOCODE_REQUEST';
 export const LOCATION_GEOCODE_SUCCESS = 'LOCATION_GEOCODE_SUCCESS';
 export const LOCATION_GEOCODE_ERROR = 'LOCATION_GEOCODE_ERROR';
+export const LOCATION_GEOCODE_CLEAR = 'LOCATION_GEOCODE_CLEAR';
 
 // UX flow for selecting a ECG Route start and end location:
 // requesting, setting, accepting, canceling, and erroring

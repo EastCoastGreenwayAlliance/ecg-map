@@ -33,6 +33,7 @@ class SearchResults extends Component {
       PropTypes.object
     ]),
     geocodeResult: PropTypes.object,
+    isMobile: PropTypes.bool.isRequired,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
     route: PropTypes.object,
@@ -74,24 +75,28 @@ class SearchResults extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    // only re-render the search box when certain parts change
-    // this could probably be more specific, where objects are being compared
-    const { geocodeIsFetching, geocodeError, geocodeResult, endLocation,
-      startLocation, route } = nextProps;
-
-    if (geocodeIsFetching !== this.props.geocodeIsFetching ||
-      !isEqual(geocodeError, this.props.geocodeError) ||
-      !isEqual(geocodeResult, this.props.geocodeResult) ||
-      !isEqual(endLocation, this.props.endLocation) ||
-      !isEqual(startLocation, this.props.startLocation ||
-      !isEqual(route, this.props.route))
-      ) {
-      return true;
-    }
-
-    return false;
-  }
+  // shouldComponentUpdate(nextProps) {
+  //   // only re-render the search box when certain parts change
+  //   // this could probably be more specific, where objects are being compared
+  //   const { geocodeIsFetching, geocodeError, geocodeResult, endLocation,
+  //     startLocation, route } = nextProps;
+  //
+  //   debugger;
+  //
+  //   if (geocodeIsFetching !== this.props.geocodeIsFetching ||
+  //     !isEqual(geocodeError, this.props.geocodeError) ||
+  //     !isEqual(geocodeResult, this.props.geocodeResult) ||
+  //     !isEqual(endLocation, this.props.endLocation) ||
+  //     !isEqual(startLocation, this.props.startLocation ||
+  //     !isEqual(route.response, this.props.route.response) ||
+  //     !isEqual(route.error, this.props.route.error) ||
+  //     route.isLoadingRoute !== this.props.route.isLoadingRoute)
+  //     ) {
+  //     return true;
+  //   }
+  //
+  //   return false;
+  // }
 
   getRoute(startLocation, endLocation) {
     const self = this;
@@ -154,8 +159,6 @@ class SearchResults extends Component {
         }
       );
     }
-
-    // TO DO: implement cancel
   }
 
   handleGeoRoutingSuccess(closestSegment, step) {
@@ -169,14 +172,16 @@ class SearchResults extends Component {
 
   renderSearchResultsStep() {
     // handles which step of the Search UX Flow to display using application state
-    const { geocodeError, geocodeResult, geocodeIsFetching, startLocation,
+    const { geocodeError, geocodeResult, geocodeIsFetching, isMobile, startLocation,
       endLocation, acceptRoutingLocation, route } = this.props;
 
     if (geocodeIsFetching || startLocation.isFetching || endLocation.isFetching) {
+      // loading message for when location is being searched
       return <LoadingMsg message={'Searching...'} />;
     }
 
     if (geocodeError) {
+      // geocode error message
       return <ErrorMsg error={geocodeError} />;
     }
 
@@ -192,8 +197,19 @@ class SearchResults extends Component {
       return <EndLocationOptions {...{ endLocation, geocodeResult, acceptRoutingLocation }} />;
     }
 
-    if (endLocation.accepted && startLocation.accepted) {
+    if (!isMobile && endLocation.accepted && startLocation.accepted) {
+      // also handles showing the route loading & error messages for desktop
       return <EndLocationAcceptedOptions {...{ route }} />;
+    }
+
+    if (isMobile && route.isLoadingRoute) {
+      // handles showing the route loading msg for mobile
+      return <LoadingMsg message={'Calculating route...'} />;
+    }
+
+    if (isMobile && route.error) {
+      // handles showing the route error msg for mobile
+      return <ErrorMsg error={route.error} />;
     }
 
     return null;

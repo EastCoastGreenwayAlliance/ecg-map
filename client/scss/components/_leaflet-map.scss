@@ -35,5 +35,10 @@
           linear-gradient(transparent, transparent);
       }
     }
+
+    .leaflet-bottom.leaflet-right,
+    .leaflet-top.leaflet-right {
+      z-index: 100;
+    }
   }
 }

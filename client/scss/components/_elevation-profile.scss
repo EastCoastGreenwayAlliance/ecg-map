@@ -4,12 +4,11 @@
   top: initial;
   left: 0;
   right: 0;
-  bottom: 52px + 88px;
+  bottom: 87px;
   z-index: 401;
   padding: 0;
   background: #fff;
   border-top: 1px solid $grey;
-  border-bottom: 1px solid $grey;
 
   @media (#{$bp-larger-than-mobile}) {
     position: absolute;
@@ -18,7 +17,7 @@
     left: 10px;
     right: initial;
     width: $left-ui-width;
-    border: 0;
+    border-top: 0;
     // border: 1px solid aqua;
   }
 
@@ -37,6 +36,11 @@
   .chart-container {
     position: relative;
     height: 200px - 35px;
+    border-bottom: 1px solid $grey;
+
+    @media (#{$bp-larger-than-mobile}) {
+      border: 0;
+    }
   }
 
   .heading {
@@ -45,6 +49,13 @@
     font-size: 1.2rem;
     letter-spacing: normal;
     color: $font-color;
+
+    &.icon-chevron {
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      background: url('../assets/icons/icon-chevron-left.svg') no-repeat;
+    }
 
     @media (#{$bp-larger-than-mobile}) {
       cursor: default;

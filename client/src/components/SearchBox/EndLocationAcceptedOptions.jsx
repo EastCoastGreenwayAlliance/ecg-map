@@ -37,7 +37,7 @@ const EndLocationAcceptedOptions = (props) => {
             this.img1.onerror = null;
           }}
         />
-        <p>Starting Location</p>
+        <p className="search-label">Starting Location</p>
       </div>
       <div className="end-description">
         <img
@@ -51,7 +51,7 @@ const EndLocationAcceptedOptions = (props) => {
             this.img2.onerror = null;
           }}
         />
-        <p>Ending Location</p>
+        <p className="search-label">Ending Location</p>
       </div>
       { loadingMessage() }
       { errorMessage() }

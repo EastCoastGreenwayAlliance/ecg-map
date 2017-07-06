@@ -23,7 +23,7 @@ class CueSheet extends Component {
 
     cues.push(
       <li key={0}>
-        <span className={'turn-icon'} />
+        <span className={'turn-icon turn-icon-start'} />
         <div>
           <p style={{ margin: 0 }}>Starting on { response.features[0].properties.title }</p>
           <p>{ metersToMiles(response.features[0].properties.length) } miles</p>

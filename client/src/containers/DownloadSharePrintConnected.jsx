@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 
 import DownloadSharePrint from '../components/DownloadSharePrint';
 
-const mapStateToProps = ({ routing }) => {
+const mapStateToProps = ({ browser, routing }) => {
   const { startLocation, endLocation, route } = routing;
+  const { greaterThan } = browser;
 
   return {
     startLocation,
     endLocation,
-    route
+    route,
+    isMobile: !greaterThan.small,
   };
 };
 
