@@ -58,7 +58,7 @@ class ElevationProfile extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { elevData, route } = nextProps;
+    const { elevData, route, activeTurningEnabled } = nextProps;
 
     // we successfully retrieved a route, now get elevation data
     if (route.response && route.response.downsampled &&
@@ -83,6 +83,14 @@ class ElevationProfile extends Component {
       // no d3 general update pattern used here yet
       this.destroyChart();
     }
+
+    // For some unknow reason React or React Collapse removes all the nice work
+    // d3 did in the SVG element when "active turning" is toggled "on", so:
+    // Destroy the chart here to prevent errors then re-render when "active turning"
+    // is toggled "off", otherwise no chart will display
+    if (activeTurningEnabled && !this.props.activeTurningEnabled) {
+      this.destroyChart();
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -105,9 +113,14 @@ class ElevationProfile extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { elevDataParsed } = this.state;
+    const { activeTurningEnabled } = prevProps;
 
     // we have parsed data now, so render the area chart!
-    if (elevDataParsed && !prevState.elevDataParsed) {
+    // or user toggled "active turning" off, so re-render the chart
+    if (
+      (elevDataParsed && !prevState.elevDataParsed) ||
+      (activeTurningEnabled && !this.props.activeTurningEnabled)
+    ) {
       this.renderAreaChart();
     }
   }
@@ -222,16 +235,16 @@ class ElevationProfile extends Component {
       maxYValue,
     ];
 
-    // create the SVG element
-    const svg = select(this.chartContainer).append('svg')
+    // selection of the SVG element
+    const svg = select('svg#elev-profile')
         .attr('height', chartHeight)
-        .attr('width', chartWidth)
-        .attr('id', 'elev-profile');
+        .attr('width', chartWidth);
 
     // append the parent group element
     const g = svg.append('g')
         .attr('transform', `translate(${chartMargins.left}, ${chartMargins.top})`);
 
+    // SVG clipping path to prevent negative elevation values from displaying
     g.append('clipPath')
         .attr('id', 'chart-clip-path')
       .append('rect')
@@ -257,7 +270,7 @@ class ElevationProfile extends Component {
       .y0(yScale(minYValue))
       .y1(d => yScale(d.y));
 
-    // create and append the path
+    // create and append the path, tell it to use our clipping path from earlier
     g.append('path')
         .datum(elevDataParsed.elev)
         .attr('fill', '#1482C5')
@@ -313,9 +326,6 @@ class ElevationProfile extends Component {
     const { isOpened } = this.state;
     const { activeTurningEnabled, route, isFetching, error } = this.props;
 
-    // don't display this if active turning is enabled on mobile
-    if (activeTurningEnabled) return null;
-
     // only reveal UI if route response data was successfully loaded, this allows
     // to show a loading and/or error message for the elevation data request
     if (route.response && route.response.downsampled && !activeTurningEnabled) {
@@ -333,7 +343,9 @@ class ElevationProfile extends Component {
               error &&
               <ErrorMsg {...{ error }} />
             }
-            <div className="chart-container" ref={(_) => { this.chartContainer = _; }} />
+            <div className="chart-container" ref={(_) => { this.chartContainer = _; }}>
+              <svg id="elev-profile" />
+            </div>
           </Collapse>
         </div>
       );
