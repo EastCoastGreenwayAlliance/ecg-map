@@ -284,14 +284,15 @@ class LeafletMap extends Component {
         });
 
         // compose some easy-to-interpolate strings about the situation
+        const METERS_TO_MILES = 1609;
         const nearline = closest.segment;
-        const nearmile = closest.distance / 1609;
+        const nearmile = closest.distance / METERS_TO_MILES;
         const nearname = nearline.properties.title;
-        const untilturn = nearline.properties.length / 1609; // distance to turn -- we wish
+        const untilturn = nearline.properties.length / METERS_TO_MILES;
 
-        if (nearmile > 0.05) { // over this = off route, please return to route
+        if (nearmile > 0.01) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
-          activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile.toFixed(1)} miles`;
+          activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile.toFixed(2)} miles`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
           activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
