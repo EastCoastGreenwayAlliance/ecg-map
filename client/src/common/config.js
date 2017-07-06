@@ -6,7 +6,7 @@ export const cartoUser = 'niles';
 
 // CARTO tables
 export const cartoTables = {
-  route_segments: 'ecg_route_lines_prod_2',
+  route_segments: 'ecg_route_lines_prod',
   cue_points: 'ecg_route_cues_prod',
 };
 
