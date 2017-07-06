@@ -34,7 +34,8 @@ class LeafletMap extends Component {
     geocodeResult: PropTypes.object,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
-    route: PropTypes.object
+    route: PropTypes.object,
+    updateActiveTurning: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -91,11 +92,27 @@ class LeafletMap extends Component {
       iconRetinaUrl: '/assets/icons/icon-map-marker-red.png'
     });
 
+    // icon for the "active turning" feature
+    this.gpsIcon = new L.Icon({
+      iconUrl: '/assets/icons/youarehere.png',
+      iconSize: [25, 25],
+      iconAnchor: [12, 12],
+      popupAnchor: [12, -12]
+    });
+
     // reference to CARTO sublayer
     this.cartoSubLayer = null;
 
-    // layer to store searchResults in when user is searching for a location
+    // layer to store searchResults (route, markers, etc) in when user is searching for a location
+    // and the subset of specifically the route segments
     this.searchResults = L.featureGroup();
+    this.searchRoute = undefined;
+
+    // reference to the active turning icon instance
+    this.gpsMarker = L.marker([0, 0], {
+      icon: this.gpsIcon,
+      title: 'You are Here'
+    }).bindPopup('You Are Here');
   }
 
   componentDidMount() {
@@ -161,6 +178,7 @@ class LeafletMap extends Component {
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
     this.layersControl.addTo(this.map, { position: 'topright' });
+    L.control.scale().addTo(this.map);
 
     // update the URL hash with zoom, lat, lng
     this.map.on('moveend', (e) => {
@@ -214,6 +232,77 @@ class LeafletMap extends Component {
           // self.initCartoSubLayerInfowindows();
       })
       .on('error', (error) => { throw error; });
+  }
+
+  enableActiveTurning() {
+    const { updateActiveTurning } = this.props;
+
+    // start geolocation tracking, simply moving the marker but not otherwise affecting the map
+    this.map.locate({
+      watch: true,
+      enableHighAccuracy: true
+    });
+
+    this.searchResults.addLayer(this.gpsMarker);
+
+    this.map.on('locationfound', (e) => {
+      // position the You Are Here marker
+      this.gpsMarker.setLatLng(e.latlng);
+
+      // if there's a route, find where we are on it and the next cue point
+      // if we're too far off it, some wording changes (sort of an implicit disclaimer)
+      // and we may want to disable some of it if they're far enough off (TBD)
+      const activeTurningUpdate = {};
+
+      if (this.searchRoute) {
+        // find route segment with closest approach to e.latlng
+        const closest = { segment: null, distance: Infinity };
+        this.searchRoute.getLayers().forEach((routesegment) => {
+          const segmentvertices = routesegment.getLatLngs()[0];
+          for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
+            const p = this.map.latLngToLayerPoint(e.latlng);
+            const p1 = this.map.latLngToLayerPoint(segmentvertices[i]);
+            const p2 = this.map.latLngToLayerPoint(segmentvertices[i + 1]);
+            const vertexdistance = L.LineUtil.pointToSegmentDistance(p, p1, p2);
+
+            if (vertexdistance < closest.distance) {
+              closest.segment = routesegment;
+              closest.distance = vertexdistance;
+            }
+          }
+        });
+
+        // compose some easy-to-interpolate strings about the situation
+        const nearline = closest.segment;
+        const nearmile = closest.distance / 1609;
+        const nearname = nearline.properties.title;
+        const untilturn = nearline.properties.length / 1609; // distance to turn -- we wish
+
+        if (nearmile > 0.05) { // over this = off route, please return to route
+          activeTurningUpdate.onpath = false;
+          activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile.toFixed(1)} miles`;
+          activeTurningUpdate.transition_code = nearline.properties.transition.code;
+          activeTurningUpdate.transition_text = nearline.properties.transition.title;
+          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+        } else {
+          activeTurningUpdate.onpath = true;
+          activeTurningUpdate.currentplace = `On ${nearname}`;
+          activeTurningUpdate.transition_code = 'RT';
+          activeTurningUpdate.transition_text = 'Turn Right';
+          activeTurningUpdate.transition_code = nearline.properties.transition.code;
+          activeTurningUpdate.transition_text = nearline.properties.transition.title;
+          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+        }
+      }
+
+      // hand it off to redux for digestion
+      updateActiveTurning(activeTurningUpdate);
+    });
+  }
+
+  disableActiveTurning() {
+    this.map.stopLocate();
+    this.searchResults.removeLayer(this.gpsMarker._leaflet_id);
   }
 
   fitBoundsToSearchResults(padding) {
@@ -302,7 +391,15 @@ class LeafletMap extends Component {
       // don't try adding anything if no GeoJSON was returned from the router
       return;
     }
-    this.searchResults.addLayer(L.geoJson(routeGeoJson));
+
+    // keep a reference to just the route sections; this.searchResults will have other markers
+    // and add .properties to the resulting L.linestring layers cuz Leaflet strips them
+    this.searchRoute = L.geoJson(routeGeoJson, {
+      onEachFeature: (feature, layer) => {
+        layer.properties = feature.properties;
+      }
+    });
+    this.searchResults.addLayer(this.searchRoute);
     this.fitBoundsToSearchResults([50, 50]);
   }
 

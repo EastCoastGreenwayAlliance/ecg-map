@@ -11,6 +11,7 @@ import DownloadSharePrintConnected from '../containers/DownloadSharePrintConnect
 import StartRouteViewCuesConnected from '../containers/StartRouteViewCuesConnected';
 import ElevationProfileConnected from '../containers/ElevationProfileConnected';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
+import ActiveTurningReadoutConnected from '../containers/ActiveTurningReadoutConnected';
 import ModalContent from '../components/Modal';
 
 /** Class that composes components to be shown on the default view / homepage
@@ -59,6 +60,7 @@ class Home extends Component {
         <SearchBox />
         <DownloadSharePrintConnected />
         <ElevationProfileConnected />
+        <ActiveTurningReadoutConnected />
         <StartRouteViewCuesConnected {...{ isMobile }} />
         <LeafletMapConnected
           lat={36.897}
