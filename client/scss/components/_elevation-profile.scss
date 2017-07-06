@@ -23,10 +23,14 @@
 
   .elev-prof--header {
     height: 35px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
     border-bottom: 1px solid $grey;
     padding: 0;
-    justify-content: space-between;
 
     @media (#{$bp-larger-than-mobile}) {
       cursor: default;
