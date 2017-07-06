@@ -43,7 +43,8 @@
 
   p.active-turning-on-path-cue,
   p.active-turning-off-path-cue {
-    width: calc(100% - 30px);
+    width: calc(100% - 35px);
+    padding-left: 5px;
   }
 
   @media (#{$bp-larger-than-mobile}) {

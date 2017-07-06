@@ -11,6 +11,7 @@ class ActiveTurningReadout extends Component {
     transition_code: PropTypes.string,
     onpath: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    error: PropTypes.object,
   };
 
   constructor(props) {
@@ -22,7 +23,7 @@ class ActiveTurningReadout extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { currentplace, onpath, transition_text, enabled } = nextProps;
+    const { currentplace, onpath, transition_text, enabled, error } = nextProps;
 
     // when the user toggles the active turning feature, tell them it's working
     if (enabled && !this.props.enabled) {
@@ -42,6 +43,12 @@ class ActiveTurningReadout extends Component {
     if (enabled && this.props.enabled && !onpath && currentplace) {
       this.setState({
         cueMessage: currentplace
+      });
+    }
+
+    if (error && !this.props.error) {
+      this.setState({
+        cueMessage: error.message || 'your location could not be determined'
       });
     }
   }
