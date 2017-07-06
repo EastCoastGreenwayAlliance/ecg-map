@@ -14,6 +14,9 @@
 @import 'views/cue-sheet';
 @import 'views/not-found';
 
+// cue icon styles used in multiple components
+@import 'cue-turn-icons';
+
 // styles for other components
 @import 'components/navbar';
 @import 'components/search-box';
