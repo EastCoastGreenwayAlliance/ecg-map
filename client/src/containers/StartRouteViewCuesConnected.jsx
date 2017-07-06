@@ -3,15 +3,20 @@
 import { connect } from 'react-redux';
 
 import StartRouteViewCues from '../components/StartRouteViewCues';
+import { enableActiveTurning } from '../actions';
 
-const mapStateToProps = ({ browser, routing }) => {
+const mapStateToProps = ({ activeturning, browser, routing }) => {
   const { greaterThan } = browser;
   const { route } = routing;
+  const { enabled } = activeturning;
 
   return {
+    activeTurningEnabled: enabled,
     isMobile: !greaterThan.small,
     route,
   };
 };
 
-export default connect(mapStateToProps, null)(StartRouteViewCues);
+export default connect(mapStateToProps, {
+  enableActiveTurning,
+})(StartRouteViewCues);

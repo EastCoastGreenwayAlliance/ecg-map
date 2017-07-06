@@ -13,6 +13,7 @@ import ErrorMsg from './ErrorMsg';
 
 class ElevationProfile extends Component {
   static propTypes = {
+    activeTurningEnabled: PropTypes.bool.isRequired,
     fetchElevationData: PropTypes.func.isRequired,
     elevData: PropTypes.array,
     error: PropTypes.oneOfType([
@@ -309,8 +310,13 @@ class ElevationProfile extends Component {
 
   render() {
     const { isOpened } = this.state;
-    const { route, isFetching, error } = this.props;
+    const { activeTurningEnabled, route, isFetching, error } = this.props;
 
+    // don't display this if active turning is enabled on mobile
+    if (activeTurningEnabled) return null;
+
+    // only reveal UI if route response data was successfully loaded, this allows
+    // to show a loading and/or error message for the elevation data request
     if (route.response && route.response.downsampled) {
       return (
         <div className="ElevationProfile">
