@@ -27,7 +27,6 @@ class Home extends Component {
     staticContext: PropTypes.object, // via react-router
     isMobile: PropTypes.bool, // via redux-responsive
     mailchimp: PropTypes.object, // mailchimp POST status
-    activeturning: PropTypes.object, // activeturning next-turn status
     postMailchimpAPI: PropTypes.func.isRequired, // action creator for POSTing to mailchip
   }
 
@@ -53,7 +52,7 @@ class Home extends Component {
 
   render() {
     const { showModal } = this.state;
-    const { isMobile, activeturning, mailchimp, postMailchimpAPI } = this.props;
+    const { isMobile, mailchimp, postMailchimpAPI } = this.props;
 
     return (
       <div className="Home">
@@ -61,7 +60,7 @@ class Home extends Component {
         <SearchBox />
         <DownloadSharePrintConnected />
         <ElevationProfileConnected />
-        <ActiveTurningReadoutConnected {...activeturning} />
+        <ActiveTurningReadoutConnected />
         <StartRouteViewCuesConnected {...{ isMobile }} />
         <LeafletMapConnected
           lat={36.897}
