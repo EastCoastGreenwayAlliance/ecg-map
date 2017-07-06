@@ -15,5 +15,6 @@ export fetchElevationData, { elevationDataClear } from './elevationDataActions';
 export {
   enableActiveTurning,
   disableActiveTurning,
-  updateActiveTurning
+  updateActiveTurning,
+  reportLocationError,
 } from './activeTurningActions';

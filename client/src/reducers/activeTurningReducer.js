@@ -3,6 +3,7 @@ import {
   ACTIVE_TURNING_UPDATE,
   ACTIVE_TURNING_ENABLE,
   ACTIVE_TURNING_DISABLE,
+  ACTIVE_TURNING_ERROR,
 } from '../common/actionTypes';
 
 const defaultState = {
@@ -12,6 +13,7 @@ const defaultState = {
   distance: '', // distance to the next turn
   transition_code: '',  // code for the next turning direction, see ecg-map-route docs
   transition_text: '',  // text for next turning direction, see ecg-map-route docs
+  error: null, // error message from Leaflet locationerror event
 };
 
 
@@ -44,6 +46,12 @@ export default (state = defaultState, action) => {
       return {
         ...defaultState,
         enabled: false
+      };
+
+    case ACTIVE_TURNING_ERROR:
+      return {
+        ...state,
+        error: action.error
       };
 
     default:
