@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import LeafletMap from '../components/LeafletMap';
 
-import { updateActiveTurning } from '../actions';
+import { updateActiveTurning, reportLocationError } from '../actions';
 
 const mapStateToProps = ({ activeturning, geocoding, routing }) => {
   const { enabled } = activeturning;
@@ -23,4 +23,5 @@ const mapStateToProps = ({ activeturning, geocoding, routing }) => {
 
 export default connect(mapStateToProps, {
   updateActiveTurning,
+  reportLocationError,
 })(LeafletMap);

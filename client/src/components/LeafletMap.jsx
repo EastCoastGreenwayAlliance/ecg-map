@@ -28,6 +28,7 @@ L.Icon.Default.mergeOptions({
 class LeafletMap extends Component {
   static propTypes = {
     activeTurningEnabled: PropTypes.bool.isRequired,
+    reportLocationError: PropTypes.func.isRequired,
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
@@ -245,7 +246,7 @@ class LeafletMap extends Component {
   }
 
   enableActiveTurning() {
-    const { updateActiveTurning } = this.props;
+    const { updateActiveTurning, reportLocationError } = this.props;
 
     // start geolocation tracking, simply moving the marker but not otherwise affecting the map
     this.map.locate({
@@ -308,6 +309,9 @@ class LeafletMap extends Component {
       // hand it off to redux for digestion
       updateActiveTurning(activeTurningUpdate);
     });
+
+    // dispatch error if a Leaflet locate geolocation error occurs
+    this.map.on('locationerror', error => reportLocationError(error.message));
   }
 
   disableActiveTurning() {
