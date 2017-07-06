@@ -175,12 +175,10 @@ class LeafletMap extends Component {
       watch: true,
       enableHighAccuracy: true
     });
-
     this.gpsMarker = L.marker([0, 0], {
       icon: this.gpsIcon,
       title: 'You are Here'
     }).bindPopup('You Are Here').addTo(this.map);
-
     this.map.on('locationfound', (e) => {
       // position the You Are Here marker
       this.gpsMarker.setLatLng(e.latlng);
@@ -189,12 +187,27 @@ class LeafletMap extends Component {
       // if we're too far off it, some wording changes (sort of an implicit disclaimer)
       // and we may want to disable some of it if they're far enough off (TBD)
       const activeTurningUpdate = {};
-
       if (this.searchRoute) {
-        const segments = this.searchRoute.getLayers();
-        const nearline = L.GeometryUtil.closestLayerSnap(this.map, segments, e.latlng).layer;
-        const nearpoint = L.GeometryUtil.closest(this.map, nearline, e.latlng);
-        const nearmile = e.latlng.distanceTo(nearpoint) / 1609;
+        // find route segment with closest approach to e.latlng
+        const closest = { segment: null, distance: Infinity };
+        this.searchRoute.getLayers().forEach((routesegment) => {
+          const segmentvertices = routesegment.getLatLngs()[0];
+          for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
+            const p = this.map.latLngToLayerPoint(e.latlng);
+            const p1 = this.map.latLngToLayerPoint(segmentvertices[i]);
+            const p2 = this.map.latLngToLayerPoint(segmentvertices[i + 1]);
+            const vertexdistance = L.LineUtil.pointToSegmentDistance(p, p1, p2);
+
+            if (vertexdistance < closest.distance) {
+              closest.segment = routesegment;
+              closest.distance = vertexdistance;
+            }
+          }
+        });
+
+        // compose some easy-to-interpolate strings about the situation
+        const nearline = closest.segment;
+        const nearmile = closest.distance / 1609;
         const nearname = nearline.properties.title;
         const untilturn = nearline.properties.length / 1609; // distance to turn -- we wish
 
@@ -348,7 +361,7 @@ class LeafletMap extends Component {
     }
 
     // keep a reference to just the route sections; this.searchResults will have other markers
-    // and add .properties to the resulting L.linestring layers
+    // and add .properties to the resulting L.linestring layers cuz Leaflet strips them
     this.searchRoute = L.geoJson(routeGeoJson, {
       onEachFeature: (feature, layer) => {
         layer.properties = feature.properties;
