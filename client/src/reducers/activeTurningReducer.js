@@ -1,9 +1,12 @@
 // Redux Reducer that stores app state relating to geographic routing for the ECG
 import {
-  ACTIVETURNING_UPDATE,
+  ACTIVE_TURNING_UPDATE,
+  ACTIVE_TURNING_ENABLE,
+  ACTIVE_TURNING_DISABLE,
 } from '../common/actionTypes';
 
 const defaultState = {
+  enabled: false, // is the active turning feature enabled?
   onpath: false,  // are we on the path? false = off the route
   currentplace: '',  // text name of our current line segment location
   distance: '', // distance to the next turn
@@ -21,7 +24,7 @@ export default (state = defaultState, action) => {
   // for now we only foresee one type of action... but let's leave the door open for more
   switch (action.type) {
 
-    case ACTIVETURNING_UPDATE:
+    case ACTIVE_TURNING_UPDATE:
       return {
         ...state,
         onpath: action.onpath,
@@ -29,6 +32,18 @@ export default (state = defaultState, action) => {
         distance: action.distance,
         transition_code: action.transition_code,
         transition_text: action.transition_text,
+      };
+
+    case ACTIVE_TURNING_ENABLE:
+      return {
+        ...state,
+        enabled: true
+      };
+
+    case ACTIVE_TURNING_DISABLE:
+      return {
+        ...defaultState,
+        enabled: false
       };
 
     default:
