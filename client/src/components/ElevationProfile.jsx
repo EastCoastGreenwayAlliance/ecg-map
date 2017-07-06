@@ -296,7 +296,7 @@ class ElevationProfile extends Component {
     const { isMobile } = this.props;
     const chevronStyle = {
       display: isMobile ? 'block' : 'none',
-      transform: `${isOpened ? 'translate(5px, -8px)' : 'translateY(10px)'}
+      transform: `${isOpened ? 'translate(5px, -20px)' : 'translateY(20px)'}
         ${isOpened ? 'rotate(-90deg)' : 'rotate(90deg)'}`
     };
 
