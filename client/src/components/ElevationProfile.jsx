@@ -86,7 +86,7 @@ class ElevationProfile extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const { elevData, isFetching, error } = nextProps;
+    const { activeTurningEnabled, elevData, isFetching, error } = nextProps;
     const { elevDataParsed, isOpened } = nextState;
 
     // only render this component when the following change
@@ -94,7 +94,8 @@ class ElevationProfile extends Component {
       !isEqual(elevDataParsed, this.state.elevDataParsed) ||
       isOpened !== this.state.isOpened ||
       isFetching !== this.props.isFetching ||
-      !isEqual(error, this.props.error)
+      !isEqual(error, this.props.error) ||
+      activeTurningEnabled !== this.props.activeTurningEnabled
     ) {
       return true;
     }
@@ -317,7 +318,7 @@ class ElevationProfile extends Component {
 
     // only reveal UI if route response data was successfully loaded, this allows
     // to show a loading and/or error message for the elevation data request
-    if (route.response && route.response.downsampled) {
+    if (route.response && route.response.downsampled && !activeTurningEnabled) {
       return (
         <div className="ElevationProfile">
           {
