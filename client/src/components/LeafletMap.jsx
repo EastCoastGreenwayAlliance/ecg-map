@@ -92,6 +92,7 @@ class LeafletMap extends Component {
       iconRetinaUrl: '/assets/icons/icon-map-marker-red.png'
     });
 
+    // icon for the "active turning" feature
     this.gpsIcon = new L.Icon({
       iconUrl: '/assets/icons/youarehere.png',
       iconSize: [25, 25],
@@ -106,6 +107,12 @@ class LeafletMap extends Component {
     // and the subset of specifically the route segments
     this.searchResults = L.featureGroup();
     this.searchRoute = undefined;
+
+    // reference to the active turning icon instance
+    this.gpsMarker = L.marker([0, 0], {
+      icon: this.gpsIcon,
+      title: 'You are Here'
+    }).bindPopup('You Are Here');
   }
 
   componentDidMount() {
@@ -150,7 +157,7 @@ class LeafletMap extends Component {
   }
 
   initMap() {
-    const { onMapMove, route, startLocation, endLocation, updateActiveTurning } = this.props;
+    const { onMapMove, route, startLocation, endLocation } = this.props;
     this.map = L.map('map', this.mapOptions);
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
@@ -170,15 +177,58 @@ class LeafletMap extends Component {
 
     this.initCartoLayer();
 
+    // for debugging...
+    // window.map = this.map;
+    // window.searchResults = this.searchResults;
+
+    // if the app state already has routing data, make sure to add it to the map
+    // and set the map view to it
+    if (route.response && startLocation.coordinates && endLocation.coordinates) {
+      this.zoomRouteExtent(startLocation, endLocation);
+      this.renderRouteHighlight(route.response);
+    }
+  }
+
+  initCartoLayer() {
+    const self = this;
+    const layerSource = configureLayerSource(configureMapSQL());
+    const options = {
+      https: true,
+      infowindow: true,
+      legends: false,
+    };
+
+    // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
+    cartodb.createLayer(self.map, layerSource, options)
+      .addTo(self.map, 5) // 2nd param is layer z-index
+      .on('done', (layer) => {
+        self.cartoLayer = layer;
+        layer.on('error', (error) => { throw error; });
+
+        // store a reference to the Carto SubLayer so we can act upon it later,
+        // mainly to update the SQL query based on filters applied by the user
+        self.cartoSubLayer = layer.getSubLayer(0);
+
+        // TO DO?:
+        // add tooltips to sublayer
+          // self.initCartoSubLayerTooltips();
+        // add infowindows to sublayer
+          // self.initCartoSubLayerInfowindows();
+      })
+      .on('error', (error) => { throw error; });
+  }
+
+  enableActiveTurning() {
+    const { updateActiveTurning } = this.props;
+
     // start geolocation tracking, simply moving the marker but not otherwise affecting the map
     this.map.locate({
       watch: true,
       enableHighAccuracy: true
     });
-    this.gpsMarker = L.marker([0, 0], {
-      icon: this.gpsIcon,
-      title: 'You are Here'
-    }).bindPopup('You Are Here').addTo(this.map);
+
+    this.searchResults.addLayer(this.gpsMarker);
+
     this.map.on('locationfound', (e) => {
       // position the You Are Here marker
       this.gpsMarker.setLatLng(e.latlng);
@@ -187,6 +237,7 @@ class LeafletMap extends Component {
       // if we're too far off it, some wording changes (sort of an implicit disclaimer)
       // and we may want to disable some of it if they're far enough off (TBD)
       const activeTurningUpdate = {};
+
       if (this.searchRoute) {
         // find route segment with closest approach to e.latlng
         const closest = { segment: null, distance: Infinity };
@@ -231,46 +282,11 @@ class LeafletMap extends Component {
       // hand it off to redux for digestion
       updateActiveTurning(activeTurningUpdate);
     });
-
-    // for debugging...
-    // window.map = this.map;
-    // window.searchResults = this.searchResults;
-
-    // if the app state already has routing data, make sure to add it to the map
-    // and set the map view to it
-    if (route.response && startLocation.coordinates && endLocation.coordinates) {
-      this.zoomRouteExtent(startLocation, endLocation);
-      this.renderRouteHighlight(route.response);
-    }
   }
 
-  initCartoLayer() {
-    const self = this;
-    const layerSource = configureLayerSource(configureMapSQL());
-    const options = {
-      https: true,
-      infowindow: true,
-      legends: false,
-    };
-
-    // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
-    cartodb.createLayer(self.map, layerSource, options)
-      .addTo(self.map, 5) // 2nd param is layer z-index
-      .on('done', (layer) => {
-        self.cartoLayer = layer;
-        layer.on('error', (error) => { throw error; });
-
-        // store a reference to the Carto SubLayer so we can act upon it later,
-        // mainly to update the SQL query based on filters applied by the user
-        self.cartoSubLayer = layer.getSubLayer(0);
-
-        // TO DO?:
-        // add tooltips to sublayer
-          // self.initCartoSubLayerTooltips();
-        // add infowindows to sublayer
-          // self.initCartoSubLayerInfowindows();
-      })
-      .on('error', (error) => { throw error; });
+  disableActiveTurning() {
+    this.map.stopLocate();
+    this.searchResults.removeLayer(this.gpsMarker._leaflet_id);
   }
 
   fitBoundsToSearchResults(padding) {
