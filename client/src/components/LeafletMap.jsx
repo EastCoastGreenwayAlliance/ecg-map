@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import * as distance from '@turf/distance';
+import * as midpoint from '@turf/midpoint';
 
 import { configureLayerSource, parseURLHash } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
 import { maxGeoBounds } from '../common/config';
+
 
 // set default image paths for Leaflet
 // note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
@@ -272,14 +275,15 @@ class LeafletMap extends Component {
         this.searchRoute.getLayers().forEach((routesegment) => {
           const segmentvertices = routesegment.getLatLngs()[0];
           for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
-            const p = this.map.latLngToLayerPoint(e.latlng);
-            const p1 = this.map.latLngToLayerPoint(segmentvertices[i]);
-            const p2 = this.map.latLngToLayerPoint(segmentvertices[i + 1]);
-            const vertexdistance = L.LineUtil.pointToSegmentDistance(p, p1, p2);
+            const p = L.marker(e.latlng).toGeoJSON();
+            const p1 = L.marker(segmentvertices[i]).toGeoJSON();
+            const p2 = L.marker(segmentvertices[i + 1]).toGeoJSON();
+            const pM = midpoint(p1, p2);
+            const d = distance(p, pM, 'miles');
 
-            if (vertexdistance < closest.distance) {
+            if (d < closest.distance) {
               closest.segment = routesegment;
-              closest.distance = vertexdistance;
+              closest.distance = d;
             }
           }
         });
@@ -287,11 +291,11 @@ class LeafletMap extends Component {
         // compose some easy-to-interpolate strings about the situation
         const METERS_TO_MILES = 1609;
         const nearline = closest.segment;
-        const nearmile = closest.distance / METERS_TO_MILES;
+        const nearmile = closest.distance;
         const nearname = nearline.properties.title;
         const untilturn = nearline.properties.length / METERS_TO_MILES;
 
-        if (nearmile > 0.01) { // over this = off route, please return to route
+        if (nearmile > 0.03) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
           activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile.toFixed(2)} miles`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
