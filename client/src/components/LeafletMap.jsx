@@ -28,6 +28,7 @@ L.Icon.Default.mergeOptions({
 class LeafletMap extends Component {
   static propTypes = {
     activeTurningEnabled: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
     reportLocationError: PropTypes.func.isRequired,
     lat: PropTypes.number.isRequired,
     lng: PropTypes.number.isRequired,
@@ -320,11 +321,20 @@ class LeafletMap extends Component {
     this.searchResults.removeLayer(this.gpsMarker._leaflet_id);
   }
 
-  fitBoundsToSearchResults(padding) {
+  fitBoundsToSearchResults(...padding) {
+    const options = {};
+
+    if (padding.length > 1) {
+      options.paddingTopLeft = padding[0];
+      options.paddingBottomRight = padding[1];
+    }
+
+    if (padding.length === 1) {
+      options.padding = padding[0];
+    }
+
     // fit the map bounds to the search results featureGroup
-    this.map.fitBounds(this.searchResults.getBounds(), {
-      padding,
-    });
+    this.map.fitBounds(this.searchResults.getBounds(), options);
   }
 
   displayGeocodeResult(geocodeResult) {
@@ -348,9 +358,10 @@ class LeafletMap extends Component {
     // adds the nearest ECG segment to the map as well as a line connecting it to
     // the last used location geocode result
     const { coordinates } = location;
-    const { geocodeResult } = this.props;
+    const { geocodeResult, isMobile } = this.props;
 
     if (coordinates.length) {
+      const padding = isMobile ? [[0, 50], [0, 160]] : [[330, 0], [60, 0]];
       // display marker showing nearest ECG location
       this.searchResults.addLayer(
         L.circleMarker(location.coordinates, {
@@ -372,7 +383,7 @@ class LeafletMap extends Component {
         })
       );
       // fit the map extent to the user's search and neareset ECG location
-      this.fitBoundsToSearchResults([325, 275]);
+      this.fitBoundsToSearchResults(...padding);
     }
   }
 
@@ -387,6 +398,9 @@ class LeafletMap extends Component {
   zoomRouteExtent(startLocation, endLocation) {
     // user has finished selecting their start and end,
     // add start and end points, then zoom the map extent
+    const { isMobile } = this.props;
+    const padding = isMobile ? [[0, 50], [0, 160]] : [[330, 0], [60, 0]];
+
     this.searchResults.clearLayers();
     this.searchResults.addLayer(
       L.marker(startLocation.coordinates, {
@@ -398,7 +412,7 @@ class LeafletMap extends Component {
         icon: this.endIcon
       }).bindPopup('End')
     );
-    this.fitBoundsToSearchResults([50, 50]);
+    this.fitBoundsToSearchResults(...padding);
   }
 
   renderRouteHighlight(routeGeoJson) {
@@ -406,6 +420,9 @@ class LeafletMap extends Component {
       // don't try adding anything if no GeoJSON was returned from the router
       return;
     }
+
+    const { isMobile } = this.props;
+    const padding = isMobile ? [[0, 50], [0, 160]] : [[330, 0], [60, 0]];
 
     // keep a reference to just the route sections; this.searchResults will have other markers
     // and add .properties to the resulting L.linestring layers cuz Leaflet strips them
@@ -415,7 +432,7 @@ class LeafletMap extends Component {
       }
     });
     this.searchResults.addLayer(this.searchRoute);
-    this.fitBoundsToSearchResults([50, 50]);
+    this.fitBoundsToSearchResults(...padding);
   }
 
   render() {

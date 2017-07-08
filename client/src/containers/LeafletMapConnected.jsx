@@ -6,8 +6,9 @@ import LeafletMap from '../components/LeafletMap';
 
 import { updateActiveTurning, reportLocationError } from '../actions';
 
-const mapStateToProps = ({ activeturning, geocoding, routing }) => {
+const mapStateToProps = ({ activeturning, browser, geocoding, routing }) => {
   const { enabled } = activeturning;
+  const { greaterThan } = browser;
   const { error, result } = geocoding;
   const { startLocation, endLocation, route } = routing;
 
@@ -15,6 +16,7 @@ const mapStateToProps = ({ activeturning, geocoding, routing }) => {
     activeTurningEnabled: enabled,
     geocodeError: error,
     geocodeResult: result,
+    isMobile: !greaterThan.small,
     startLocation,
     endLocation,
     route
