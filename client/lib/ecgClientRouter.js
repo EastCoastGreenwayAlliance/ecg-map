@@ -27947,13 +27947,19 @@ var ROUTER = {
             }),
             features: route.map(function (routestep) {
                 var feature = wktwriter.write(routestep.geom);
-                feature.properties = {
-                    id: routestep.id,
-                    title: routestep.title,
-                    length: routestep.meters,
-                    transition: routestep.transition
+                return {
+                    geometry: {
+                        type: feature.type,
+                        coordinates: feature.coordinates
+                    },
+                    properties: {
+                        id: routestep.id,
+                        title: routestep.title,
+                        length: routestep.meters,
+                        transition: routestep.transition
+                    },
+                    type: "Feature"
                 };
-                return feature;
             })
         };
 
