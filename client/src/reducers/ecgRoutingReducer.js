@@ -10,7 +10,7 @@ import {
   ROUTE_SEARCH_ERROR,
 } from '../common/actionTypes';
 
-const defaultState = {
+export const defaultRoutingState = {
   startLocation: {
     accepted: false,
     coordinates: [],
@@ -39,7 +39,7 @@ const defaultState = {
  * @param {object} state: default reducer state
  * @param {object} action: redux action creator
 */
-export default (state = defaultState, action) => {
+export default (state = defaultRoutingState, action) => {
   switch (action.type) {
 
     case REQUEST_ROUTING_LOCATION:
@@ -142,7 +142,7 @@ export default (state = defaultState, action) => {
 
       // user chooses to start over
       if (action.step === 'DONE') {
-        return { ...defaultState };
+        return { ...defaultRoutingState };
       }
 
       break;
