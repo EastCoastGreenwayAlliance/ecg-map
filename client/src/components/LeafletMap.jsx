@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import * as distance from '@turf/distance';
-import * as midpoint from '@turf/midpoint';
 
-import { configureLayerSource, parseURLHash } from '../common/api';
+import { configureLayerSource, parseURLHash, loadTurfModules } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
 import { maxGeoBounds } from '../common/config';
 
@@ -127,6 +125,7 @@ class LeafletMap extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { activeTurningEnabled, geocodeResult, startLocation, endLocation, route } = nextProps;
+    const self = this;
 
     /* Handles adding the geocode result, if there is one */
     if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
@@ -174,7 +173,16 @@ class LeafletMap extends Component {
 
     /* Handles enabling & disabling of "active turning" */
     if (activeTurningEnabled && !this.props.activeTurningEnabled) {
-      this.enableActiveTurning();
+      if (!this.turfDistance || !this.turfMidpoint) {
+        loadTurfModules((error, response) => {
+          if (error) throw error;
+          self.turfDistance = response[0];
+          self.turfMidpoint = response[1];
+          self.enableActiveTurning();
+        });
+      } else {
+        this.enableActiveTurning();
+      }
     }
 
     if (!activeTurningEnabled && this.props.activeTurningEnabled) {
@@ -278,8 +286,8 @@ class LeafletMap extends Component {
             const p = L.marker(e.latlng).toGeoJSON();
             const p1 = L.marker(segmentvertices[i]).toGeoJSON();
             const p2 = L.marker(segmentvertices[i + 1]).toGeoJSON();
-            const pM = midpoint(p1, p2);
-            const d = distance(p, pM, 'miles');
+            const pM = this.turfMidpoint(p1, p2);
+            const d = this.turfDistance(p, pM, 'miles');
 
             if (d < closest.distance) {
               closest.segment = routesegment;

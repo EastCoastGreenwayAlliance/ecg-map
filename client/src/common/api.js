@@ -52,15 +52,26 @@ export const loadGeoRouter = callback =>
     .then(response => callback(null, response))
     .catch(error => callback(error));
 
+// async loads togpx.js
 export const loadToGPX = callback =>
   import('togpx')
     .then(response => callback(null, response))
     .catch(error => callback(error));
 
+// async loads file-saver.js
 export const loadFileSaver = callback =>
   import('file-saver')
     .then(response => callback(null, response))
     .catch(error => callback(error));
+
+// async loads turf/distance and turf/midpoint
+export const loadTurfModules = callback =>
+  Promise.all([
+    import('@turf/distance'),
+    import('@turf/midpoint'),
+  ])
+  .then(response => callback(null, response))
+  .catch(error => callback(error));
 
 // helper function to convert meters to miles
 export const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
