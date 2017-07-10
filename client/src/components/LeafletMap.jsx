@@ -120,7 +120,16 @@ class LeafletMap extends Component {
   }
 
   componentDidMount() {
+    const { startLocation, endLocation } = this.props;
+
+    // set up the Leaflet map
     this.initMap();
+
+    // if we received preloaded state for start and end locations, show those on the map
+    if (startLocation.accepted && startLocation.coordinates.length && endLocation.accepted
+      && endLocation.coordinates.length) {
+      this.zoomRouteExtent(startLocation, endLocation);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -192,6 +201,7 @@ class LeafletMap extends Component {
 
   shouldComponentUpdate() {
     // Let Leaflet handle this part of the DOM, not React!
+    // NOTE: life cycle methods componentWillUpdate and componentDidUpdate will never get called
     return false;
   }
 
