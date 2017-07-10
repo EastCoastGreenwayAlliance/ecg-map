@@ -36,6 +36,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.8",
+    "query-string": "^4.3.4",
     "react": "^15.5.4",
     "react-collapse": "^4.0.2",
     "react-dom": "^15.5.4",
