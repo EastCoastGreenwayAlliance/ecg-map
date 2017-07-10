@@ -1,5 +1,7 @@
+import queryString from 'query-string';
 import { cartoUser, routeSegmentsFieldsVisible } from './config';
-import cartocss from '../common/cartocss';
+import cartocss from './cartocss';
+import { defaultRoutingState } from '../reducers';
 
 // App "API" functionality & logic stored in this module
 // helper fns
@@ -18,10 +20,59 @@ export const parseURLHash = () => {
   const zxy = split.split('/');
   if (!zxy.length || zxy.length < 3 || zxy.length > 3) return noop();
 
+  // make sure to ignore any query params if present
+  const zxyParsed = zxy.map((n) => {
+    const x = n.indexOf('?') === -1 ? n : n.split('?')[0];
+    return +x;
+  });
+
   return {
-    zoom: isNumber(+zxy[0]) ? +zxy[0] : null,
-    lat: isNumber(+zxy[1]) ? +zxy[1] : null,
-    lng: isNumber(+zxy[2]) ? +zxy[2] : null,
+    zoom: isNumber(zxyParsed[0]) ? zxy[0] : null,
+    lat: isNumber(zxyParsed[1]) ? zxy[1] : null,
+    lng: isNumber(zxyParsed[2]) ? zxy[2] : null,
+  };
+};
+
+// looks for and parses query parameters representing application state that will
+// be preloaded with app, e.g "?start=[x,y]&end=[x,y]" => startLocation: [x,y], endLocation: [x,y]
+export const parseURLQueryParams = () => {
+  const hash = window.location.hash;
+  if (!hash.length) return noop();
+
+  const split = hash.split('?')[1];
+  if (!split) return noop();
+
+  return queryString.parse(split);
+};
+
+// sets the application state for (geo)routing given parsed URL query params
+export const preloadRoutingState = (startEnd) => {
+  const { start, end } = startEnd;
+  let startCoords;
+  let endCoords;
+
+  // validate & parse start coordinates
+  if (start && start.length) {
+    startCoords = start.map(coord => +coord);
+  }
+
+  // validate & parse end coordinates
+  if (end && end.length) {
+    endCoords = end.map(coord => +coord);
+  }
+
+  return {
+    ...defaultRoutingState,
+    startLocation: {
+      ...defaultRoutingState.startLocation,
+      accepted: typeof startCoords !== 'undefined',
+      coordinates: startCoords || [],
+    },
+    endLocation: {
+      ...defaultRoutingState.endLocation,
+      accepted: typeof endCoords !== 'undefined',
+      coordinates: endCoords || [],
+    }
   };
 };
 
