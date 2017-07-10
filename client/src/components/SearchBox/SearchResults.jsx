@@ -48,6 +48,17 @@ class SearchResults extends Component {
     this.geoRouter = undefined;
   }
 
+  componentWillMount() {
+    const { startLocation, endLocation } = this.props;
+
+    // check for preloaded state with start and end locations, if they exist tell
+    // the geoRouter to find a route between them asyc
+    if (endLocation.accepted && endLocation.coordinates.length && startLocation.accepted
+      && startLocation.coordinates.length) {
+      this.getRoute(startLocation, endLocation);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const { geocodeResult, startLocation, endLocation } = nextProps;
 
@@ -99,20 +110,37 @@ class SearchResults extends Component {
   // }
 
   getRoute(startLocation, endLocation) {
+    // handles making the geo routing search request given start and end locations
     const self = this;
-    // handles making the geo routing search request
+
+    function findEcgRoute() {
+      // make the findRoute call from our geoRouter, passing coordinates for
+      // start and end locations, and callbacks for success and error
+      self.geoRouter.findRoute(
+        startLocation.coordinates[0],
+        startLocation.coordinates[1],
+        endLocation.coordinates[0],
+        endLocation.coordinates[1],
+        route => self.props.routeSearchSuccess(route),
+        error => self.props.routeSearchError(error)
+      );
+    }
+
     // tell our app we are starting the search for a geo route
     this.props.routeSearchRequest();
-    // make the findRoute call from our geoRouter, passing coordinates for
-    // start and end locations, and callbacks for success and error
-    this.geoRouter.findRoute(
-      startLocation.coordinates[0],
-      startLocation.coordinates[1],
-      endLocation.coordinates[0],
-      endLocation.coordinates[1],
-      route => self.props.routeSearchSuccess(route),
-      error => self.props.routeSearchError(error)
-    );
+
+    if (!this.geoRouter) {
+      // import geoRouter codebase async
+      loadGeoRouter((error, response) => {
+        if (error) throw error;
+        self.geoRouter = response.default;
+        self.geoRouter.init(cartoUser, cartoTables.route_segments);
+        findEcgRoute();
+      });
+    } else {
+      // geo-router is already loaded
+      findEcgRoute();
+    }
   }
 
   handleGeocodeResult(result) {
