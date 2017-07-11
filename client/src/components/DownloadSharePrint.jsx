@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
+import Clipboard from 'clipboard';
 
 import { loadToGPX, loadFileSaver } from '../common/api';
 
@@ -26,6 +27,25 @@ class DownloadSharePrint extends Component {
     };
     this.togpx = null;
     this.fileSaver = null;
+  }
+
+  componentDidMount() {
+    // enable copying of the URL to the user's clipboard
+    if (Clipboard.isSupported()) {
+      const copyFail = () => {
+        alert('Your browser doesn\'t support copying with a button.');
+      };
+
+      const copySuccess = () => {
+        alert('Route search copied! Feel free to paste and share.');
+      };
+
+      new Clipboard('button.dps-share', {
+        text: () => window.location.href
+      })
+      .on('success', copySuccess)
+      .on('error', copyFail);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
