@@ -141,12 +141,3 @@ export const loadFileSaver = callback =>
   import('file-saver')
     .then(response => callback(null, response))
     .catch(error => callback(error));
-
-// async loads turf/distance and turf/midpoint
-export const loadTurfModules = callback =>
-  Promise.all([
-    import('@turf/distance'),
-    import('@turf/midpoint'),
-  ])
-  .then(response => callback(null, response))
-  .catch(error => callback(error));
