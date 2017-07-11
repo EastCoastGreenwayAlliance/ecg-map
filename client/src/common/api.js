@@ -4,74 +4,101 @@ import cartocss from './cartocss';
 import { defaultRoutingState } from '../reducers';
 
 // App "API" functionality & logic stored in this module
-// helper fns
-const noop = () => ({});
 const isNumber = val => val && typeof val === 'number';
 
-// parses the URL hash to see if it contains zxy settings for the leaflet map
-// used to set the map's center and zoom on load
-export const parseURLHash = () => {
-  const hash = window.location.hash;
-  if (!hash.length) return noop();
+// helper function to convert meters to miles
+export const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
 
-  const split = hash.split('#')[1];
-  if (!split) return noop();
+// parse URL query params for use with hydrating Redux state on app load
+export const parseQueryParams = () => {
+  const search = window.location.search;
+  if (!search.length) return {};
 
-  const zxy = split.split('/');
-  if (!zxy.length || zxy.length < 3 || zxy.length > 3) return noop();
+  // parse a string like '?thing1=x&thing2=y&thing3=z' into an object
+  const parsed = queryString.parse(search);
+  const keys = Object.keys(parsed);
 
-  // make sure to ignore any query params if present
-  const zxyParsed = zxy.map((n) => {
-    const x = n.indexOf('?') === -1 ? n : n.split('?')[0];
-    return +x;
+  // if keys aren't valid, don't do anything else
+  if (keys.indexOf('loc') === -1 && keys.indexOf('route') === -1) return {};
+
+  // check for location & route keys, parse them as well if present
+  keys.forEach((key) => {
+    if (key === 'loc' && parsed.loc) {
+      parsed.loc = parsed.loc.split(',').map(n => parseFloat(n));
+
+      if (parsed.loc.length) {
+        parsed.loc.map((n) => {
+          if (isNumber(n)) return n;
+          return null;
+        });
+      }
+    }
+
+    if (key === 'route' && parsed.route) {
+      parsed.route = parsed.route.split(',').map(n => parseFloat(n));
+
+      if (parsed.route.length) {
+        parsed.route.map((n) => {
+          if (isNumber(n)) return n;
+          return null;
+        });
+      }
+    }
   });
 
-  return {
-    zoom: isNumber(zxyParsed[0]) ? zxy[0] : null,
-    lat: isNumber(zxyParsed[1]) ? zxy[1] : null,
-    lng: isNumber(zxyParsed[2]) ? zxy[2] : null,
-  };
+  return parsed;
 };
 
-// looks for and parses query parameters representing application state that will
-// be preloaded with app, e.g "?start=[x,y]&end=[x,y]" => startLocation: [x,y], endLocation: [x,y]
-export const parseURLQueryParams = () => {
-  const hash = window.location.hash;
-  if (!hash.length) return noop();
+// grab the map zoom, lat, lon from query params
+export const queryZXY = () => {
+  const parsed = parseQueryParams();
 
-  const split = hash.split('?')[1];
-  if (!split) return noop();
+  if (parsed.loc && parsed.loc.length === 3) {
+    return {
+      zoom: parsed.loc[0],
+      lat: parsed.loc[1],
+      lng: parsed.loc[2]
+    };
+  }
 
-  return queryString.parse(split);
+  return {};
 };
 
-// sets the application state for (geo)routing given parsed URL query params
-export const preloadRoutingState = (startEnd) => {
-  const { start, end } = startEnd;
-  let startCoords;
-  let endCoords;
+// grab the start and/or end coordinates for a previously searched route
+export const queryStartEnd = () => {
+  const parsed = parseQueryParams();
 
-  // validate & parse start coordinates
-  if (start && start.length) {
-    startCoords = start.map(coord => +coord);
+  if (parsed.route && parsed.route.length === 2) {
+    return {
+      start: parsed.route
+    };
   }
 
-  // validate & parse end coordinates
-  if (end && end.length) {
-    endCoords = end.map(coord => +coord);
+  if (parsed.route && parsed.route.length === 4) {
+    return {
+      start: parsed.route.slice(0, 2),
+      end: parsed.route.slice(2, 4)
+    };
   }
+
+  return {};
+};
+
+// sets the application state for (geo)routing from parsed URL query params
+export const preloadRoutingState = () => {
+  const startEnd = queryStartEnd();
 
   return {
     ...defaultRoutingState,
     startLocation: {
       ...defaultRoutingState.startLocation,
-      accepted: typeof startCoords !== 'undefined',
-      coordinates: startCoords || [],
+      accepted: typeof startEnd.start !== 'undefined',
+      coordinates: startEnd.start || [],
     },
     endLocation: {
       ...defaultRoutingState.endLocation,
-      accepted: typeof endCoords !== 'undefined',
-      coordinates: endCoords || [],
+      accepted: typeof startEnd.end !== 'undefined',
+      coordinates: startEnd.end || [],
     }
   };
 };

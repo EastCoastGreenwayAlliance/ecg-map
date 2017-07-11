@@ -45,7 +45,7 @@ class LeafletMap extends Component {
   constructor(props) {
     super(props);
     const { lat, lng, zoom } = props;
-    const hashZXY = parseURLHash();
+    const hashZXY = queryZXY();
 
     this.map = null;
     this.baseLayers = {
@@ -120,7 +120,7 @@ class LeafletMap extends Component {
   }
 
   componentDidMount() {
-    const { startLocation, endLocation } = this.props;
+    const { startLocation, endLocation, route } = this.props;
 
     // set up the Leaflet map
     this.initMap();
@@ -129,6 +129,18 @@ class LeafletMap extends Component {
     if (startLocation.accepted && startLocation.coordinates.length && endLocation.accepted
       && endLocation.coordinates.length) {
       this.zoomRouteExtent(startLocation, endLocation);
+    }
+
+    // if we received preloaded state for just a start location
+    if (startLocation.accepted && startLocation.coordinates.length && !endLocation.accepted) {
+      this.zoomToNearestSegment(startLocation);
+    }
+
+    // if the app state already has routing.response data to test,
+    // add it to the map and set the map view to it
+    if (route.response && startLocation.accepted && endLocation.accepted) {
+      this.zoomRouteExtent(startLocation, endLocation);
+      this.renderRouteHighlight(route.response);
     }
   }
 
@@ -195,7 +207,7 @@ class LeafletMap extends Component {
   }
 
   initMap() {
-    const { onMapMove, route, startLocation, endLocation } = this.props;
+    const { onMapMove } = this.props;
     this.map = L.map('map', this.mapOptions);
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
@@ -207,7 +219,7 @@ class LeafletMap extends Component {
       if (e && e.target) {
         const zoom = e.target.getZoom();
         const latLng = e.target.getCenter();
-        onMapMove(latLng.lat, latLng.lng, zoom);
+        onMapMove(zoom, latLng.lat, latLng.lng);
       }
     });
 
@@ -218,13 +230,6 @@ class LeafletMap extends Component {
     // for debugging...
     window.map = this.map;
     window.searchResults = this.searchResults;
-
-    // if the app state already has routing data, make sure to add it to the map
-    // and set the map view to it
-    if (route.response && startLocation.coordinates && endLocation.coordinates) {
-      this.zoomRouteExtent(startLocation, endLocation);
-      this.renderRouteHighlight(route.response);
-    }
   }
 
   initCartoLayer() {
