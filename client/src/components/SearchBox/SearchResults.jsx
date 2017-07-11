@@ -9,7 +9,6 @@ import { loadGeoRouter } from '../../common/api';
 import LoadingMsg from '../LoadingMsg';
 import ErrorMsg from '../ErrorMsg';
 import StartLocationOptions from './StartLocationOptions';
-import StartLocationAcceptedOptions from './StartLocationAcceptedOptions';
 import EndLocationOptions from './EndLocationOptions';
 import EndLocationAcceptedOptions from './EndLocationAcceptedOptions';
 
@@ -218,7 +217,8 @@ class SearchResults extends Component {
     }
 
     if (startLocation.accepted && !endLocation.coordinates.length) {
-      return <StartLocationAcceptedOptions />;
+      // do nothing, previously this displayed StartLocationAcceptedOptions.jsx
+      // see issue #50
     }
 
     if (endLocation.coordinates.length && !endLocation.accepted) {
