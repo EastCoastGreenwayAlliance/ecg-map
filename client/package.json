@@ -23,8 +23,6 @@
   },
   "homepage": "https://github.com/EastCoastGreenwayAlliance/ecg-map#readme",
   "dependencies": {
-    "@turf/distance": "^4.5.2",
-    "@turf/midpoint": "^4.5.2",
     "babel-polyfill": "^6.23.0",
     "d3-array": "^1.2.0",
     "d3-axis": "^1.0.8",
