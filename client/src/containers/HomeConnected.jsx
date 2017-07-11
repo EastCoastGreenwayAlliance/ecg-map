@@ -7,7 +7,9 @@ import Home from '../views/Home';
 
 const mapStateToProps = state => ({
   isMobile: !state.browser.greaterThan.small,
-  mailchimp: state.mailchimp
+  mailchimp: state.mailchimp,
+  startLocation: state.routing.startLocation,
+  endLocation: state.routing.endLocation,
 });
 
 export default connect(mapStateToProps, {

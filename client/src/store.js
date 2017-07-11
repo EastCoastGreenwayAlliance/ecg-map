@@ -4,7 +4,7 @@ import debounce from 'lodash/debounce';
 
 import rootReducer from './reducers/';
 import middleware from './middleware';
-import { parseURLQueryParams, preloadRoutingState } from './common/api';
+import { preloadRoutingState } from './common/api';
 
 // saved sample application state for store.routing, for testing / feature development,
 // so that we don't have to manually go through the UX steps to get routing data
@@ -37,11 +37,9 @@ function makeStore(initialState) {
 // temp state for testing app after a route has been successfully searched & loaded
 // const preloadedState = process.env.NODE_ENV === 'production' ? {} : { routing: routingState };
 
-// look for start and end lat lons in the query params
-const startEnd = parseURLQueryParams();
 // create the preloaded state for store.routing if any query params exist
 const preloadedState = {
-  routing: preloadRoutingState(startEnd),
+  routing: preloadRoutingState(),
 };
 // set our default application state
 const store = makeStore(preloadedState);

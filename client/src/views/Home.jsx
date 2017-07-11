@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
+import queryString from 'query-string';
+
+import { parseQueryParams } from '../common/api';
 
 // import components
 // note that most of these are connected components, from 'containers/' dir
@@ -27,6 +30,8 @@ class Home extends Component {
     isMobile: PropTypes.bool, // via redux-responsive
     mailchimp: PropTypes.object, // mailchimp POST status
     postMailchimpAPI: PropTypes.func.isRequired, // action creator for POSTing to mailchip
+    startLocation: PropTypes.object.isRequired,
+    endLocation: PropTypes.object.isRequired,
   }
 
   constructor() {
@@ -38,10 +43,46 @@ class Home extends Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
-  updateHash(lat, lng, zoom) {
-    const { history } = this.props;
+  componentDidUpdate(prevProps) {
+    const { startLocation } = prevProps;
+
+    if (startLocation.accepted && !this.props.startLocation.accepted) {
+      const latLngZoom = parseQueryParams().loc;
+      this.updateHash(...latLngZoom);
+    }
+  }
+
+  updateHash(zoom, lat, lng) {
+    // partial application state is stored in the URL hash & search
+    // LeafletMap's center coordinates & zoom level are stored in the hash
+    // start and/or end location are stored as query / search params
+    const { history, startLocation, endLocation } = this.props;
+    const params = {};
+    params.route = [];
+    params.loc = [];
+
+    if (startLocation.accepted) {
+      const coordsStart = startLocation.coordinates.map(coord => coord.toFixed(5));
+      params.route = params.route.concat(coordsStart);
+    }
+
+    if (endLocation.accepted) {
+      const coordsEnd = endLocation.coordinates.map(coord => coord.toFixed(5));
+      params.route = params.route.concat(coordsEnd);
+    }
+
+    if (params.route.length) {
+      params.route = params.route.join(',');
+    } else {
+      params.route = null;
+    }
+
+    params.loc = [zoom, lat.toFixed(5), lng.toFixed(5)].join(',');
+
+    const search = queryString.stringify(params, { encode: false });
+
     history.push({
-      hash: `#${zoom}/${lat}/${lng}`
+      search,
     });
   }
 
