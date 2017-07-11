@@ -3,6 +3,7 @@
   position: fixed;
   bottom: 0;
   background: #fff;
+  z-index: $component-zindex;
 
   @media (#{$bp-larger-than-mobile}) {
     position: static;

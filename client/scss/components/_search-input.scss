@@ -1,6 +1,7 @@
 .SearchInput {
   background: #fff;
   border-bottom: 1px solid $dark-grey;
+  z-index: $component-zindex;
 
   @media (#{$bp-larger-than-mobile}) {
     border: 0;

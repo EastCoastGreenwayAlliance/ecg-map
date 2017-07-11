@@ -5,7 +5,7 @@
   right: 0;
   width: $left-ui-width-mobile;
   background: $transparent;
-  z-index: 401;
+  z-index: $component-zindex;
   border-top: 1px solid $light-grey;
   border-bottom: 1px solid $light-grey;
 

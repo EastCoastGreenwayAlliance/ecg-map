@@ -1,6 +1,7 @@
 .SearchResults {
   margin-top: 0;
   width: 100%;
+  z-index: $component-zindex;
 
   @media (#{$bp-larger-than-mobile}) {
     margin-top: 15px;

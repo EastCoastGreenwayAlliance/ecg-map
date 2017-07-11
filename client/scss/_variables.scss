@@ -27,3 +27,7 @@ $left-ui-width-mobile:      100%;
 $searchboxHeightMobile:     45px;
 $mapHeight:                 calc(100% - #{$navbarHeight});
 $mapHeightMobile:           calc(100% - #{$navbarHeightMobile} - #{$searchboxHeightMobile});
+
+// z-indexes
+$component-zindex:          2000;
+$modal-zindex:              4002;
