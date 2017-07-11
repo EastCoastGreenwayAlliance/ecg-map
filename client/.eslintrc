@@ -34,6 +34,7 @@
       "peerDependencies": false
       }],
     "linebreak-style": 0,
+    "no-alert": 0,
     "no-debugger": 1,
     "no-param-reassign": 0,
     "no-underscore-dangle": 0,
