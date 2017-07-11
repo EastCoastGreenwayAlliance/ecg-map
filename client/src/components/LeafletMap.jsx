@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
-import { configureLayerSource, parseURLHash, loadTurfModules } from '../common/api';
+import { configureLayerSource, parseURLHash } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
 import { maxGeoBounds } from '../common/config';
 
@@ -134,7 +134,6 @@ class LeafletMap extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { activeTurningEnabled, geocodeResult, startLocation, endLocation, route } = nextProps;
-    const self = this;
 
     /* Handles adding the geocode result, if there is one */
     if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
@@ -182,18 +181,8 @@ class LeafletMap extends Component {
 
     /* Handles enabling & disabling of "active turning" */
     if (activeTurningEnabled && !this.props.activeTurningEnabled) {
-      if (!this.turfDistance || !this.turfMidpoint) {
-        loadTurfModules((error, response) => {
-          if (error) throw error;
-          self.turfDistance = response[0];
-          self.turfMidpoint = response[1];
-          self.enableActiveTurning();
-        });
-      } else {
-        this.enableActiveTurning();
-      }
+      this.enableActiveTurning();
     }
-
     if (!activeTurningEnabled && this.props.activeTurningEnabled) {
       this.disableActiveTurning();
     }
@@ -279,8 +268,9 @@ class LeafletMap extends Component {
     this.searchResults.addLayer(this.gpsMarker);
 
     this.map.on('locationfound', (e) => {
-      // position the You Are Here marker
+      // position the You Are Here marker (optionally zoom the map for debugging)
       this.gpsMarker.setLatLng(e.latlng);
+      // this.map.setView(e.latlng, 16);
 
       // if there's a route, find where we are on it and the next cue point
       // if we're too far off it, some wording changes (sort of an implicit disclaimer)
@@ -293,11 +283,12 @@ class LeafletMap extends Component {
         this.searchRoute.getLayers().forEach((routesegment) => {
           const segmentvertices = routesegment.getLatLngs()[0];
           for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
-            const p = L.marker(e.latlng).toGeoJSON();
-            const p1 = L.marker(segmentvertices[i]).toGeoJSON();
-            const p2 = L.marker(segmentvertices[i + 1]).toGeoJSON();
-            const pM = this.turfMidpoint(p1, p2);
-            const d = this.turfDistance(p, pM, 'miles');
+            const p = this.map.latLngToLayerPoint(e.latlng); // me
+            const p1 = this.map.latLngToLayerPoint(segmentvertices[i]); // vertex
+            const p2 = this.map.latLngToLayerPoint(segmentvertices[i + 1]); // vertex +1
+            const px = L.LineUtil.closestPointOnSegment(p, p1, p2); // closest pixel to me
+            const pd = this.map.layerPointToLatLng(px); // pixel back to latlng
+            const d = e.latlng.distanceTo(pd); // meters distance between me + closest
 
             if (d < closest.distance) {
               closest.segment = routesegment;
@@ -308,14 +299,22 @@ class LeafletMap extends Component {
 
         // compose some easy-to-interpolate strings about the situation
         const METERS_TO_MILES = 1609;
+        const METERS_TO_FEET = 3.281;
         const nearline = closest.segment;
-        const nearmile = closest.distance;
+        const nearmile = (closest.distance / METERS_TO_MILES).toFixed(2);
+        const nearfeet = Math.round(closest.distance * METERS_TO_FEET);
         const nearname = nearline.properties.title;
         const untilturn = nearline.properties.length / METERS_TO_MILES;
 
-        if (nearmile > 0.03) { // over this = off route, please return to route
+        if (nearmile > 0.1) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
-          activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile.toFixed(2)} miles`;
+          activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile} miles`;
+          activeTurningUpdate.transition_code = nearline.properties.transition.code;
+          activeTurningUpdate.transition_text = nearline.properties.transition.title;
+          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+        } else if (nearmile > 0.03) { // over this = off route, please return to route
+          activeTurningUpdate.onpath = false;
+          activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearfeet} feet`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
           activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;

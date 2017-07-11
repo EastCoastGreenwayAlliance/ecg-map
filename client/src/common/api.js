@@ -115,14 +115,5 @@ export const loadFileSaver = callback =>
     .then(response => callback(null, response))
     .catch(error => callback(error));
 
-// async loads turf/distance and turf/midpoint
-export const loadTurfModules = callback =>
-  Promise.all([
-    import('@turf/distance'),
-    import('@turf/midpoint'),
-  ])
-  .then(response => callback(null, response))
-  .catch(error => callback(error));
-
 // helper function to convert meters to miles
 export const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
