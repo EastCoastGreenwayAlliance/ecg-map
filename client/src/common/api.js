@@ -23,7 +23,7 @@ export const parseQueryParams = () => {
 
   // check for location & route keys, parse them as well if present
   keys.forEach((key) => {
-    if (key === 'loc') {
+    if (key === 'loc' && parsed.loc) {
       parsed.loc = parsed.loc.split(',').map(n => parseFloat(n));
 
       if (parsed.loc.length) {
@@ -34,7 +34,7 @@ export const parseQueryParams = () => {
       }
     }
 
-    if (key === 'route') {
+    if (key === 'route' && parsed.route) {
       parsed.route = parsed.route.split(',').map(n => parseFloat(n));
 
       if (parsed.route.length) {
