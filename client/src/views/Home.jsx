@@ -58,10 +58,10 @@ class Home extends Component {
     // start and/or end location are stored as query / search params
     const { history, startLocation, endLocation } = this.props;
     const params = {};
-    params.route = [];
     params.loc = [];
 
     if (startLocation.accepted) {
+      params.route = [];
       const coordsStart = startLocation.coordinates.map(coord => coord.toFixed(5));
       params.route = params.route.concat(coordsStart);
     }
@@ -71,10 +71,8 @@ class Home extends Component {
       params.route = params.route.concat(coordsEnd);
     }
 
-    if (params.route.length) {
+    if (params.route) {
       params.route = params.route.join(',');
-    } else {
-      params.route = null;
     }
 
     params.loc = [zoom, lat.toFixed(5), lng.toFixed(5)].join(',');
