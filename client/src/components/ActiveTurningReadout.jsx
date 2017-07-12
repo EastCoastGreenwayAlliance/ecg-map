@@ -25,8 +25,6 @@ class ActiveTurningReadout extends Component {
   componentWillReceiveProps(nextProps) {
     const { currentplace, onpath, transition_text, enabled, error } = nextProps;
 
-    console.log('nextProps.enabled: ', enabled, ' this.props.enabled: ', this.props.enabled);
-
     // when the user toggles the active turning feature, tell them it's working
     if (enabled && !this.props.enabled && !transition_text && !currentplace) {
       this.setState({
