@@ -19,12 +19,26 @@
       margin-top: 0;
     }
 
+    // reposition & reset the Carto logo on the map
     .cartodb-logo {
       z-index: 100 !important;
       left: 100px !important;
     }
 
+    // overide the basemap icon
     .leaflet-control-layers.leaflet-control {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+
+      &.leaflet-control-layers-expanded {
+        background: #fff;
+      }
+
+      form {
+        margin-bottom: 0;
+      }
+
       a.leaflet-control-layers-toggle {
         width: 39px;
         height: 39px;
@@ -33,6 +47,56 @@
         background: url('../assets/icons/button-basemap.png') no-repeat;
         background:
           url('../assets/icons/button-basemap.svg') no-repeat,
+          linear-gradient(transparent, transparent);
+      }
+    }
+
+    // leaflet locate-control overrides
+    .leaflet-control-locate.leaflet-bar.leaflet-control {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+
+      a.leaflet-bar-part.leaflet-bar-part-single {
+        width: 39px;
+        height: 39px;
+        border: 0;
+        background: transparent;
+      }
+
+      a.leaflet-bar-part.leaflet-bar-part-single > span.btn-locate {
+        width: 39px;
+        height: 39px;
+        display: inline-block;
+
+        // png fallback in case browser doesn't support svg
+        background: url('../assets/icons/button-locate.png') no-repeat;
+        background:
+          url('../assets/icons/button-locate.svg') no-repeat,
+          linear-gradient(transparent, transparent);
+      }
+
+      a.leaflet-bar-part.leaflet-bar-part-single > span.loading {
+        width: 39px;
+        height: 39px;
+        display: inline-block;
+        background:
+          url('../assets/icons/loading.gif') no-repeat,
+          #fff;
+        border-radius: 5px;
+        border: 1px solid $grey;
+        background-size: cover;
+      }
+    }
+
+    // when the locate control is active
+    .leaflet-control-locate.leaflet-bar.leaflet-control.active,
+    .leaflet-control-locate.leaflet-bar.leaflet-control.following {
+      a.leaflet-bar-part.leaflet-bar-part-single > span.btn-locate {
+        // png fallback in case browser doesn't support svg
+        background: url('../assets/icons/button-locate-on.png') no-repeat;
+        background:
+          url('../assets/icons/button-locate-on.svg') no-repeat,
           linear-gradient(transparent, transparent);
       }
     }

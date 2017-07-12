@@ -3,6 +3,9 @@
 // this includes Normalize CSS
 @import 'skeleton/skeleton';
 
+// CSS required for Leaflet Locate-Control plugin
+@import '~leaflet.locatecontrol/dist/L.Control.Locate.css';
+
 // global variables: colors, etc.
 @import 'variables';
 
