@@ -17,37 +17,78 @@ class CueSheet extends Component {
   renderCues() {
     const { route } = this.props;
     const { response } = route;
-    let cues = [];
 
     if (!response || !response.features || !response.features.length) return null;
 
+    let cues = [];
+    const imageBaseURL = '/assets/icons/';
+    let cumulativeMiles = metersToMiles(response.features[0].properties.length);
+
+    const transitionCodeImageMap = (code) => {
+      switch (code) {
+        case 'AR':
+          return `${imageBaseURL}/icon-search-marker-red.svg`;
+        case 'RT':
+        case 'RH':
+          return `${imageBaseURL}/icon-arrow-right.svg`;
+        case 'RS':
+          return `${imageBaseURL}/icon-arrow-bear-right.svg`;
+        case 'LT':
+        case 'LH':
+          return `${imageBaseURL}/icon-arrow-left.svg`;
+        case 'LS':
+          return `${imageBaseURL}/icon-arrow-bear-left.svg`;
+        case 'ST':
+          return `${imageBaseURL}/icon-arrow-straight.svg`;
+        default:
+          return null;
+      }
+    };
+
     cues.push(
-      <li key={0}>
-        <span className={'turn-icon turn-icon-start'} />
-        <div>
+      <tr key={0}>
+        <td>
+          <p>{ cumulativeMiles.toFixed(1) }</p>
+        </td>
+        <td>
+          <img className="turn-icon" alt="start icon" src={`${imageBaseURL}icon-search-marker-green.svg`} />
+        </td>
+        <td>
           <p style={{ margin: 0 }}>Starting on { response.features[0].properties.title }</p>
-          <p>{ metersToMiles(response.features[0].properties.length) } miles</p>
-        </div>
-      </li>
+        </td>
+        <td>
+          <p>{ metersToMiles(response.features[0].properties.length) }</p>
+        </td>
+      </tr>
     );
 
     cues = cues.concat(response.features.map((feature, idx, arr) => {
       const { properties } = feature;
       const nextSegment = arr[idx + 1];
+      cumulativeMiles += metersToMiles(properties.length);
 
       return (
-        <li key={properties.id}>
-          <span className={`turn-icon turn-icon-${properties.transition.code}`} />
-          <div>
-            <p>
-              { properties.transition.title }
-            </p>
+        <tr key={properties.id}>
+          <td>
+            <p>{ cumulativeMiles.toFixed(1) }</p>
+          </td>
+          <td>
+            <img
+              className="turn-icon"
+              src={transitionCodeImageMap(properties.transition.code)}
+              alt="turn icon"
+            />
+          </td>
+          <td>
+            <p>{ properties.transition.title }</p>
+          </td>
+          <td>
             {
               nextSegment ?
-                <p>{ metersToMiles(nextSegment.properties.length) } miles</p> : <p />
+                <p>{ metersToMiles(nextSegment.properties.length) }</p> : <p />
             }
-          </div>
-        </li>
+          </td>
+        </tr>
       );
     }));
 
@@ -55,17 +96,42 @@ class CueSheet extends Component {
   }
 
   render() {
-    const { isMobile } = this.props;
+    const { isMobile, route } = this.props;
+    const { response } = route;
+    const header1 = isMobile ? 'Cum. miles' : 'Cumulative miles';
+    const header2 = isMobile ? 'Seg. miles' : 'Segment miles';
+
     return (
       <div className="CueSheet">
         <NavBar {...{ isMobile }} />
         <div className="cues-container">
-          <h3>Cue Sheet</h3>
-          <p><Link to="/">Back to Map</Link></p>
-          <ol>
-            { this.renderCues() }
-          </ol>
-          <p><Link to="/">Back to Map</Link></p>
+          {
+            (response && response.features) ?
+              <div>
+                <p className="nav-link"><Link to="/">Back to Map</Link></p>
+                <button className="print" onClick={() => window.print()} />
+                <table>
+                  <thead>
+                    <tr>
+                      <th><p>{ header1 }</p></th>
+                      <th colSpan="2"><p>Cue</p></th>
+                      <th><p>{ header2 }</p></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    { this.renderCues() }
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colSpan="4">
+                        <p className="nav-link"><Link to="/">Back to Map</Link></p>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div> :
+              <p>No cues to show, try searching for a route on the <Link to="/">map</Link></p>
+          }
         </div>
       </div>
     );

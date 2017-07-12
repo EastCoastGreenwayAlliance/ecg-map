@@ -1,50 +1,105 @@
 .CueSheet {
   width: 100%;
 
+  .Navbar {
+    @media print {
+      display: none;
+    }
+  }
+
   .cues-container {
     padding: 25px;
     width: 100%;
     margin: 0 auto;
 
     @media (#{$bp-larger-than-mobile}) {
-      width: 500px;
+      width: 612px;
     }
 
-    h3 {
-      text-align: left;
-    }
+    button.print {
+      float: right;
+      width: 27px;
+      display: inline-block;
+      // png fallback in case browser doesn't support svg
+      background: url('../assets/icons/button-print.png') no-repeat;
+      background:
+        url('../assets/icons/button-print.svg') no-repeat,
+        linear-gradient(transparent, transparent);
 
-    ol {
-      margin: 0 0 25px;
-    }
-
-    li {
-      text-align: left;
-
-      div {
-        width: 75%;
-        display: inline-block;
-        margin-left: 10px;
-        vertical-align: middle;
-        border-bottom: 1px solid $dark-grey;
-      }
-
-      &:last-child > div {
-        border: 0;
+      @media print {
+        display: none;
       }
     }
 
-    ol p {
+    p {
       margin: 0;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
 
       @media (#{$bp-larger-than-mobile}) {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
       }
 
       &:first-child {
         display: inline-block;
       }
+    }
+
+    p.nav-link {
+      display: inline-block;
+
+      @media print {
+        display: none;
+      }
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+    // table styles
+    th,
+    td {
+      border-bottom: 2px solid $light-grey;
+      vertical-align: middle;
+    }
+
+    th {
+      white-space: wrap;
+      padding: 5px 0;
+
+      @media (#{$bp-larger-than-mobile}) {
+        white-space: nowrap;
+      }
+
+      &:nth-child(2n) {
+        padding: 5px 0 5px 15px;
+      }
+    }
+
+    td {
+      padding: 5px;
+    }
+
+    tbody tr {
+      // "zebra striping"
+      &:nth-child(odd) {
+        background: #eee;
+      }
+
+      &:hover {
+        background: yellow;
+      }
+    }
+
+    thead > tr,
+    tfoot > tr {
+      &:hover {
+        background: #fff;
+      }
+    }
+
+    tfoot td {
+      border-bottom: 0;
     }
   }
 }
