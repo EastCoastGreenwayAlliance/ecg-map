@@ -20,9 +20,10 @@ const ModalContent = (props) => {
       </button>
       <div className="modal-content__top-box">
         <h5 className="modal-content__greeting-copy">
-          The East Coast Greenway is a 2,500 mile traffic free path linking east
-          coast cities from Maine to Florida. Use this map to get to the Greenway
-          and plan trips along it.
+          The East Coast Greenway connects 15 states, 450 cities and towns, and
+          3,000 miles of people-powered trails from Maine to Florida —the country’s
+          longest biking and walking route. Use this map to get to the greenway
+          and plan a trip.
         </h5>
       </div>
       {
