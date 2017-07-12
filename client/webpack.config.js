@@ -71,6 +71,10 @@ module.exports = {
     }
   },
 
+  externals: {
+    leaflet: 'L'
+  },
+
   plugins: [
     // lint Sass/CSS
     new StyleLintPlugin({

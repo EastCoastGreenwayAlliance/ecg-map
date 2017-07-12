@@ -59,6 +59,9 @@ module.exports = {
       }
     ]
   },
+  externals: {
+    leaflet: 'L'
+  },
   plugins: [
     new UglifyJSPlugin({
       test: /\.(js|jsx)$/,
