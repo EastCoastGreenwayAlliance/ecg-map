@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+// import 'leaflet.locatecontrol/dist/L.Control.Locate.min';
 
 import { configureLayerSource, queryZXY } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
 import { maxGeoBounds } from '../common/config';
-
 
 // set default image paths for Leaflet
 // note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
@@ -207,11 +207,35 @@ class LeafletMap extends Component {
   }
 
   initMap() {
-    const { onMapMove } = this.props;
+    const { onMapMove, isMobile } = this.props;
+
+    // instantiate the map and add a reference to it
     this.map = L.map('map', this.mapOptions);
+
+    // "locate me" feature only available on mobile devices
+    if (isMobile) {
+      // import the code for the Leaflet-Locate plugin
+      import('leaflet.locatecontrol/dist/L.Control.Locate.min')
+        .then(() => {
+          // add the plugin
+          L.control.locate({
+            position: 'topright',
+            icon: 'btn-locate',
+            iconLoading: 'loading',
+          }).addTo(this.map);
+        })
+        .catch((error) => { throw error; });
+    }
+
+    // add the basemap toggle control
     this.layersControl = L.control.layers(this.baseLayers, null);
-    this.zoomControl = L.control.zoom({ position: 'bottomright' }).addTo(this.map);
     this.layersControl.addTo(this.map, { position: 'topright' });
+
+    // if we're on desktop add zoom buttons
+    this.zoomControl = !isMobile ?
+      L.control.zoom({ position: 'bottomright' }).addTo(this.map) : null;
+
+    // add the scale bar control
     L.control.scale().addTo(this.map);
 
     // update the URL hash with zoom, lat, lng
@@ -223,13 +247,15 @@ class LeafletMap extends Component {
       }
     });
 
+    // add the search results feature group to the map for storing markers & paths
     this.searchResults.addTo(this.map);
 
+    // set up the CARTO basemap layer
     this.initCartoLayer();
 
     // for debugging...
-    window.map = this.map;
-    window.searchResults = this.searchResults;
+    // window.map = this.map;
+    // window.searchResults = this.searchResults;
   }
 
   initCartoLayer() {
@@ -240,23 +266,15 @@ class LeafletMap extends Component {
       infowindow: true,
       legends: false,
     };
-
     // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
     cartodb.createLayer(self.map, layerSource, options)
       .addTo(self.map, 5) // 2nd param is layer z-index
       .on('done', (layer) => {
         self.cartoLayer = layer;
         layer.on('error', (error) => { throw error; });
-
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
-
-        // TO DO?:
-        // add tooltips to sublayer
-          // self.initCartoSubLayerTooltips();
-        // add infowindows to sublayer
-          // self.initCartoSubLayerInfowindows();
       })
       .on('error', (error) => { throw error; });
   }
