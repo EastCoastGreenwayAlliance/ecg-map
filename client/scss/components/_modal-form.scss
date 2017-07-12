@@ -1,6 +1,10 @@
 .ModalForm {
   // same padding as modal-content__top-box in _modal-content.scss
-  padding: 25px 35px 25px 25px;
+  padding: 15px 20px 15px 15px;
+
+  @media (#{$bp-larger-than-mobile}) {
+    padding: 25px 35px 25px 25px;
+  }
 
   form.modal-content__signup-form {
     display: block;
