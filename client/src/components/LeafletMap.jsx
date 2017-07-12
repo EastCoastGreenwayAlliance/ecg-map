@@ -40,6 +40,7 @@ class LeafletMap extends Component {
     endLocation: PropTypes.object,
     route: PropTypes.object,
     updateActiveTurning: PropTypes.func.isRequired,
+    disableActiveTurning: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -107,16 +108,13 @@ class LeafletMap extends Component {
     // reference to CARTO sublayer
     this.cartoSubLayer = null;
 
-    // layer to store searchResults (route, markers, etc) in when user is searching for a location
-    // and the subset of specifically the route segments
+    // layer to store searchResults (route, markers, etc) when user is searching for a location
     this.searchResults = L.featureGroup();
+    // and the subset of specifically the route segments
     this.searchRoute = undefined;
 
-    // reference to the active turning icon instance
-    this.gpsMarker = L.marker([0, 0], {
-      icon: this.gpsIcon,
-      title: 'You are Here'
-    }).bindPopup('You Are Here');
+    // leaflet-locate control instance (mobile only)
+    self.locateMe = null;
   }
 
   componentDidMount() {
@@ -207,7 +205,8 @@ class LeafletMap extends Component {
   }
 
   initMap() {
-    const { onMapMove, isMobile } = this.props;
+    const { onMapMove, isMobile, disableActiveTurning } = this.props;
+    const self = this;
 
     // instantiate the map and add a reference to it
     this.map = L.map('map', this.mapOptions);
@@ -215,13 +214,27 @@ class LeafletMap extends Component {
     // "locate me" feature only available on mobile devices
     if (isMobile) {
       // import the code for the Leaflet-Locate plugin
-      import('leaflet.locatecontrol/dist/L.Control.Locate.min')
+      import('../../lib/L.Control.Locate')
         .then(() => {
           // add the plugin
-          L.control.locate({
+          self.locateMe = L.control.locate({
+            cacheLocation: true,
             position: 'topright',
             icon: 'btn-locate',
             iconLoading: 'loading',
+            locateOptions: {
+              enableHighAccuracy: true,
+            },
+            metric: false,
+            markerStyle: {
+              color: '#136AEC',
+              fillColor: '#2A93EE',
+              fillOpacity: 1,
+              weight: 2,
+              opacity: 0.9,
+              radius: 5
+            },
+            stopCallback: disableActiveTurning,
           }).addTo(this.map);
         })
         .catch((error) => { throw error; });
@@ -283,18 +296,9 @@ class LeafletMap extends Component {
     const { updateActiveTurning, reportLocationError } = this.props;
 
     // start geolocation tracking, simply moving the marker but not otherwise affecting the map
-    this.map.locate({
-      watch: true,
-      enableHighAccuracy: true
-    });
-
-    this.searchResults.addLayer(this.gpsMarker);
+    this.locateMe.start();
 
     this.map.on('locationfound', (e) => {
-      // position the You Are Here marker (optionally zoom the map for debugging)
-      this.gpsMarker.setLatLng(e.latlng);
-      // this.map.setView(e.latlng, 16);
-
       // if there's a route, find where we are on it and the next cue point
       // if we're too far off it, some wording changes (sort of an implicit disclaimer)
       // and we may want to disable some of it if they're far enough off (TBD)
@@ -361,8 +365,7 @@ class LeafletMap extends Component {
   }
 
   disableActiveTurning() {
-    this.map.stopLocate();
-    this.searchResults.removeLayer(this.gpsMarker._leaflet_id);
+    this.locateMe.stop();
   }
 
   fitBoundsToSearchResults(...padding) {
