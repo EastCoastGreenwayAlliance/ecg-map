@@ -7,7 +7,7 @@
   background-color: rgba($grey, 0.7);
   z-index: $modal-zindex;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     top: $navbarHeight;
   }
 }

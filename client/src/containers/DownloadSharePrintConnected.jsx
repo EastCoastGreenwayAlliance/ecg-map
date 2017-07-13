@@ -12,7 +12,7 @@ const mapStateToProps = ({ browser, routing }) => {
     startLocation,
     endLocation,
     route,
-    isMobile: !greaterThan.small,
+    isMobile: !greaterThan.medium,
   };
 };
 

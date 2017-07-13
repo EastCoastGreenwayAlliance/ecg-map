@@ -9,7 +9,7 @@
   border-top: 1px solid $light-grey;
   border-bottom: 1px solid $light-grey;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     top: $navbarHeight + 10px;
     left: 10px;
     right: initial;

@@ -5,7 +5,7 @@
   background: #fff;
   z-index: $component-zindex;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     position: static;
     bottom: initial;
   }

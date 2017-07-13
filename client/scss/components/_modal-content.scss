@@ -14,7 +14,7 @@
     margin: 0;
     border: 0;
 
-    @media (#{$bp-larger-than-mobile}) {
+    @media (#{$bp-larger-than-tablet}) {
       font-size: 3.5rem;
     }
   }
@@ -24,7 +24,7 @@
     color: #fff;
     background: lighten($dark-grey, 10%);
 
-    @media (#{$bp-larger-than-mobile}) {
+    @media (#{$bp-larger-than-tablet}) {
       padding: 25px 35px 25px 25px;
     }
   }
@@ -33,7 +33,7 @@
     margin-bottom: 0;
     font-size: 1.6rem;
 
-    @media (#{$bp-larger-than-mobile}) {
+    @media (#{$bp-larger-than-tablet}) {
       font-size: 1.8rem;
     }
   }

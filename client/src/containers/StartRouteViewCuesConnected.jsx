@@ -12,7 +12,7 @@ const mapStateToProps = ({ activeturning, browser, routing }) => {
 
   return {
     activeTurningEnabled: enabled,
-    isMobile: !greaterThan.small,
+    isMobile: !greaterThan.medium,
     route,
   };
 };

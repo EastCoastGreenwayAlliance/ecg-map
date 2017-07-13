@@ -7,7 +7,7 @@
   transform: translate(-50%, -50%);
   background-color: #fff;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     width: 700px;
     top: initial;
     transform: translate(-50%, $navbarHeight + 40px);

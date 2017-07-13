@@ -23,7 +23,7 @@ const mapStateToProps = ({ browser, geocoding, routing }) => {
     geocodeIsFetching: isFetching,
     geocodeError: error,
     geocodeResult: result,
-    isMobile: !greaterThan.small,
+    isMobile: !greaterThan.medium,
     endLocation,
     startLocation,
     route

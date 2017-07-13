@@ -3,7 +3,7 @@
   width: 100%;
   z-index: $component-zindex;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     margin-top: 15px;
   }
 

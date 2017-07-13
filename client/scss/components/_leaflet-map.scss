@@ -4,7 +4,7 @@
   height: $mapHeightMobile;
   z-index: 0;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     height: $mapHeight;
   }
 
@@ -15,14 +15,14 @@
     padding: 0;
     margin-top: $searchboxHeightMobile;
 
-    @media (#{$bp-larger-than-mobile}) {
+    @media (#{$bp-larger-than-tablet}) {
       margin-top: 0;
     }
 
     // reposition & reset the Carto logo on the map
     .cartodb-logo {
       z-index: 100 !important;
-      left: 70px !important;
+      left: 80px !important;
 
       @media (#{$bp-larger-than-mobile}) {
         left: 100px !important;

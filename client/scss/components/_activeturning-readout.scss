@@ -47,7 +47,7 @@
     padding-left: 5px;
   }
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     // not visiable on devices larger than mobile
     display: none;
   }

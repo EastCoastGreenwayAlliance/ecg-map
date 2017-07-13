@@ -6,7 +6,7 @@
   z-index: 401;
   background: #fff;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     position: absolute;
     top: 276px;
     bottom: initial;

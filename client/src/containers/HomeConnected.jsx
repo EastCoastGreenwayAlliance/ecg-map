@@ -6,7 +6,7 @@ import { postMailchimpAPI } from '../actions';
 import Home from '../views/Home';
 
 const mapStateToProps = state => ({
-  isMobile: !state.browser.greaterThan.small,
+  isMobile: !state.browser.greaterThan.medium,
   mailchimp: state.mailchimp,
   startLocation: state.routing.startLocation,
   endLocation: state.routing.endLocation,

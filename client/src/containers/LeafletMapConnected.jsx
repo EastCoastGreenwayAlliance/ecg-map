@@ -16,7 +16,7 @@ const mapStateToProps = ({ activeturning, browser, geocoding, routing }) => {
     activeTurningEnabled: enabled,
     geocodeError: error,
     geocodeResult: result,
-    isMobile: !greaterThan.small,
+    isMobile: !greaterThan.medium,
     startLocation,
     endLocation,
     route

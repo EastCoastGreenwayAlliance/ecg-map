@@ -3,7 +3,7 @@
   border-bottom: 1px solid $dark-grey;
   z-index: $component-zindex;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     border: 0;
   }
 
@@ -65,7 +65,7 @@
     margin: 0;
     border: 0;
 
-    @media (#{$bp-larger-than-mobile}) {
+    @media (#{$bp-larger-than-tablet}) {
       // width: 100%;
       height: auto;
     }

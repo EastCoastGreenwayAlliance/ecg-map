@@ -11,7 +11,7 @@ const mapStateToProps = ({ activeturning, browser, elevation, routing }) => {
 
   return {
     activeTurningEnabled: enabled,
-    isMobile: !greaterThan.small,
+    isMobile: !greaterThan.medium,
     elevData: result,
     route,
     error,

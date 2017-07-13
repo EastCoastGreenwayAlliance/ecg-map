@@ -12,7 +12,7 @@ import activeTurningReducer from './activeTurningReducer';
 const browser = createResponsiveStateReducer({
   extraSmall: 420,
   small: 550,
-  medium: 750,
+  medium: 768,
   large: 1000,
   extraLarge: 1200
 }, {

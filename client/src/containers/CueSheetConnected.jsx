@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CueSheet from '../views/CueSheet';
 
 const mapStateToProps = ({ browser, routing }) => ({
-  isMobile: !browser.greaterThan.small,
+  isMobile: !browser.greaterThan.medium,
   route: routing.route
 });
 

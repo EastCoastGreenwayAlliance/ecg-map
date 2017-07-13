@@ -7,7 +7,7 @@
   border-bottom: 1px solid $light-grey;
   box-sizing: border-box;
 
-  @media (#{$bp-larger-than-mobile}) {
+  @media (#{$bp-larger-than-tablet}) {
     height: $navbarHeight;
   }
 
@@ -31,7 +31,7 @@
     width: 79px;
     height: 41px;
 
-    @media (#{$bp-larger-than-mobile}) {
+    @media (#{$bp-larger-than-tablet}) {
       width: 163px;
       height: 85px;
     }
