@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-// import 'leaflet.locatecontrol/dist/L.Control.Locate.min';
+import Legend from '../../lib/L.Control.Legend';
 
 import { configureLayerSource, queryZXY } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
@@ -243,6 +243,10 @@ class LeafletMap extends Component {
     // add the basemap toggle control
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.layersControl.addTo(this.map, { position: 'topright' });
+
+    // add the legend control
+    this.legend = new Legend();
+    this.legend.addTo(this.map);
 
     // if we're on desktop add zoom buttons
     this.zoomControl = !isMobile ?
