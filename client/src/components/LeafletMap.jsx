@@ -25,6 +25,7 @@ L.Icon.Default.mergeOptions({
     - updating features to be shown on the map such as markers and the highlighted
       portion of the ECG route after a successful search
     - integrating Carto(db).JS for loading the ECG route as a tileLayer
+    - enabling "Locate Me" and "Active Turning"
  */
 class LeafletMap extends Component {
   static propTypes = {
@@ -207,6 +208,10 @@ class LeafletMap extends Component {
   }
 
   initMap() {
+    // sets up the Leaflet map.
+    // NOTE: attribution fixes are called within the initCartoLayer callback
+    // map zoom buttons are conditionally added there as well, otherwise the attribution
+    // is placed on top of them
     const { onMapMove, isMobile, disableActiveTurning } = this.props;
     const self = this;
 
@@ -249,10 +254,6 @@ class LeafletMap extends Component {
     // add the legend control
     this.legend = new Legend();
     this.legend.addTo(this.map);
-
-    // if we're on desktop add zoom buttons
-    this.zoomControl = !isMobile ?
-      L.control.zoom({ position: 'bottomright' }).addTo(this.map) : null;
 
     // add the scale bar control
     L.control.scale().addTo(this.map);
@@ -302,10 +303,17 @@ class LeafletMap extends Component {
   }
 
   fixMapAttribution() {
+    const { isMobile } = this.props;
     // when a user changes the basemap layer, show the correct attribution for the provider
     // leaflet's layer control does a poor job of handling this on its own.
     const attr = document.querySelector('.leaflet-control-attribution.leaflet-control');
     attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap<a/>';
+
+    // if we're on desktop add zoom buttons
+    // adding zoom buttons here because otherwise the attribution is placed on top
+    // of them and looks wrong
+    this.zoomControl = !isMobile ?
+      L.control.zoom({ position: 'bottomright' }).addTo(this.map) : null;
 
     this.map.on('baselayerchange', (e) => {
       // set the correct attribution
