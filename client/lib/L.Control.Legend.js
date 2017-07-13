@@ -50,11 +50,11 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
       var className = 'leaflet-map-legend';
       var legend = this._container = L.DomUtil.create('div', className, L.DomUtil.get('map'));
       var html = `
-        <ul className="map-legend-items">
-          <li>thig one</li>
-          <li>thig two</li>
-          <li>thig three</li>
-          <li>thig four</li>
+        <ul class="map-legend-items">
+          <li><span class="legend-item-road"></span> On Road</li>
+          <li><span class="legend-item-path"></span> Trail</li>
+          <li><span class="legend-item-dirt"></span> Unpaved Trail</li>
+          <li><span class="legend-item-transit"></span> Transit or Ferry</li>
         </ul>
       `;
 
