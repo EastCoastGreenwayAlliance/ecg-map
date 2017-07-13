@@ -10,14 +10,17 @@ const NavBar = (props) => {
   const height = isMobile ? 41 : 85;
   return (
     <div className="Navbar">
-      <div
-        className="ecg-logo"
-        style={{
-          backgroundImage: `url(/assets/logo/${bgImage})`,
-          height,
-          width,
-        }}
-      />
+      <a target="_blank" rel="noopener noreferrer" href="https://www.greenway.org">
+        <div
+          className="ecg-logo"
+          style={{
+            backgroundImage: `url(/assets/logo/${bgImage})`,
+            display: 'inline-block',
+            height,
+            width,
+          }}
+        />
+      </a>
     </div>
   );
 };
