@@ -87,7 +87,7 @@ class SearchInput extends Component {
     let text = '';
 
     if (!startLocation.accepted && !endLocation.accepted) text = 'Search a Starting Point';
-    if (startLocation.accepted && !endLocation.accepted) text = 'Search a Ending Point';
+    if (startLocation.accepted && !endLocation.accepted) text = 'Search an Ending Point';
     if (startLocation.accepted && endLocation.accepted) text = 'Search Again';
 
     return text;
