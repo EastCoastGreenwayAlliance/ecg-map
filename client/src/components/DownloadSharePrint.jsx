@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import Clipboard from 'clipboard';
+import ReactGA from 'react-ga/src/index'; // have to import from the src path
 
 import { loadToGPX, loadFileSaver } from '../common/api';
 
@@ -38,6 +39,13 @@ class DownloadSharePrint extends Component {
 
       const copySuccess = () => {
         alert('Route search copied! Feel free to paste and share.');
+
+        // log the copy event
+        ReactGA.event({
+          category: 'Post Route Search Options',
+          action: 'Button Click',
+          label: 'Stateful URL Copy'
+        });
       };
 
       new Clipboard('button.dps-share', {
@@ -114,6 +122,13 @@ class DownloadSharePrint extends Component {
     function saveFile() {
       const blob = new Blob([gpxString], { type: 'text/plain;charset=utf-8' });
       self.fileSaver.saveAs(blob, 'my-ecg-route.gpx');
+
+      // record the GPX download event
+      ReactGA.event({
+        category: 'Post Route Search Options',
+        action: 'Button Click',
+        label: 'GPX download'
+      });
     }
 
     // dynamically imports "file-saver.js" library if it hasn't been imported already
@@ -126,6 +141,15 @@ class DownloadSharePrint extends Component {
     } else {
       saveFile();
     }
+  }
+
+  logCueSheetBtnClick() {
+    // record the Cuesheet Button event
+    ReactGA.event({
+      category: 'Post Route Search Options',
+      action: 'Button Click',
+      label: 'Cuesheet view'
+    });
   }
 
   render() {
