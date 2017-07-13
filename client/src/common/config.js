@@ -1,5 +1,6 @@
 // App wide configuration goes here
 export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
+export const gaTrackingID = '';
 
 // CARTO account name (temporarily set to "greeninfo" until data is in order)
 export const cartoUser = 'niles';
