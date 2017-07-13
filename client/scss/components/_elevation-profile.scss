@@ -57,6 +57,10 @@
     letter-spacing: normal;
     color: $font-color;
 
+    &.total-dist {
+      text-align: left;
+    }
+
     &.icon-chevron {
       -webkit-box-flex: 1 1 0;
       -ms-flex: 1 1 0;
@@ -64,6 +68,10 @@
       width: 18px;
       height: 18px;
       background: url('../assets/icons/icon-chevron-left.svg') no-repeat;
+    }
+
+    &.elev-gain {
+      text-align: right;
     }
 
     @media (#{$bp-larger-than-tablet}) {
