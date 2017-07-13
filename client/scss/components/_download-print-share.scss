@@ -24,6 +24,10 @@
     display: inline-block;
     border-bottom: none;
 
+    &:focus {
+      outline: 5px auto $outline-color;
+    }
+
     &.dps-download,
     &.dps-share {
       border-right: 1px solid $grey;

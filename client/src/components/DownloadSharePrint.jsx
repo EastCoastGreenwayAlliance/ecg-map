@@ -162,10 +162,31 @@ class DownloadSharePrint extends Component {
 
     return (
       <div className="DownloadSharePrint">
-        <button className="dps-download" onClick={() => this.convertToGPX(route.response)}><span /></button>
-        <button className="dps-share" onClick={() => {}}><span /></button>
+        <button
+          className="dps-download"
+          title="Download GPX file"
+          tabIndex={0}
+          onClick={() => this.convertToGPX(route.response)}
+        >
+          <span />
+        </button>
+        <button
+          className="dps-share"
+          title="Copy URL"
+          tabIndex={0}
+          onClick={() => {}}
+        >
+          <span />
+        </button>
         <Link to={'/cuesheet'}>
-          <button className="dps-print" onClick={() => {}}><span /></button>
+          <button
+            className="dps-print"
+            title="Print or View Cuesheet"
+            tabIndex={0}
+            onClick={() => this.logCueSheetBtnClick()}
+          >
+            <span />
+          </button>
         </Link>
       </div>
     );
