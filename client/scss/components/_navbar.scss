@@ -1,12 +1,39 @@
 .Navbar {
+  display: block;
+  width: 100%;
+  height: $navbarHeightMobile;
   padding: 10px;
-  border-bottom: 1px solid $light-grey;
-  height: auto;
   background: #fff;
+  border-bottom: 1px solid $light-grey;
+  box-sizing: border-box;
 
-  .ecg-logo {
-    background-size: contain;
-    width: 163px;
-    height: 85px;
+  @media (#{$bp-larger-than-mobile}) {
+    height: $navbarHeight;
+  }
+
+  .navbar-left,
+  .navbar-right {
+    display: inline-block;
+    height: 100%;
+  }
+
+  .navbar-left {
+    width: 40%;
+  }
+
+  .navbar-right {
+    // placeholder container for nav UI options
+    width: 60%;
+  }
+
+  img.ecg-logo {
+    display: block;
+    width: 79px;
+    height: 41px;
+
+    @media (#{$bp-larger-than-mobile}) {
+      width: 163px;
+      height: 85px;
+    }
   }
 }

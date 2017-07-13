@@ -22,7 +22,11 @@
     // reposition & reset the Carto logo on the map
     .cartodb-logo {
       z-index: 100 !important;
-      left: 100px !important;
+      left: 70px !important;
+
+      @media (#{$bp-larger-than-mobile}) {
+        left: 100px !important;
+      }
     }
 
     // overide the basemap icon
