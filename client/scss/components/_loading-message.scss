@@ -6,6 +6,16 @@
     padding: 10px;
   }
 
+  span.loading-gif {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+    background: url('../assets/icons/loading.gif') no-repeat;
+    background-size: cover;
+  }
+
   &:only-child {
     border: none;
   }

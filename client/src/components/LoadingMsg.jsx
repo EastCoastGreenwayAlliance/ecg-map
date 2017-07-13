@@ -6,7 +6,7 @@ const LoadingMsg = (props) => {
   const { message } = props;
   return (
     <div className="LoadingMessage">
-      <p>{ message || 'Loading...' }</p>
+      <p><span className="loading-gif" />{ message || 'Loading...' }</p>
     </div>
   );
 };
