@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import ReactGA from 'react-ga/src/index'; // have to import from the src path
 
 import { cartoUser, cartoTables } from '../../common/config';
 import { loadGeoRouter } from '../../common/api';
@@ -45,6 +46,9 @@ class SearchResults extends Component {
     // instead we load it async after the user performs a search
     // see Webpack documenation for more info: https://webpack.js.org/guides/code-splitting-async/
     this.geoRouter = undefined;
+    // for logging the amount of time it takes to search for a route
+    this.routeSearchStartTime = null;
+    this.routeSearchEndTime = null;
   }
 
   componentWillMount() {
@@ -54,12 +58,13 @@ class SearchResults extends Component {
     // the geoRouter to find a route between them asyc
     if (endLocation.accepted && endLocation.coordinates.length && startLocation.accepted
       && startLocation.coordinates.length) {
+      this.routeSearchStartTime = new Date();
       this.getRoute(startLocation, endLocation);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { geocodeResult, startLocation, endLocation } = nextProps;
+    const { geocodeResult, startLocation, endLocation, route } = nextProps;
 
     if (geocodeResult && !isEqual(geocodeResult, this.props.geocodeResult)) {
       // We received a geocode result from the user, so show the geocode result
@@ -81,7 +86,26 @@ class SearchResults extends Component {
 
     // user has okay'd start and end locations, now get the actual route
     if (startLocation.accepted && endLocation.accepted && !this.props.endLocation.accepted) {
+      // note the start time before the route search took place
+      this.routeSearchStartTime = new Date();
+      // fire the geo router findRoute method
       this.getRoute(startLocation, endLocation);
+    }
+
+    // we recieved the route response, log the amount of time it took in GA
+    if (route.response && !this.props.route.response) {
+      this.routeSearchEndTime = new Date();
+      const timeEllapsed = this.routeSearchEndTime.getTime() - this.routeSearchStartTime.getTime();
+
+      ReactGA.timing({
+        category: 'Search',
+        variable: 'Total route calculation time',
+        value: timeEllapsed / 1000,
+        label: 'Route Search Time'
+      });
+
+      this.routeSearchStartTime = null;
+      this.routeSearchEndTime = null;
     }
   }
 
