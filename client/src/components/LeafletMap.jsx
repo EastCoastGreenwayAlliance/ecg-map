@@ -5,7 +5,7 @@ import Legend from '../../lib/L.Control.Legend';
 
 import { configureLayerSource, queryZXY } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
-import { maxGeoBounds } from '../common/config';
+import { maxGeoBounds, mbURL } from '../common/config';
 
 // set default image paths for Leaflet
 // note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
@@ -50,24 +50,26 @@ class LeafletMap extends Component {
 
     this.map = null;
     this.baseLayers = {
-      positron: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      Greyscale: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
         maxZoom: 18,
         zIndex: 0,
       }),
-      satellite: L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '<a href="http://www.esri.com/">Esri</a>',
+      Satellite: L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 18,
         zIndex: 0,
-      })
+      }),
+      'Detailed Streets': L.tileLayer(mbURL, {
+        zIndex: 0,
+      }),
     };
 
     this.mapOptions = {
+      attributionControl: false,
       center: [
         hashZXY.lat && hashZXY.lng ? hashZXY.lat : lat,
         hashZXY.lat && hashZXY.lng ? hashZXY.lng : lng,
       ],
-      layers: [this.baseLayers.positron],
+      layers: [this.baseLayers['Detailed Streets']],
       maxBounds: maxGeoBounds,
       scrollWheelZoom: false,
       minZoom: 4,
@@ -292,8 +294,35 @@ class LeafletMap extends Component {
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
+
+        // fix the map attribution
+        self.fixMapAttribution();
       })
       .on('error', (error) => { throw error; });
+  }
+
+  fixMapAttribution() {
+    // when a user changes the basemap layer, show the correct attribution for the provider
+    // leaflet's layer control does a poor job of handling this on its own.
+    const attr = document.querySelector('.leaflet-control-attribution.leaflet-control');
+    attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap<a/>';
+
+    this.map.on('baselayerchange', (e) => {
+      // set the correct attribution
+      switch (e.name) {
+        case 'Greyscale':
+          attr.innerHTML = '© <a target="_blank">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+          break;
+        case 'Detailed Streets':
+          attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap<a/>';
+          break;
+        case 'Satellite':
+          attr.innerHTML = '© <a target="_blank" href="http://www.esri.com/">Esri</a>';
+          break;
+        default:
+          return null;
+      }
+    });
   }
 
   enableActiveTurning() {
@@ -412,7 +441,7 @@ class LeafletMap extends Component {
     const { geocodeResult, isMobile } = this.props;
 
     if (coordinates.length) {
-      const padding = isMobile ? [[0, 50], [0, 160]] : [[330, 0], [60, 0]];
+      const padding = isMobile ? [[0, 50], [50, 185]] : [[330, 0], [60, 0]];
       // display marker showing nearest ECG location
       this.searchResults.addLayer(
         L.circleMarker(location.coordinates, {
@@ -450,7 +479,7 @@ class LeafletMap extends Component {
     // user has finished selecting their start and end,
     // add start and end points, then zoom the map extent
     const { isMobile } = this.props;
-    const padding = isMobile ? [[0, 50], [0, 160]] : [[330, 0], [60, 0]];
+    const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
     this.searchResults.clearLayers();
     this.searchResults.addLayer(
@@ -473,7 +502,7 @@ class LeafletMap extends Component {
     }
 
     const { isMobile } = this.props;
-    const padding = isMobile ? [[0, 50], [0, 160]] : [[330, 0], [60, 0]];
+    const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
     // keep a reference to just the route sections; this.searchResults will have other markers
     // and add .properties to the resulting L.linestring layers cuz Leaflet strips them

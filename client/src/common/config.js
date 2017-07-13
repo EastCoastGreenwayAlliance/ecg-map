@@ -10,6 +10,11 @@ export const cartoTables = {
   cue_points: 'ecg_route_cues_prod',
 };
 
+// Mapbox access token
+const mbtoken = 'pk.eyJ1IjoiZWNnbmlsZXMiLCJhIjoiY2lyZHkxbmRqMDF5bGc3bTN2ajN0ZmNqbyJ9.29ONxUaTcSYUH3skP_FY1Q';
+const mbOutdoors = 'cirdy2p7r000mh5m5xzg6pplr';
+export const mbURL = `https://api.mapbox.com/styles/v1/ecgniles/${mbOutdoors}/tiles/256/{z}/{x}/{y}?access_token=${mbtoken}`;
+
 // route segment field names to appear within InfoWindows / PopUps
 export const routeSegmentsFieldsVisible = [
   'line_type',
