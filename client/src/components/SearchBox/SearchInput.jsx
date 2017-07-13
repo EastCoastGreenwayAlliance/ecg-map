@@ -127,7 +127,7 @@ class SearchInput extends Component {
           <span className={searchIconClassName()} />
           <input
             ref={(_) => { this.textInput = _; }}
-            type="text"
+            type="search"
             placeholder={this.renderPlaceholderText()}
             value={searchAddress}
             onChange={this.handleChange}
