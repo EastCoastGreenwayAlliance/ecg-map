@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactGA from 'react-ga/src/index'; // have to import from the src path
 
 // Handles displaying of an error message to the user
 const ErrorMsg = (props) => {
@@ -16,13 +15,6 @@ const ErrorMsg = (props) => {
       `${error.message}, please try again.` :
       'Something went wrong, please try again.';
   }
-
-  // log the error event
-  ReactGA.event({
-    category: 'Errors',
-    action: 'An Error Occured',
-    label: errorMsg
-  });
 
   return (
     <div className="ErrorMessage">
