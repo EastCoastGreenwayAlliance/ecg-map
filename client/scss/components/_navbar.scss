@@ -18,21 +18,29 @@
   }
 
   .navbar-left {
-    width: 40%;
+    width: $logoWidthMobile;
+
+    @media (#{$bp-larger-than-tablet}) {
+      width: $logoWidth;
+    }
   }
 
   .navbar-right {
     // placeholder container for nav UI options
-    width: 60%;
+    width: calc(100% - $logoWidthMobile);
+
+    @media (#{$bp-larger-than-tablet}) {
+      width: calc(100% - $logoWidth);
+    }
   }
 
   img.ecg-logo {
     display: block;
-    width: 79px;
+    width: $logoWidthMobile;
     height: 41px;
 
     @media (#{$bp-larger-than-tablet}) {
-      width: 163px;
+      width: $logoWidth;
       height: 85px;
     }
   }

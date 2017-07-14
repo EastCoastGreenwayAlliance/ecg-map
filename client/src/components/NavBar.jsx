@@ -13,6 +13,7 @@ const NavBar = (props) => {
           <img
             className="ecg-logo"
             alt="East Coast Greenway logo"
+            title="Visit the East Coast Greenway website"
             src={`/assets/logo/${bgImage}`}
           />
         </a>
