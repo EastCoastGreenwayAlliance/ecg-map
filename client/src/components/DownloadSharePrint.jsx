@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import Clipboard from 'clipboard';
-import ReactGA from 'react-ga/src/index'; // have to import from the src path
 
 import { loadToGPX, loadFileSaver } from '../common/api';
+import {
+  logCueSheetBtnClick,
+  logDownloadGPX,
+  logStatefulURLCopy
+} from '../common/googleAnalytics';
 
 /** Class that displays UI and handles:
     - creation and download of GPX file from route.response
@@ -39,13 +43,8 @@ class DownloadSharePrint extends Component {
 
       const copySuccess = () => {
         alert('Route search copied! Feel free to paste and share.');
-
         // log the copy event
-        ReactGA.event({
-          category: 'Post Route Search Options',
-          action: 'Button Click',
-          label: 'Stateful URL Copy'
-        });
+        logStatefulURLCopy();
       };
 
       new Clipboard('button.dps-share', {
@@ -124,11 +123,7 @@ class DownloadSharePrint extends Component {
       self.fileSaver.saveAs(blob, 'my-ecg-route.gpx');
 
       // record the GPX download event
-      ReactGA.event({
-        category: 'Post Route Search Options',
-        action: 'Button Click',
-        label: 'GPX download'
-      });
+      logDownloadGPX();
     }
 
     // dynamically imports "file-saver.js" library if it hasn't been imported already
@@ -141,15 +136,6 @@ class DownloadSharePrint extends Component {
     } else {
       saveFile();
     }
-  }
-
-  logCueSheetBtnClick() {
-    // record the Cuesheet Button event
-    ReactGA.event({
-      category: 'Post Route Search Options',
-      action: 'Button Click',
-      label: 'Cuesheet view'
-    });
   }
 
   render() {
@@ -183,7 +169,7 @@ class DownloadSharePrint extends Component {
             className="dps-print"
             title="Print or View Cuesheet"
             tabIndex={0}
-            onClick={() => this.logCueSheetBtnClick()}
+            onClick={() => logCueSheetBtnClick()}
           >
             <span />
           </button>

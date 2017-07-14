@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ReactGA from 'react-ga/src/index'; // have to import from the src path
+
+import { logLocationSearch } from '../../common/googleAnalytics';
 
 /** Class for displaying the Location Search text input and firing geocoding API
     requests upon a search */
@@ -62,11 +63,7 @@ class SearchInput extends Component {
     }
 
     // log the search event in Google Analytics
-    ReactGA.event({
-      category: 'Search',
-      action: !startLocation.accepted ? 'Start location search' : 'End location search',
-      label: searchAddress
-    });
+    logLocationSearch(startLocation.accepted, searchAddress);
   }
 
   handleSearchCancel() {

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import ReactGA from 'react-ga/src/index'; // have to import from the src path
+
+import { logCueSheetBtnClick } from '../common/googleAnalytics';
 
 // This UI only displays on mobile, it's purpose is to allow someone to
 // follow the ECG route while also viewing the next upcoming cue
@@ -15,14 +16,7 @@ const StartRouteViewCues = (props) => {
         <Link to={'/cuesheet'} style={{ textDecoration: 'none' }}>
           <button
             className="center blue"
-            onClick={() => {
-              // log the cue sheet view event
-              ReactGA.event({
-                category: 'Post Route Search Options',
-                action: 'Button Click',
-                label: 'Cuesheet view'
-              });
-            }}
+            onClick={() => logCueSheetBtnClick()}
           >
             View Cues
           </button>

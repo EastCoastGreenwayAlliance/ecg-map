@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import ReactGA from 'react-ga/src/index'; // have to import from the src path
 
 import { cartoUser, cartoTables } from '../../common/config';
 import { loadGeoRouter } from '../../common/api';
+import { logRouteSearchTime } from '../../common/googleAnalytics';
 
 // helper components
 import LoadingMsg from '../LoadingMsg';
@@ -92,18 +92,11 @@ class SearchResults extends Component {
       this.getRoute(startLocation, endLocation);
     }
 
-    // we recieved the route response, log the amount of time it took in GA
+    // we recieved the route response, log the amount of time it took to find the route
     if (route.response && !this.props.route.response) {
       this.routeSearchEndTime = new Date();
       const timeEllapsed = this.routeSearchEndTime.getTime() - this.routeSearchStartTime.getTime();
-
-      ReactGA.timing({
-        category: 'Route Search',
-        variable: 'Route calculation time',
-        value: timeEllapsed,
-        label: 'Route Search Time'
-      });
-
+      logRouteSearchTime(timeEllapsed);
       this.routeSearchStartTime = null;
       this.routeSearchEndTime = null;
     }

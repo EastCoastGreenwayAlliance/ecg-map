@@ -1,4 +1,5 @@
 import queryString from 'query-string';
+
 import { cartoUser, routeSegmentsFieldsVisible } from './config';
 import cartocss from './cartocss';
 import { defaultRoutingState } from '../reducers';
