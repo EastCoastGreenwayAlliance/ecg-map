@@ -51,15 +51,15 @@ class LeafletMap extends Component {
 
     this.map = null;
     this.baseLayers = {
+      'Detailed Streets': L.tileLayer(mbURL, {
+        zIndex: 0,
+      }),
       Greyscale: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
         maxZoom: 18,
         zIndex: 0,
       }),
       Satellite: L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 18,
-        zIndex: 0,
-      }),
-      'Detailed Streets': L.tileLayer(mbURL, {
         zIndex: 0,
       }),
     };
@@ -70,7 +70,7 @@ class LeafletMap extends Component {
         hashZXY.lat && hashZXY.lng ? hashZXY.lat : lat,
         hashZXY.lat && hashZXY.lng ? hashZXY.lng : lng,
       ],
-      layers: [this.baseLayers['Detailed Streets']],
+      layers: [this.baseLayers.Greyscale],
       maxBounds: maxGeoBounds,
       scrollWheelZoom: false,
       minZoom: 4,
