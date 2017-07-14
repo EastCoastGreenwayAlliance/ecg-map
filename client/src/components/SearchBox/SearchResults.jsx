@@ -98,9 +98,9 @@ class SearchResults extends Component {
       const timeEllapsed = this.routeSearchEndTime.getTime() - this.routeSearchStartTime.getTime();
 
       ReactGA.timing({
-        category: 'Search',
-        variable: 'Total route calculation time',
-        value: timeEllapsed / 1000,
+        category: 'Route Search',
+        variable: 'Route calculation time',
+        value: timeEllapsed,
         label: 'Route Search Time'
       });
 
