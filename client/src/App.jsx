@@ -14,8 +14,6 @@ ReactGA.initialize(gaTrackingID, {
   debug: process.env.NODE_ENV !== 'production',
   titleCase: true,
   gaOptions: {
-    name: 'ecg-map-tracker',
-    anonymizeIp: true,
     forceSSL: true,
     viewportSize: `${store.getState().browser.width}x${store.getState().browser.height}`
   }
