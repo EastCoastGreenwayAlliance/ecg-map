@@ -26,6 +26,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "express-sslify": "^1.2.0",
     "morgan": "^1.8.2",
     "superagent": "^3.5.2"
   }
