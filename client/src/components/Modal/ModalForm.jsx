@@ -12,7 +12,9 @@ class ModalForm extends Component {
     handleCloseModal: PropTypes.func.isRequired,
     handleFormSubmit: PropTypes.func.isRequired,
     mailchimpResponse: PropTypes.string,
-    mailchimpError: PropTypes.object,
+    mailchimpError: PropTypes.oneOfType([
+      PropTypes.object, PropTypes.string
+    ]),
   }
 
   constructor(props) {
