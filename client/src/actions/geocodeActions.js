@@ -47,7 +47,14 @@ const fetchLocationGeocode = (searchTerm) => {
   return (dispatch) => {
     dispatch(locationGeocodeRequest(searchTerm));
     return fetch(url)
-      .then(res => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          dispatch(locationGeocodeError(res.statusText));
+          throw Error(res.statusText);
+        } else {
+          return res.json();
+        }
+      })
       .then((json) => {
         const { results, status } = json;
         // catch a non-successful geocode result that was returned in the response
