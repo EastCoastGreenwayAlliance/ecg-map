@@ -23,7 +23,9 @@ var url = `https://${mailchimpServerInstance}.api.mailchimp.com/3.0/lists/${mail
 var app = express();
 
 // enforces HTTPS connections on any incoming GET and HEAD requests
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+if (process.env.NODE_ENV === 'production') {
+  app.use(enforce.HTTPS({ trustProtoHeader: true }));
+}
 
 // setup logging
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
