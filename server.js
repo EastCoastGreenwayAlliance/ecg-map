@@ -5,11 +5,13 @@
 /* eslint-disable prefer-template */
 /* eslint-disable no-console */
 
+var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('superagent');
 var morgan = require('morgan');
 var path = require('path');
+var enforce = require('express-sslify');
 
 // mailchimp API settings are stored in the .env file
 var mailchimpAPIKey = process.env.MAILCHIMP_API_KEY;
@@ -19,6 +21,9 @@ var mailchimpListID = process.env.MAILCHIMP_LIST_ID;
 var url = `https://${mailchimpServerInstance}.api.mailchimp.com/3.0/lists/${mailchimpListID}/members/`;
 
 var app = express();
+
+// enforces HTTPS connections on any incoming GET and HEAD requests
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 // setup logging
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
@@ -66,6 +71,7 @@ app.post('/signup', function(req, res) {
   }
 });
 
-app.listen(process.env.PORT || 5001, function() {
+// necessary to use http.createServer for enforcing HTTPS
+http.createServer(app).listen(process.env.PORT || 5001, function() {
   console.log('Listening on http://%s:%d/', this.address().address, this.address().port);
 });
