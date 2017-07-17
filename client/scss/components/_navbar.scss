@@ -13,8 +13,10 @@
 
   .navbar-left,
   .navbar-right {
+    position: relative;
     display: inline-block;
     height: 100%;
+    float: left;
   }
 
   .navbar-left {
@@ -27,10 +29,23 @@
 
   .navbar-right {
     // placeholder container for nav UI options
-    width: calc(100% - $logoWidthMobile);
+    width: calc(100% - #{$logoWidthMobile});
+    line-height: $navbarHeightMobile;
 
     @media (#{$bp-larger-than-tablet}) {
-      width: calc(100% - $logoWidth);
+      width: calc(100% - #{$logoWidth});
+      line-height: $navbarHeight;
+    }
+
+    p.about-feedback {
+      display: block;
+      margin: 0;
+      font-size: 1.2rem;
+      text-align: right;
+
+      a {
+        text-decoration: none;
+      }
     }
   }
 

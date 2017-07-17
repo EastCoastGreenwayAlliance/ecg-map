@@ -18,7 +18,13 @@ const NavBar = (props) => {
           />
         </a>
       </div>
-      <div className="navbar-right" />
+      <div className="navbar-right">
+        <p className="about-feedback">
+          <a target="_blank" rel="noopener noreferrer" href="https://www.greenway.org/trips/plan-your-trip">
+            About & Feedback
+          </a>
+        </p>
+      </div>
     </nav>
   );
 };
