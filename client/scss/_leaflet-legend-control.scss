@@ -1,6 +1,8 @@
 // legend control
 .leaflet-map-legend.leaflet-control {
   position: relative;
+  width: 39px;
+  height: 39px;
 
   ul {
     display: none;
