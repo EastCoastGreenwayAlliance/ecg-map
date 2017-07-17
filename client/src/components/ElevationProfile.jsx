@@ -308,15 +308,15 @@ class ElevationProfile extends Component {
     const { totalDistance, elevGain } = elevDataParsed;
     const { isMobile } = this.props;
     const chevronStyle = {
-      display: isMobile ? 'block' : 'none',
-      transform: `${isOpened ? 'translate(5px, -20px)' : 'translateY(20px)'}
-        ${isOpened ? 'rotate(-90deg)' : 'rotate(90deg)'}`
+      display: isMobile ? 'block' : 'none'
     };
 
     return (
       <button onClick={this.handleClick} className="elev-prof--header">
         <p className="heading total-dist">Total Dist: <span>{totalDistance} mi</span></p>
-        <p className="heading icon-chevron" style={chevronStyle} />
+        <p className="heading icon-chevron" style={chevronStyle}>
+          <span className={isOpened ? 'down' : 'up'} />
+        </p>
         <p className="heading elev-gain">Elev Gain: <span>{elevGain} ft</span></p>
       </button>
     );

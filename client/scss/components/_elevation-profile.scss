@@ -65,9 +65,27 @@
       -webkit-box-flex: 1 1 0;
       -ms-flex: 1 1 0;
       flex: 1 1 0;
-      width: 18px;
-      height: 18px;
-      background: url('../assets/icons/icon-chevron-left.svg') no-repeat;
+
+      span {
+        width: 18px;
+        height: 18px;
+        display: block;
+        margin: 0 auto;
+      }
+
+      span.up {
+        background: url('../assets/icons/icon-chevron-up.png') no-repeat;
+        background:
+          url('../assets/icons/icon-chevron-up.svg') no-repeat,
+          linear-gradient(transparent, transparent);
+      }
+
+      span.down {
+        background: url('../assets/icons/icon-chevron-down.png') no-repeat;
+        background:
+          url('../assets/icons/icon-chevron-down.svg') no-repeat,
+          linear-gradient(transparent, transparent);
+      }
     }
 
     &.elev-gain {
