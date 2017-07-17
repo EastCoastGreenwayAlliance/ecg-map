@@ -37,7 +37,16 @@ const postMailchimpAPI = (data) => {
       },
       mode: 'cors'
     })
-      .then(res => res.text())
+      .then((res) => {
+        // fetch() doesn't reject a promise if res status code isn't in the success range
+        // so have to handle this way:
+        if (!res.ok) {
+          dispatch(mailchimpPostError(res.statusText));
+          throw Error(res.statusText);
+        } else {
+          return res.text();
+        }
+      })
       .then(text => dispatch(mailchimpPostSuccess(text)))
       .catch(error => dispatch(mailchimpPostError(error)));
   };
