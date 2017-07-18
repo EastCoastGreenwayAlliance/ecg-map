@@ -241,6 +241,7 @@ class LeafletMap extends Component {
               opacity: 0.9,
               radius: 5
             },
+            setView: 'once',
             stopCallback: disableActiveTurning,
           }).addTo(this.map);
         })
