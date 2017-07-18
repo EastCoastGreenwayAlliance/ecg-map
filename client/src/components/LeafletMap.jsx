@@ -71,7 +71,7 @@ class LeafletMap extends Component {
         hashZXY.lat && hashZXY.lng ? hashZXY.lng : lng,
       ],
       layers: [this.baseLayers.Greyscale],
-      maxBounds: maxGeoBounds,
+      // maxBounds: maxGeoBounds,
       scrollWheelZoom: false,
       minZoom: 4,
       maxZoom: 18,
