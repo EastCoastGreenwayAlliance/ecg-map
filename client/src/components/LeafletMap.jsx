@@ -5,7 +5,7 @@ import Legend from '../../lib/L.Control.Legend';
 
 import { configureLayerSource, queryZXY } from '../common/api';
 import configureMapSQL from '../common/sqlQueries';
-import { maxGeoBounds, mbURL } from '../common/config';
+import { mbSatellite, mbOutdoors } from '../common/config';
 
 // set default image paths for Leaflet
 // note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
@@ -51,14 +51,14 @@ class LeafletMap extends Component {
 
     this.map = null;
     this.baseLayers = {
-      'Detailed Streets': L.tileLayer(mbURL, {
+      'Detailed Streets': L.tileLayer(mbOutdoors, {
         zIndex: 0,
       }),
       Greyscale: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
         maxZoom: 18,
         zIndex: 0,
       }),
-      Satellite: L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      Satellite: L.tileLayer(mbSatellite, {
         maxZoom: 18,
         zIndex: 0,
       }),
@@ -326,7 +326,7 @@ class LeafletMap extends Component {
           attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap<a/>';
           break;
         case 'Satellite':
-          attr.innerHTML = '© <a target="_blank" href="http://www.esri.com/">Esri</a>';
+          attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="https://www.digitalglobe.com/">Digital Globe</a>';
           break;
         default:
           return null;
