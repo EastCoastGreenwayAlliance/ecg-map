@@ -232,6 +232,7 @@ class LeafletMap extends Component {
             locateOptions: {
               enableHighAccuracy: true,
             },
+            keepCurrentZoomLevel: true,
             metric: false,
             markerStyle: {
               color: '#136AEC',
@@ -241,9 +242,8 @@ class LeafletMap extends Component {
               opacity: 0.9,
               radius: 5
             },
-            setView: 'once',
             stopCallback: disableActiveTurning,
-          }).addTo(this.map);
+          }).addTo(self.map);
         })
         .catch((error) => { throw error; });
     }
