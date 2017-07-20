@@ -345,7 +345,10 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
             } else {
                 if (this.options.keepCurrentZoomLevel) {
                     var f = this.options.flyTo ? this._map.flyTo : this._map.panTo;
-                    f.bind(this._map)([this._event.latitude, this._event.longitude]);
+                    var e = this._event;
+                    var lat = e.latitude || e.latlng.lat;
+                    var lon = e.longitude || e.latlng.lng;
+                    f.bind(this._map)([lat, lon]);
                 } else {
                     var f = this.options.flyTo ? this._map.flyToBounds : this._map.fitBounds;
                     f.bind(this._map)(this._event.bounds, {
