@@ -41,8 +41,8 @@ class SearchResults extends Component {
 
   constructor() {
     super();
-    // Placeholder for the geo routing algorithm
-    // not imported immediately due to its dependency, JSTS, being a large file size
+    // Placeholder for the geo routing module
+    // Note that it's not imported immediately due to its dependency, JSTS, being a large file size
     // instead we load it async after the user performs a search
     // see Webpack documenation for more info: https://webpack.js.org/guides/code-splitting-async/
     this.geoRouter = undefined;
@@ -101,29 +101,6 @@ class SearchResults extends Component {
       this.routeSearchEndTime = null;
     }
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   // only re-render the search box when certain parts change
-  //   // this could probably be more specific, where objects are being compared
-  //   const { geocodeIsFetching, geocodeError, geocodeResult, endLocation,
-  //     startLocation, route } = nextProps;
-  //
-  //   debugger;
-  //
-  //   if (geocodeIsFetching !== this.props.geocodeIsFetching ||
-  //     !isEqual(geocodeError, this.props.geocodeError) ||
-  //     !isEqual(geocodeResult, this.props.geocodeResult) ||
-  //     !isEqual(endLocation, this.props.endLocation) ||
-  //     !isEqual(startLocation, this.props.startLocation ||
-  //     !isEqual(route.response, this.props.route.response) ||
-  //     !isEqual(route.error, this.props.route.error) ||
-  //     route.isLoadingRoute !== this.props.route.isLoadingRoute)
-  //     ) {
-  //     return true;
-  //   }
-  //
-  //   return false;
-  // }
 
   getRoute(startLocation, endLocation) {
     // handles making the geo routing search request given start and end locations

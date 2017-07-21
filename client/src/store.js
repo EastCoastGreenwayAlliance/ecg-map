@@ -6,10 +6,6 @@ import rootReducer from './reducers/';
 import middleware from './middleware';
 import { preloadRoutingState } from './common/api';
 
-// saved sample application state for store.routing, for testing / feature development,
-// so that we don't have to manually go through the UX steps to get routing data
-// import routingState from './hydratedStateForTesting.json';
-
 // enable redux dev tools: https://github.com/zalmoxisus/redux-devtools-extension
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -24,7 +20,7 @@ function makeStore(initialState) {
   );
 
   if (module.hot) {
-    // enable hot module replacement
+    // Enable Webpack's "hot module replacement" for Redux reducers
     module.hot.accept('./reducers', () => {
       const nextReducer = System.import('./reducers/index.js').default;
       store.replaceReducer(nextReducer);
@@ -34,13 +30,11 @@ function makeStore(initialState) {
   return store;
 }
 
-// temp state for testing app after a route has been successfully searched & loaded
-// const preloadedState = process.env.NODE_ENV === 'production' ? {} : { routing: routingState };
-
 // create the preloaded state for store.routing if any query params exist
 const preloadedState = {
   routing: preloadRoutingState(),
 };
+
 // set our default application state
 const store = makeStore(preloadedState);
 

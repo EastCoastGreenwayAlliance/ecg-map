@@ -17,7 +17,7 @@ const renderApp = (Component) => {
 
 renderApp(App);
 
-// Hot Module Replacement API
+// Enable Webpack's "Hot Module Replacement" for React Components
 if (module.hot) {
   module.hot.accept('./App', () => renderApp(App));
 }
