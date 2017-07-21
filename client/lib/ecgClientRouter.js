@@ -27432,7 +27432,7 @@ var ROUTER = {
                         var route = self.assemblePath(start_segment, target_segment, data.rows, northbound);
 
                         if (!route) {
-                            failure_callback("No route could be found between those locations.");return;
+                            failure_callback("Please try a shorter route.");return;
                         }
 
                         route.start_lat = start_lat;
