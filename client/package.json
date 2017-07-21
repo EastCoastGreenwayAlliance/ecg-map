@@ -22,6 +22,10 @@
     "url": "https://github.com/EastCoastGreenwayAlliance/ecg-map/issues"
   },
   "homepage": "https://github.com/EastCoastGreenwayAlliance/ecg-map#readme",
+  "browserslist": [
+    "defaults",
+    "not ie < 11"
+  ],
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "clipboard": "^1.7.1",
@@ -53,6 +57,7 @@
     "togpx": "^0.5.4"
   },
   "devDependencies": {
+    "autoprefixer": "^7.1.2",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-eslint": "^7.2.3",
@@ -77,6 +82,7 @@
     "image-webpack-loader": "^3.3.0",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
+    "postcss-loader": "^2.0.6",
     "react-moment-proptypes": "^1.4.0",
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.3",
