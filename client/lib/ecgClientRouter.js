@@ -27396,7 +27396,7 @@ var ROUTER = {
                 // var geomtext = "ST_SIMPLIFY(the_geom,0.0001)"; // a teeny-tiny simplification to clean some of their flourishes that have wonky angles at starts and ends
                 var geomtext = "the_geom"; // the geometry is clean enough we can just use it as-is
 
-                var sql = "SELECT pline_id AS id, title, meters, ST_ASTEXT(" + geomtext + ") AS geom FROM " + self.DBTABLE_EDGES + " WHERE DIRECTION IN ('B', '{{ dir }}') AND the_geom && ST_MAKEENVELOPE({{ w }}, {{ s }}, {{ e }}, {{ n }}, 4326)";
+                var sql = "SELECT pline_id AS id, title, meters, ST_ASTEXT(ST_MULTI(" + geomtext + ")) AS geom FROM " + self.DBTABLE_EDGES + " WHERE DIRECTION IN ('B', '{{ dir }}') AND the_geom && ST_MAKEENVELOPE({{ w }}, {{ s }}, {{ e }}, {{ n }}, 4326)";
 
                 new cartodb.SQL({ user: self.CARTODB_USER, protocol: 'https' }).execute(sql, params).done(function (data) {
                     var wktreader = new jsts.io.WKTReader();
