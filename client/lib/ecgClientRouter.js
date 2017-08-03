@@ -27385,11 +27385,12 @@ var ROUTER = {
                 // fetch relevant route segments
                 // loading the whole dataset can be workable over a fast connection, but we'd rather not
                 // and a bounding box filter to fetch only the relevant area; no path near Boston can be relevant to a route within Florida
+                // BUT don't be too draconian, as a 50-mile loop may indeed head well outside the box the the two endpoints (imagine the letter theta)
                 var params = {
-                    n: Math.max(target_segment.n, start_segment.n) + 1.0,
-                    s: Math.min(target_segment.s, start_segment.s) - 1.0,
-                    e: Math.max(target_segment.e, start_segment.e) + 1.0,
-                    w: Math.min(target_segment.w, start_segment.w) - 1.0,
+                    n: Math.max(target_segment.n, start_segment.n) + 2.0,
+                    s: Math.min(target_segment.s, start_segment.s) - 2.0,
+                    e: Math.max(target_segment.e, start_segment.e) + 2.0,
+                    w: Math.min(target_segment.w, start_segment.w) - 2.0,
                     dir: northbound ? 'N' : 'S'
                 };
 
@@ -27428,6 +27429,7 @@ var ROUTER = {
                     // tack on some metadata to the resulting list of segments
                     // then pass the results through cleanup and serialization
                     if (self.options.debug) console.log('downloaded ' + data.rows.length + ' segments, starting assembly');
+                    debugger; //GDA
                     try {
                         var route = self.assemblePath(start_segment, target_segment, data.rows, northbound);
 
