@@ -27429,7 +27429,7 @@ var ROUTER = {
                     // tack on some metadata to the resulting list of segments
                     // then pass the results through cleanup and serialization
                     if (self.options.debug) console.log('downloaded ' + data.rows.length + ' segments, starting assembly');
-                    debugger; //GDA
+
                     try {
                         var route = self.assemblePath(start_segment, target_segment, data.rows, northbound);
 
