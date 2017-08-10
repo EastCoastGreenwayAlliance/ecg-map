@@ -27446,8 +27446,16 @@ var ROUTER = {
 
                         // hand off to various postprocess and cleanup steps
                         route = self.routeCleanup(route);
+                        route = self.routeClipStartEndSegments(route);
+
+                        // metadata: the sum distance from all the segments, e.g. total trip length
+                        route.total_meters = route.reduce(function (sum, segment) {
+                            return sum + segment.meters;
+                        }, 0);
+
                         route = self.routeDownsample(route);
                         route = self.routeSerialize(route);
+
                         success_callback(route);
                     } catch (errmsg) {
                         failure_callback(errmsg);
@@ -27571,7 +27579,7 @@ var ROUTER = {
                 // use this to debug if two segments aren't connecting but you think they should
                 // compare their endpoint-to-endpoint distance to the tolerance below
                 // tip: if the end-to-end distance is greater than the minimum distance, maybe the ends you see aren't really the ends, e.g. the line bends back over itself
-                var tolerance = 0.002; // about 50ft; the topology is bad but we should tolerate it
+                var tolerance = 0.001; // about 50ft; the topology is bad but we should tolerate it
 
                 /*
                 if (here.id == 661596 && candidate.id == 661598) {
@@ -27763,13 +27771,6 @@ var ROUTER = {
             OTHER: { code: 'XX', text: "" }
         };
 
-        function rad2deg(angle) {
-            return angle * 57.29577951308232; // angle / Math.PI * 180
-        }
-        function deg2rad(angle) {
-            return angle * 0.017453292519943295; // (angle / 180) * Math.PI;
-        }
-
         for (var i = 0, l = route.length - 2; i <= l; i++) {
             var thisstep = route[i];
             var nextstep = route[i + 1];
@@ -27796,8 +27797,8 @@ var ROUTER = {
                 nextlon1 = next_second.x,
                 nextlat1 = next_second.y;
 
-            var thisaz = (180 + rad2deg(Math.atan2(Math.sin(deg2rad(thislon2) - deg2rad(thislon1)) * Math.cos(deg2rad(thislat2)), Math.cos(deg2rad(thislat1)) * Math.sin(deg2rad(thislat2)) - Math.sin(deg2rad(thislat1)) * Math.cos(deg2rad(thislat2)) * Math.cos(deg2rad(thislon2) - deg2rad(thislon1))))) % 360;
-            var nextaz = (180 + rad2deg(Math.atan2(Math.sin(deg2rad(nextlon2) - deg2rad(nextlon1)) * Math.cos(deg2rad(nextlat2)), Math.cos(deg2rad(nextlat1)) * Math.sin(deg2rad(nextlat2)) - Math.sin(deg2rad(nextlat1)) * Math.cos(deg2rad(nextlat2)) * Math.cos(deg2rad(nextlon2) - deg2rad(nextlon1))))) % 360;
+            var thisaz = (180 + self.rad2deg(Math.atan2(Math.sin(self.deg2rad(thislon2) - self.deg2rad(thislon1)) * Math.cos(self.deg2rad(thislat2)), Math.cos(self.deg2rad(thislat1)) * Math.sin(self.deg2rad(thislat2)) - Math.sin(self.deg2rad(thislat1)) * Math.cos(self.deg2rad(thislat2)) * Math.cos(self.deg2rad(thislon2) - self.deg2rad(thislon1))))) % 360;
+            var nextaz = (180 + self.rad2deg(Math.atan2(Math.sin(self.deg2rad(nextlon2) - self.deg2rad(nextlon1)) * Math.cos(self.deg2rad(nextlat2)), Math.cos(self.deg2rad(nextlat1)) * Math.sin(self.deg2rad(nextlat2)) - Math.sin(self.deg2rad(nextlat1)) * Math.cos(self.deg2rad(nextlat2)) * Math.cos(self.deg2rad(nextlon2) - self.deg2rad(nextlon1))))) % 360;
             var angle = Math.round(nextaz - thisaz);
             if (angle > 180) angle = angle - 360;
             if (angle < -180) angle = angle + 360;
@@ -27833,12 +27834,107 @@ var ROUTER = {
         route.closest_distance_start = route.start_segment.closest_distance;
         route.closest_distance_end = route.target_segment.closest_distance;
 
-        // metadata: the sum distance from all the segments, e.g. total trip length
-        route.total_meters = route.reduce(function (sum, segment) {
-            return sum + segment.meters;
-        }, 0);
-
         // and Bob's your uncle
+        return route;
+    },
+
+    //
+    // internal function: given a completed path from assemblePath() do trim the starty and end segments
+    // to fit the requested start and end points, rather than including the extra segment content before and after we'd rather be getting on/off the road
+    //
+    routeClipStartEndSegments: function routeClipStartEndSegments(route) {
+        var self = this;
+        var gfactory = new jsts.geom.GeometryFactory();
+
+        // starting segment
+
+        // iterate over vertices, find the closest vertex to our start latlng
+        // rewrite the segment geometry to start at that point: clip vertices, rewrite segment.startpoint, recalculate length of segment
+        var start_segment = route[0];
+        var start_vertices = start_segment.geom.geometries[0].points;
+
+        var start_mindist = 999999;
+        var start_closest_index;
+        for (var i = 0; i < start_vertices.coordinates.length; i++) {
+            var thispoint = gfactory.createPoint(start_vertices.coordinates[i]);
+            var thisdist = thispoint.distance(route.closest_point_start);
+
+            if (self.options.debug) console.log(['start segment find closest', start_segment, i, thispoint, thisdist]);
+
+            if (thisdist < start_mindist) {
+                start_closest_index = i;
+                start_mindist = thisdist;
+            }
+        }
+        if (self.options.debug) console.log(['start segment trim, closest is', start_closest_index, 'out of', start_vertices.coordinates.length - 1]);
+
+        // if segment 0 happens to have been the closest, then we're already fine
+        // otherwise, slice our vertex list and prepend our start latlng as being the new first vertex
+        // then recalculate the length of the newly-truncated segment
+        if (start_closest_index > 0) {
+            if (self.options.debug) console.log(['start segment before=', route[0].firstpoint, route[0].geom]);
+            var newvertices = start_vertices.coordinates.slice(start_closest_index);
+            newvertices.unshift(route.closest_point_start.coordinates.coordinates[0]);
+
+            route[0].geom = gfactory.createMultiLineString([gfactory.createLineString(newvertices)]);
+            route[0].firstpoint = route.closest_point_start;
+
+            route[0].meters = 0;
+            for (var i = 1, l = newvertices.length - 1; i <= l; i++) {
+                var thisone = newvertices[i];
+                var prevone = newvertices[i - 1];
+                route[0].meters += self.getLatLonPairDistance(thisone.y, thisone.x, prevone.y, prevone.x);
+            }
+
+            if (self.options.debug) console.log(['start segment after=', route[0].firstpoint, route[0].geom]);
+        }
+
+        // ending / target segment
+
+        // iterate over vertices, find the closest vertex to our target latlng
+        // rewrite the segment geometry to target at that point: clip vertices, rewrite segment.targetpoint, recalculate length of segment
+        var target_segment = route[route.length - 1];
+        var target_vertices = target_segment.geom.geometries[0].points;
+
+        var target_mindist = 999999;
+        var target_closest_index;
+        for (var i = 0; i < target_vertices.coordinates.length; i++) {
+            var thispoint = gfactory.createPoint(target_vertices.coordinates[i]);
+            var thisdist = thispoint.distance(route.closest_point_end);
+
+            if (self.options.debug) console.log(['target segment find closest', target_segment, i, thispoint, thisdist]);
+
+            if (thisdist < target_mindist) {
+                target_closest_index = i;
+                target_mindist = thisdist;
+            }
+        }
+        if (self.options.debug) console.log(['target segment trim, closest is', target_closest_index, 'out of', target_vertices.coordinates.length - 1]);
+
+        // if segment -1 happens to have been the closest, then we're already fine
+        // otherwise, slice our vertex list and prepend our target latlng as being the new first vertex
+        // then recalculate the length of the newly-truncated segment
+        if (target_closest_index < target_vertices.coordinates.length - 1) {
+            if (self.options.debug) console.log(['target segment before=', route[route.length - 1].firstpoint, route[route.length - 1].geom]);
+            var newvertices = target_vertices.coordinates.slice(0, target_closest_index + 1);
+            newvertices.push(route.closest_point_end.coordinates.coordinates[0]);
+
+            route[route.length - 1].geom = gfactory.createMultiLineString([gfactory.createLineString(newvertices)]);
+            route[route.length - 1].lastpoint = route.closest_point_end;
+            route[route.length - 1].transition.lat = route.closest_point_end.coordinates.coordinates[0].y;
+            route[route.length - 1].transition.lng = route.closest_point_end.coordinates.coordinates[0].x;
+
+            route[route.length - 1].meters = 0;
+            for (var i = 1, l = newvertices.length - 1; i <= l; i++) {
+                var thisone = newvertices[i];
+                var prevone = newvertices[i - 1];
+                route[route.length - 1].meters += self.getLatLonPairDistance(thisone.y, thisone.x, prevone.y, prevone.x);
+            }
+
+            if (self.options.debug) console.log(['target segment after=', route[route.length - 1].firstpoint, route[route.length - 1].geom]);
+        }
+
+        // done, hand it back
         return route;
     },
 
@@ -27864,20 +27960,6 @@ var ROUTER = {
         }));
         if (self.options.debug) console.log(['downsample collected vertices', allvertices]);
 
-        // the Haversine formula to find distance (in meters) between two lat-lon pairs -- why is this not in JSTS?
-        function deg2rad(angle) {
-            return angle * 0.017453292519943295; // (angle / 180) * Math.PI;
-        }
-        function getLatLonPairDistance(lat1, lon1, lat2, lon2) {
-            var R = 6371;
-            var dLat = deg2rad(lat2 - lat1);
-            var dLon = deg2rad(lon2 - lon1);
-            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            var d = R * c * 1000; // Distance in meters
-            return d;
-        }
-
         // what we want is a sample evenly-balanced along the .total_meters of the whole route
         var meters_between_samples = Math.round(route.total_meters / howmanysamples);
         if (self.options.debug) console.log(['downsample total/points/interval', route.total_meters, howmanysamples, meters_between_samples]);
@@ -27887,7 +27969,7 @@ var ROUTER = {
         for (var i = 1, l = allvertices.length - 1; i <= l; i++) {
             var thisone = allvertices[i];
             var prevone = allvertices[i - 1];
-            var thisdistance = getLatLonPairDistance(thisone.y, thisone.x, prevone.y, prevone.x);
+            var thisdistance = self.getLatLonPairDistance(thisone.y, thisone.x, prevone.y, prevone.x);
 
             total_distance_traveled += thisdistance; // log the total distance we have come; sample points are saved with this as their X axis in miles
 
@@ -27967,6 +28049,26 @@ var ROUTER = {
 
         // done!
         return structure;
+    },
+
+    // math utilities
+    // the Haversine formula to find distance (in meters) between two lat-lon pairs -- why is this not in JSTS?
+    getLatLonPairDistance: function getLatLonPairDistance(lat1, lon1, lat2, lon2) {
+        var self = this;
+
+        var R = 6371;
+        var dLat = self.deg2rad(lat2 - lat1);
+        var dLon = self.deg2rad(lon2 - lon1);
+        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(self.deg2rad(lat1)) * Math.cos(self.deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c * 1000; // Distance in meters
+        return d;
+    },
+    rad2deg: function rad2deg(angle) {
+        return angle * 57.29577951308232; // angle / Math.PI * 180
+    },
+    deg2rad: function deg2rad(angle) {
+        return angle * 0.017453292519943295; // (angle / 180) * Math.PI;
     }
 };
 
