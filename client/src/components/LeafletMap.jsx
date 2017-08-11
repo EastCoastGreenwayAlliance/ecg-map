@@ -308,7 +308,7 @@ class LeafletMap extends Component {
     // when a user changes the basemap layer, show the correct attribution for the provider
     // leaflet's layer control does a poor job of handling this on its own.
     const attr = document.querySelector('.leaflet-control-attribution.leaflet-control');
-    attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap<a/>';
+    attr.innerHTML = '© <a target="_blank">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
     // if we're on desktop add zoom buttons
     // adding zoom buttons here because otherwise the attribution is placed on top
@@ -527,7 +527,9 @@ class LeafletMap extends Component {
   render() {
     return (
       <div className="LeafletMap">
-        <div id="map" />
+        <div id="map">
+          <a href="http://mapbox.com/about/maps" className="mapbox-wordmark" target="_blank" rel="noopener noreferrer">Mapbox</a>
+        </div>
       </div>
     );
   }
