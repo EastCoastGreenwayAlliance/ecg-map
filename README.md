@@ -1,4 +1,5 @@
 # East Coast Greenway: Map & Trip Planner
+![ecg-map-overview](client/assets/img/ecg-map-overview.png)
 
 Mobile friendly web application for the [East Coast Greenway](http://greenway.org) map and trip planner, developed by [GreenInfo Network](http://greeninfo.org).
 
