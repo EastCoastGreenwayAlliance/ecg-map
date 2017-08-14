@@ -22,7 +22,8 @@ class CueSheet extends Component {
 
     let cues = [];
     const imageBaseURL = '/assets/icons/';
-    let cumulativeMiles = metersToMiles(response.features[0].properties.length);
+    // starting cumulative mileage is always 0
+    let cumulativeMiles = 0;
 
     const transitionCodeImageMap = (code) => {
       switch (code) {
@@ -45,10 +46,11 @@ class CueSheet extends Component {
       }
     };
 
+    // first cue
     cues.push(
       <tr key={0}>
         <td>
-          <p>{ cumulativeMiles.toFixed(1) }</p>
+          <p>{ cumulativeMiles }</p>
         </td>
         <td>
           <img className="turn-icon" alt="start icon" src={`${imageBaseURL}icon-search-marker-green.svg`} />
@@ -65,7 +67,11 @@ class CueSheet extends Component {
     cues = cues.concat(response.features.map((feature, idx, arr) => {
       const { properties } = feature;
       const nextSegment = arr[idx + 1];
+      // sum cumulative miles with the segment's length
+      // math uses 2 decimal places but client requested 1 decimal place for readout in cuesheet
       cumulativeMiles += metersToMiles(properties.length);
+      // note that transition title is for the next turn direction and that
+      // the segment length column reflects the length of the next segment, not the current one
 
       return (
         <tr key={properties.id}>
@@ -85,7 +91,7 @@ class CueSheet extends Component {
           <td>
             {
               nextSegment ?
-                <p>{ metersToMiles(nextSegment.properties.length) }</p> : <p />
+                <p>{ metersToMiles(nextSegment.properties.length).toFixed(1) }</p> : <p />
             }
           </td>
         </tr>
