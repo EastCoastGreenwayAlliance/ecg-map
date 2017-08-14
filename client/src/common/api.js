@@ -8,7 +8,8 @@ import { defaultRoutingState } from '../reducers';
 const isNumber = val => val && typeof val === 'number';
 
 // helper function to convert meters to miles
-export const metersToMiles = x => +parseFloat(x * 0.000621371).toFixed(2);
+// arguments: value to convert (number), decimal precision of number returned (integer)
+export const metersToMiles = (x, p) => +parseFloat(x * 0.000621371).toFixed(p || 2);
 
 // parse URL query params for use with hydrating Redux state on app load
 export const parseQueryParams = () => {
