@@ -59,7 +59,7 @@ class CueSheet extends Component {
           <p style={{ margin: 0 }}>Starting on { response.features[0].properties.title }</p>
         </td>
         <td>
-          <p>{ metersToMiles(response.features[0].properties.length) }</p>
+          <p>{ metersToMiles(response.features[0].properties.length, 1) }</p>
         </td>
       </tr>
     );
