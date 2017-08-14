@@ -8,6 +8,7 @@ import { quantile, min, max, range } from 'd3-array';
 import { area, curveBasis } from 'd3-shape';
 import { axisBottom, axisLeft } from 'd3-axis';
 
+import { metersToMiles } from '../common/api';
 import LoadingMsg from './LoadingMsg';
 import ErrorMsg from './ErrorMsg';
 
@@ -144,7 +145,6 @@ class ElevationProfile extends Component {
     const { response } = route;
     const { downsampled } = response;
     const METERS_TO_FEET = 3.28084;
-    const METERS_TO_MILES = 0.000621371;
     const parsed = {};
 
     // format data for use with d3 area chart
@@ -157,8 +157,9 @@ class ElevationProfile extends Component {
     parsed.totalDistance = (() => {
       if (route && route.response && route.response.properties
         && route.response.properties.total_meters) {
-        // convert meters to miles
-        return Math.round(route.response.properties.total_meters * METERS_TO_MILES);
+        // convert meters to miles; note that we use 1 decimal place per client's request,
+        // but return calculation with 2 because of other places in the app
+        return metersToMiles(route.response.properties.total_meters, 1);
       }
       return null;
     })();

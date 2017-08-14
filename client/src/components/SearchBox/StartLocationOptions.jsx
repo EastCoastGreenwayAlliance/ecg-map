@@ -12,7 +12,7 @@ const StartLocationOptions = (props) => {
     <div className="SearchStartOptions">
       <p>
         { `The nearest Greenway location to ${geocodeResult.addressFormatted} is `}
-        <span className="bold">{`${metersToMiles(startLocation.distance)} miles`}</span>
+        <span className="bold">{`${metersToMiles(startLocation.distance, 2)} miles`}</span>
         { ' away.' }
       </p>
       <button className="center green" tabIndex="0" onClick={() => window.open(directionsURL)}>

@@ -11,7 +11,7 @@ const EndLocationOptions = (props) => {
     <div className="SearchEndOptions">
       <p>
         { `The nearest Greenway location to ${geocodeResult.addressFormatted} is `}
-        <span className="bold">{`${metersToMiles(endLocation.distance)} miles`}</span>
+        <span className="bold">{`${metersToMiles(endLocation.distance, 2)} miles`}</span>
         { ' away.' }
       </p>
       <button className="center blue" tabIndex="0" onClick={() => acceptRoutingLocation('END')}>
