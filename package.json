@@ -31,6 +31,7 @@
     "jsts": "^1.4.0",
     "morgan": "^1.8.2",
     "nodemon": "^1.11.0",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "worker-farm": "^1.5.0"
   }
 }
