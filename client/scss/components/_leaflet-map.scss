@@ -23,6 +23,7 @@
     // reposition & reset the scalebar control
     .leaflet-control-scale.leaflet-control {
       bottom: 25px;
+      left: 40px;
     }
 
     // reposition & reset the Carto logo on the map
@@ -33,6 +34,25 @@
       img {
         left: 0 !important;
         bottom: 0 !important;
+      }
+    }
+
+    // GreenInfo logo
+    .greeninfo-logo {
+      position: absolute;
+      display: block;
+      height: 28px;
+      width: 32px;
+      left: 10px;
+      bottom: 30px;
+      background-image: url('../assets/icons/GreenInfo_logo@2x.png');
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      background-size: 28px 32px;
+      z-index: 100;
+
+      span {
+        visibility: hidden;
       }
     }
 

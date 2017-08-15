@@ -273,10 +273,6 @@ class LeafletMap extends Component {
 
     // set up the CARTO basemap layer
     this.initCartoLayer();
-
-    // for debugging...
-    // window.map = this.map;
-    // window.searchResults = this.searchResults;
   }
 
   initCartoLayer() {
@@ -529,6 +525,9 @@ class LeafletMap extends Component {
       <div className="LeafletMap">
         <div id="map">
           <a href="http://mapbox.com/about/maps" className="mapbox-wordmark" target="_blank" rel="noopener noreferrer">Mapbox</a>
+          <a href="http://greeninfo.org" className="greeninfo-logo" target="_blank" rel="noopener noreferrer">
+            <span>GreenInfo</span>
+          </a>
         </div>
       </div>
     );
