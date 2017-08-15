@@ -44,7 +44,7 @@ export const logRouteSearchRequest = () => {
   ReactGA.event({
     category: 'Routing',
     action: 'Route Search Request',
-    label: 'Route Search Request'
+    label: window.location.search
   });
 };
 
@@ -53,7 +53,7 @@ export const logRouteSearchSuccess = () => {
   ReactGA.event({
     category: 'Routing',
     action: 'Route Search Success',
-    label: 'Route Search Success'
+    label: window.location.search
   });
 };
 
