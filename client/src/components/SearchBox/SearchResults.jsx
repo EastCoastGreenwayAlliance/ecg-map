@@ -56,12 +56,12 @@ class SearchResults extends Component {
   }
 
   componentWillMount() {
-    const { startLocation, endLocation } = this.props;
+    const { startLocation, endLocation, route } = this.props;
 
     // check for preloaded state with start and end locations, if they exist tell
     // the geoRouter to find a route between them asyc
     if (endLocation.accepted && endLocation.coordinates.length && startLocation.accepted
-      && startLocation.coordinates.length) {
+      && startLocation.coordinates.length && !route.response) {
       this.routeSearchStartTime = new Date();
       this.getRoute(startLocation, endLocation);
     }

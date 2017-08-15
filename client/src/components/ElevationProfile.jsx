@@ -42,19 +42,28 @@ class ElevationProfile extends Component {
   }
 
   componentWillMount() {
-    const { elevData } = this.props;
-    // in case we have preloaded state
-    if (elevData) {
-      this.parseElevData(this.props);
+    const { elevData, route } = this.props;
+    // if we already had elevData and the user switched React Router routes (e.g. from "cuesheet")
+    // set state so we can draw the chart
+    if (elevData && route && route.response) {
+      this.setState({
+        elevDataParsed: this.parseElevData(this.props)
+      });
     }
   }
 
   componentDidMount() {
-    const { route } = this.props;
+    const { route, elevData } = this.props;
+    const { elevDataParsed } = this.state;
 
     // our app state was hydrated with route data, get the elevation data
-    if (route.response && route.response.downsampled) {
+    if (route.response && route.response.downsampled && !elevData) {
       this.getElevationData(route.response.downsampled);
+    }
+
+    // if we already parsed elevData in componentDidMount from preloaded state, draw the chart
+    if (elevDataParsed) {
+      this.renderAreaChart();
     }
   }
 
