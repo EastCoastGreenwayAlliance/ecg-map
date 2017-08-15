@@ -39,9 +39,27 @@ export const logStatefulURLCopy = () => {
   });
 };
 
+export const logRouteSearchRequest = () => {
+  // log that a route search was made
+  ReactGA.event({
+    category: 'Routing',
+    action: 'Route Search Request',
+    label: 'Route Search Request'
+  });
+};
+
+export const logRouteSearchSuccess = () => {
+  // log a successful route search
+  ReactGA.event({
+    category: 'Routing',
+    action: 'Route Search Success',
+    label: 'Route Search Success'
+  });
+};
+
 export const logRouteSearchTime = (timeEllapsed) => {
   ReactGA.timing({
-    category: 'Route Search',
+    category: 'Routing',
     variable: 'Route calculation time',
     value: timeEllapsed,
     label: 'Route Search Time'

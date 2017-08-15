@@ -4,7 +4,11 @@ import isEqual from 'lodash/isEqual';
 
 import { cartoUser, cartoTables } from '../../common/config';
 import { loadGeoRouter } from '../../common/api';
-import { logRouteSearchTime } from '../../common/googleAnalytics';
+import {
+  logRouteSearchRequest,
+  logRouteSearchSuccess,
+  logRouteSearchTime
+} from '../../common/googleAnalytics';
 
 // helper components
 import LoadingMsg from '../LoadingMsg';
@@ -107,6 +111,8 @@ class SearchResults extends Component {
     const self = this;
 
     function findEcgRoute() {
+      // log GA custom event for requesting a ecg trip route
+      logRouteSearchRequest();
       // make the findRoute call from our geoRouter, passing coordinates for
       // start and end locations, and callbacks for success and error
       self.geoRouter.findRoute(
@@ -114,7 +120,11 @@ class SearchResults extends Component {
         startLocation.coordinates[1],
         endLocation.coordinates[0],
         endLocation.coordinates[1],
-        route => self.props.routeSearchSuccess(route),
+        (route) => {
+          // GA event that the georouting was successful
+          logRouteSearchSuccess();
+          self.props.routeSearchSuccess(route);
+        },
         error => self.props.routeSearchError(error)
       );
     }
@@ -128,6 +138,7 @@ class SearchResults extends Component {
         if (error) throw error;
         self.geoRouter = response.default;
         self.geoRouter.init(cartoUser, cartoTables.route_segments);
+        // find the route
         findEcgRoute();
       });
     } else {
