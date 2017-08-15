@@ -155,11 +155,12 @@ Or if you want to deploy a branch that _isn't_ master:
 git push heroku branch-name:master
 ```
 
-### Github Pages
-~~To deploy the contents of the `dist/` directory to the repository's Github Pages do:~~
-
-**This app no longer will run on Github Pages as it now requires a NodeJS server**
-
-
 ## Using Static Assets
 The empty `assets/` directory is available for Webpack to include static assets such as images, icons, etc. The Webpack Dev Server should resolve file paths just by doing `assets/filename.png` in your code (e.g. for the `src` attribute of an image tag). When doing `npm run build` the `CopyWebpackPlugin` will copy the `assets/` directory to `dist/assets` for you.
+
+## Data
+The data for this web app is being hosted on [CARTO](https://carto.com), loaded into and queried by the web app. This data is routinely edited by the ECGA staff using the [Carto QGIS plugin](https://plugins.qgis.org/plugins/QgisCartoDB/). Two lines tables exist, one writable table that ECGA staff edit using QGIS, and another production read-only table that is periodically updated with changes from the writable table. The production table is locked for editing and used by the web app.
+
+In the [`sql`](./sql) directory there are queries for updating the data on CARTO in `ecg_lines_update_prod_table.sql` and a PostgreSQL trigger for auto-populating columns in the lines table when it is updated.
+
+Note that some legacy SQL files & queries exist for the purpose of documenting how the original ECG data obtained from Wiki Mapping was restructured for use with this web app. Besides using these SQL queries, GreenInfo GIS staff edited the topology of the original source data to make it compatible with geographic routing.
