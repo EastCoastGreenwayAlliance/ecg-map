@@ -85,21 +85,6 @@ cp ../path/to/ecg-map-router/dist/ecgClientRouter.js ./client/lib/ecgClientRoute
 
 You shouldn't need to do this unless you are updating the ecgClientRouter, as the above code is checked into version control with this repo.
 
-## Environment Variables
-Note that [Foreman](https://www.theforeman.org/) is used to run the Node.JS server in a dev environment so that ENV variables may be accessed from a `.env` file.
-
-The `.env` file should reside in the root level of this repo and contain the following:
-
-```
-MAILCHIMP_API_KEY="<REDACTED>"
-MAILCHIMP_LIST_ID="<REDACTED>"
-NODE_ENV="development"
-```
-
-When you run `npm run dev` in the root of this repo, `Foreman` will be used to expose these variables to Node.JS for use by `server.js`.
-
-These same environment variables are configured with Heroku for when the app is deployed.
-
 ## Develop
 To develop the app locally do:
 
@@ -113,11 +98,11 @@ npm start
 # will start the webpack dev server on port 8888
 ```
 
-This will start the Node.JS server, have Webpack compile the assets in `client`, and start [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/#devserver). This should automatically open your web browser to `localhost:8888` and you should see the site once Webpack has finished its initial bundling process. Webpack will update the app's front-end codebase using [hot-module-replacement](https://webpack.js.org/concepts/hot-module-replacement/) after it recompiles, and notify you that it has done so. For some updates you may need to manually refresh the page to see changes take place.
+This will start the Node.JS server, have Webpack compile the assets in `client`, and start [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/#devserver). This should automatically open your web browser to `localhost:8888` and you should see the site once Webpack has finished its initial bundling process. Webpack will update the app's front-end codebase using [hot-module-replacement](https://webpack.js.org/concepts/hot-module-replacement/) after it recompiles, and notify you that it has done so. For some updates you may need to refresh the page to see changes take place.
 
 **NOTE** that there is a **proxy** enabled with the Webpack Dev Server so that HTTP requests can be made from port 8888 to the Node.JS server which is running on port 5001. This is necessary to test the Mailchimp API locally.
 
-## Compiling Client Codebase
+### Compiling Client Codebase
 To have Webpack create an optimized production build in `client/dist` do:
 
 ```bash
@@ -128,6 +113,21 @@ npm run build
 This will create compiled and compressed JS and CSS files in the `client/dist/` directory. Note that any existing files in `client/dist/` will be blown away prior to new ones being generating using `rimraf`. These files will be served up by `server.js`, which is what happens upon deploying the app to Heroku.
 
 **NOTE** that the `client/dist/` directory is intentionally kept of out version control in `.gitignore`. If you'd like to include the contents of `dist/` in Git, simply remove `dist/` from `.gitignore`.
+
+### Environment Variables
+Note that [Foreman](https://www.theforeman.org/) is used to run the Node.JS server in a dev environment so that ENV variables may be accessed from a `.env` file.
+
+The `.env` file should reside in the root level of this repo and contain the following:
+
+```
+MAILCHIMP_API_KEY="<REDACTED>"
+MAILCHIMP_LIST_ID="<REDACTED>"
+NODE_ENV="development"
+```
+
+When you run `npm run dev` in the root of this repo, `Foreman` will be used to expose these variables to Node.JS for use by `server.js`.
+
+These same environment variables are configured with Heroku for when the app is deployed.
 
 ## Deploy
 
@@ -154,9 +154,6 @@ Or if you want to deploy a branch that _isn't_ master:
 ```
 git push heroku branch-name:master
 ```
-
-## Using Static Assets
-The empty `assets/` directory is available for Webpack to include static assets such as images, icons, etc. The Webpack Dev Server should resolve file paths just by doing `assets/filename.png` in your code (e.g. for the `src` attribute of an image tag). When doing `npm run build` the `CopyWebpackPlugin` will copy the `assets/` directory to `dist/assets` for you.
 
 ## Data
 The data for this web app is being hosted on [CARTO](https://carto.com), loaded into and queried by the web app. This data is routinely edited by the ECGA staff using the [Carto QGIS plugin](https://plugins.qgis.org/plugins/QgisCartoDB/). Two lines tables exist, one writable table that ECGA staff edit using QGIS, and another production read-only table that is periodically updated with changes from the writable table. The production table is locked for editing and used by the web app.
