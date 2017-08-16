@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "foreman run node server.js",
+    "dev": "foreman run nodemon server.js",
     "install:client": "cd client && yarn && npm run build && cd ..",
     "heroku-postbuild": "npm run install:client"
   },
@@ -28,6 +28,7 @@
     "express": "^4.15.3",
     "express-sslify": "^1.2.0",
     "morgan": "^1.8.2",
+    "nodemon": "^1.11.0",
     "superagent": "^3.5.2"
   }
 }
