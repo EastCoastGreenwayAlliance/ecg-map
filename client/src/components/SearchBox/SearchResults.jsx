@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
-import { logRouteSearchTime } from '../../common/googleAnalytics';
+import {
+  logRouteSearchRequest,
+  logRouteSearchSuccess,
+  logRouteSearchTime
+} from '../../common/googleAnalytics';
 
 // helper components
 import LoadingMsg from '../LoadingMsg';
@@ -82,6 +86,8 @@ class SearchResults extends Component {
 
     // we recieved the route response, log the amount of time it took to find the route
     if (route.response && !this.props.route.response) {
+      // log GA custom event that the route request was successful
+      logRouteSearchSuccess();
       this.routeSearchEndTime = new Date();
       const timeEllapsed = this.routeSearchEndTime.getTime() - this.routeSearchStartTime.getTime();
       logRouteSearchTime(timeEllapsed);
@@ -93,6 +99,9 @@ class SearchResults extends Component {
   getRoute(startLocation, endLocation) {
     // handles making the geo routing search request given start and end locations
     const { fetchRouteDirections } = this.props;
+    // log custom GA event for requesting a route search
+    logRouteSearchRequest();
+    // ping the API endpoint for a route
     fetchRouteDirections(
       startLocation.coordinates[0],
       startLocation.coordinates[1],
