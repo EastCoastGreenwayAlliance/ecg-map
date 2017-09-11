@@ -36,10 +36,10 @@ function findRoute (start_lat, start_lng, target_lat, target_lng, options, callb
     direction: northbound ? 'N' : 'S'
   };
 
-  findNearest(start_lat, start_lng, {}, function (error, start_segment) {
+  findNearest(start_lat, start_lng, pointfinderoptions, function (error, start_segment) {
     if (error) handleError(callback, error);
 
-    findNearest(target_lat, target_lng, {}, function (error, target_segment) {
+    findNearest(target_lat, target_lng, pointfinderoptions, function (error, target_segment) {
       if (error) handleError(callback, error);
       if (DEBUG) console.log([ 'start segment', start_lat, start_lng, start_segment ]);
       if (DEBUG) console.log([ 'target segment', target_lat, target_lng, target_segment ]);
@@ -134,15 +134,13 @@ function findRoute (start_lat, start_lng, target_lat, target_lng, options, callb
     function (errmsg) {
       errmsg = "error finding target segment: " + errmsg;
       handleError(errmsg, callback);
-    },
-    pointfinderoptions
+    }
     )
   },
   function (errmsg) {
     errmsg = "error finding start segment: " + errmsg;
     handleError(errmsg, callback);
-  },
-  pointfinderoptions
+  }
   );
 }
 exports.findRoute = findRoute;
