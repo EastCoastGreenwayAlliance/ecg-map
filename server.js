@@ -152,7 +152,7 @@ app.get('/route/directions/', (req, res) => {
 
   function failure (errmsg) {
     clearInterval(intervalId);
-    res.write('{ message: ' + errmsg + '}');
+    res.write(JSON.stringify({ error: errmsg }));
     res.end();
   }
 
