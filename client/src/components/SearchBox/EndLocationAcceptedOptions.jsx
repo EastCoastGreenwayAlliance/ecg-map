@@ -7,7 +7,7 @@ import ErrorMsg from '../ErrorMsg';
 // Options to show the user after they've accepted a end location
 const EndLocationAcceptedOptions = (props) => {
   const { route } = props;
-  const { isLoadingRoute, error } = route;
+  const { isLoadingRoute, error, response } = route;
 
   function loadingMessage() {
     if (isLoadingRoute) {
@@ -18,8 +18,15 @@ const EndLocationAcceptedOptions = (props) => {
 
   function errorMessage() {
     if (error) {
-      return <ErrorMsg {...{ error }} />;
+      return <ErrorMsg error={error} />;
     }
+
+    // the response could also contain an error message for "no route found"
+    // because we are keeping the network connection open we need to check for it here
+    if (response && response.error) {
+      return <ErrorMsg error={response.error} />;
+    }
+
     return null;
   }
 
