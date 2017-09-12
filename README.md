@@ -120,9 +120,11 @@ Note that [Foreman](https://www.theforeman.org/) is used to run the Node.JS serv
 The `.env` file should reside in the root level of this repo and contain the following:
 
 ```
-MAILCHIMP_API_KEY="<REDACTED>"
-MAILCHIMP_LIST_ID="<REDACTED>"
-NODE_ENV="development"
+export MAILCHIMP_API_KEY="<REDACTED>"
+export MAILCHIMP_LIST_ID="<REDACTED>"
+export CARTODB_USER="niles"
+export DBTABLE_EDGES="ecg_route_lines_prod"
+export NODE_ENV="development"
 ```
 
 When you run `npm run dev` in the root of this repo, `Foreman` will be used to expose these variables to Node.JS for use by `server.js`.
