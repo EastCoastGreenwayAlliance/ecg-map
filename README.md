@@ -67,6 +67,8 @@ yarn add -D some-library
 
 The `-D` flag will save the dependency to `devDependencies` in `package.json`.
 
+If you do this, make sure to commit the updated `yarn.lock` file in the `root` and/or `client` depending on where you modified dependencies.
+
 #### Foreman
 You will also need [Foreman](http://ddollar.github.io/foreman/) to run the Node.JS server locally, as Foreman is used to make environment variables specified in a `.env` file accessible to Node.JS (see the section on environment variables).
 
@@ -76,31 +78,25 @@ The easiest way to install Foreman is to use Ruby's `gem` command:
 gem install foreman
 ```
 
-### Install the Geo Routing Library
-Currently this app uses a custom library built on JSTS for handling geographic routing along the ECG. This library exists [in a separate repo](#) and will be open sourced following the launch of this project. To install or update it in the client folder:
-
-```bash
-cp ../path/to/ecg-map-router/dist/ecgClientRouter.js ./client/lib/ecgClientRouter.js
-```
-
-You shouldn't need to do this unless you are updating the ecgClientRouter, as the above code is checked into version control with this repo.
+Doing `npm run dev` in the root of the repo will have `foreman` run the Node.JS server. This is required for geo-routing API calls to work.
 
 ## Develop
-To develop the app locally do:
+To develop the app locally first do:
 
-```bash
-# start the Node.JS server on port 5001
+```
 npm run dev
-
-# in a new terminal window / tab do:
-cd client
-npm start
-# will start the webpack dev server on port 8888
 ```
 
-This will start the Node.JS server, have Webpack compile the assets in `client`, and start [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/#devserver). This should automatically open your web browser to `localhost:8888` and you should see the site once Webpack has finished its initial bundling process. Webpack will update the app's front-end codebase using [hot-module-replacement](https://webpack.js.org/concepts/hot-module-replacement/) after it recompiles, and notify you that it has done so. For some updates you may need to refresh the page to see changes take place.
+Then, in a new terminal window / tab do:
 
-**NOTE** that there is a **proxy** enabled with the Webpack Dev Server so that HTTP requests can be made from port 8888 to the Node.JS server which is running on port 5001. This is necessary to test the Mailchimp API locally.
+```
+cd client
+npm start
+```
+
+The above commands will start the Node.JS server, have Webpack compile the assets in `client`, and start [Webpack Dev Server](https://webpack.js.org/configuration/dev-server/#devserver). This should automatically open your web browser to `localhost:8888` and you should see the site once Webpack has finished its initial bundling process. Webpack will update the app's front-end codebase using [hot-module-replacement](https://webpack.js.org/concepts/hot-module-replacement/) after it finishes transpiling source code, and notify you that it has done so. For some updates you may need to refresh the page to see changes take place.
+
+**NOTE** that there is a **proxy** enabled with the Webpack Dev Server from port 8888 to the Node.JS server which is running on port 5001. This is necessary for CORS for the app's API endpoints (see `server.js`).
 
 ### Compiling Client Codebase
 To have Webpack create an optimized production build in `client/dist` do:
@@ -120,11 +116,11 @@ Note that [Foreman](https://www.theforeman.org/) is used to run the Node.JS serv
 The `.env` file should reside in the root level of this repo and contain the following:
 
 ```
-export MAILCHIMP_API_KEY="<REDACTED>"
-export MAILCHIMP_LIST_ID="<REDACTED>"
-export CARTODB_USER="niles"
-export DBTABLE_EDGES="ecg_route_lines_prod"
-export NODE_ENV="development"
+MAILCHIMP_API_KEY="<REDACTED>"
+MAILCHIMP_LIST_ID="<REDACTED>"
+CARTODB_USER="niles"
+DBTABLE_EDGES="ecg_route_lines_prod"
+NODE_ENV="development"
 ```
 
 When you run `npm run dev` in the root of this repo, `Foreman` will be used to expose these variables to Node.JS for use by `server.js`.
