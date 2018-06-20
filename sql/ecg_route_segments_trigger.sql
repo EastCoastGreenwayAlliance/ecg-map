@@ -27,13 +27,14 @@ CREATE UNIQUE INDEX ON ecg_route_lines(pline_id);
 -- delete the trigger if it already exists as we're replacing it
 DROP TRIGGER IF EXISTS ecg_route_segment ON ecg_route_lines;
 
--- create / replace the trigger's function
 CREATE OR REPLACE FUNCTION ecg_route_segment()
   RETURNS TRIGGER AS
 $ecg_route_segment$
 BEGIN
   NEW.datetime_modified := current_timestamp;
   NEW.meters := round(ST_Length(NEW.the_geom::geography));
+  NEW.miles := round (CAST(NEW.meters AS NUMERIC)* 0.00062137,1);
+  NEW.feet := round (CAST(NEW.meters AS NUMERIC) / 0.3048);
   RETURN NEW;
 END;
 $ecg_route_segment$
