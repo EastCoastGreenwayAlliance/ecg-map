@@ -39,3 +39,7 @@ export const routeSegmentFieldsSQL = [
 
 // lat lon bounds that limit panning within the map's geographic area
 export const maxGeoBounds = [[18.312811, -110.830078], [53.278353, -45.351563]];
+
+// some universal constants such as unit conversions
+export const METERS_TO_MILES = 1609;
+export const METERS_TO_FEET = 3.281;

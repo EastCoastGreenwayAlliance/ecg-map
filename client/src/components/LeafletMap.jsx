@@ -5,7 +5,8 @@ import Legend from '../../lib/L.Control.Legend';
 
 import { configureLayerSource, cartoAlertsSource, queryZXY } from '../common/api';
 import { configureMapSQL } from '../common/sqlQueries';
-import { mbSatellite, mbOutdoors } from '../common/config';
+import { mbSatellite, mbOutdoors, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
+
 
 // set default image paths for Leaflet
 // note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
@@ -316,6 +317,11 @@ class LeafletMap extends Component {
         self.alertsLayer = layer;
         layer.on('error', (error) => { throw error; });
         self.alertsSubLayer = layer.getSubLayer(0);
+
+        layer.setInteraction(true);
+        layer.on('featureClick', (e, latlng, pos, data) => {
+          this.handleAlertClick(latlng, data);
+        });
       })
       .on('error', (error) => { throw error; });
   }
@@ -351,6 +357,11 @@ class LeafletMap extends Component {
     });
   }
 
+  handleAlertClick(latlng, data) {
+    // GDA
+    console.log([ 'clicked', latlng, data ]);  // eslint-disable-line
+  }
+
   enableActiveTurning() {
     const { updateActiveTurning, reportLocationError } = this.props;
 
@@ -384,8 +395,6 @@ class LeafletMap extends Component {
         });
 
         // compose some easy-to-interpolate strings about the situation
-        const METERS_TO_MILES = 1609;
-        const METERS_TO_FEET = 3.281;
         const nearline = closest.segment;
         const nearmile = (closest.distance / METERS_TO_MILES).toFixed(2);
         const nearfeet = Math.round(closest.distance * METERS_TO_FEET);
