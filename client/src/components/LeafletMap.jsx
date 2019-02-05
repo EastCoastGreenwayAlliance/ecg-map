@@ -43,6 +43,7 @@ class LeafletMap extends Component {
     route: PropTypes.object,
     updateActiveTurning: PropTypes.func.isRequired,
     disableActiveTurning: PropTypes.func.isRequired,
+    selectAlertPoint: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -310,7 +311,6 @@ class LeafletMap extends Component {
       legends: false,
     };
     // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
-    console.log(layerSource);  // eslint-disable-line
     cartodb.createLayer(self.map, layerSource, options)
       .addTo(self.map, 10) // 2nd param is layer z-index; trails route is 5
       .on('done', (layer) => {
@@ -357,9 +357,10 @@ class LeafletMap extends Component {
     });
   }
 
-  handleAlertClick(latlng, data) {
-    // GDA
-    console.log([ 'clicked', latlng, data ]);  // eslint-disable-line
+  handleAlertClick(latlng, alertpoiinfo) {
+    const { selectAlertPoint } = this.props;
+    alertpoiinfo.latlng = latlng;
+    selectAlertPoint(alertpoiinfo);
   }
 
   enableActiveTurning() {

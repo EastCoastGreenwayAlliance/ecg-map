@@ -123,13 +123,14 @@ export const configureLayerSource = (sql) => {
 };
 
 // unlike the cartoLoayerSource this one won't need later adjustment so we can streamline slightly
+// include in the interactivity property, any fields which we would want displayed on click
 export const cartoAlertsSource = {
   user_name: cartoUser,
   type: 'cartodb',
   sublayers: [{
     sql: alertPointsSQL(),
     cartocss: cartocss_alerts,
-    interactivity: 'name',
+    interactivity: 'cartodb_id,name,description',
   }]
 };
 

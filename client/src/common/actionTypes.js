@@ -35,3 +35,7 @@ export const ACTIVE_TURNING_UPDATE = 'ACTIVE_TURNING_UPDATE';
 export const ACTIVE_TURNING_ENABLE = 'ACTIVE_TURNING_ENABLE';
 export const ACTIVE_TURNING_DISABLE = 'ACTIVE_TURNING_DISABLE';
 export const ACTIVE_TURNING_ERROR = 'ACTIVE_TURNING_ERROR';
+
+// selecting an Alert POI to display info, or de-selecting it
+export const ALERTPOI_SELECT = 'ALERTPOI_SELECT';
+export const ALERTPOI_CLEAR = 'ALERTPOI_CLEAR';
