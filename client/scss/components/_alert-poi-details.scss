@@ -4,8 +4,45 @@ div.AlertPoiDetails {
   bottom: 0;
   background-color: white;
   z-index: 1000;
+  border-top: 1px solid black;
+  padding: 0.25em 0.25em 1em 1em;
+
+  @media screen and (max-width: 499px) {
+    width: 100%;
+    border-left-color: transparent;
+    border-left-width: 0;
+  }
+
+  @media screen and (min-width: 500px) {
+    max-width: 75%;
+    border-top-left-radius: 5px;
+    border-left: 1px solid black;
+  }
+
+  @media screen and (min-width: 768px) {
+    max-width: 50%;
+  }
+
+  h2 {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 15px;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 
   span.close {
+    float: right;
     cursor: pointer;
+    font-size: 31px;
+    line-height: 1;
+    color: black;
   }
 }

@@ -20,8 +20,9 @@ class AlertPoiDetails extends Component {
 
     return (
       <div className="AlertPoiDetails">
-        <span className="close" onClick={() => this.deselectPoi()}>X</span>
-        <p>{ poi.name }</p>
+        <span className="close" onClick={() => this.deselectPoi()}>&times;</span>
+        <h2>{ poi.name }</h2>
+        <p>{ poi.description }</p>
       </div>
     );
   }
