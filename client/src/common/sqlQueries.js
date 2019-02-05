@@ -2,11 +2,13 @@ import sls from 'single-line-string';
 
 import { cartoTables } from './config';
 
-const { route_segments } = cartoTables;
+const { route_segments, alert_points } = cartoTables;
 
 // SQL for loading the route from CARTO via Carto(db).JS
-const configureMapSQL = () => sls`
+export const configureMapSQL = () => sls`
   SELECT * FROM ${route_segments}
 `;
 
-export default configureMapSQL;
+export const alertPointsSQL = () => sls`
+  SELECT * FROM ${alert_points} WHERE published
+`;

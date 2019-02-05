@@ -2,11 +2,11 @@ import sls from 'single-line-string';
 
 import { cartoTables } from './config';
 
-const { route_segments } = cartoTables;
+const { route_segments, alert_points } = cartoTables;
 
 // CartoCSS for styling the ECG Route
 // this is passed to Carto(db).JS' createLayer() method
-const cartocss = sls`
+export const cartocss = sls`
   /* color values */
   @casing_light: #FFF;
   @casing_dark: #333;
@@ -74,4 +74,31 @@ const cartocss = sls`
   }
 `;
 
-export default cartocss;
+export const cartocss_alerts = sls`
+  #${alert_points} {
+    marker-allow-overlap: true;
+    marker-type: ellipse;
+    marker-opacity: 0.8;
+    marker-fill: red;
+
+    [zoom < 12] {  /* below this Z just don't show the alert markers */
+      marker-width: 0;
+      marker-height: 0;
+    }
+
+    marker-width: 13;
+    marker-height: 13;
+    [zoom >= 14] {
+      marker-width: 15;
+      marker-height: 15;
+    }
+    [zoom >= 16] {
+      marker-width: 18;
+      marker-height: 18;
+    }
+    [zoom >= 18] {
+      marker-width: 20;
+      marker-height: 20;
+    }
+  }
+`;

@@ -10,6 +10,7 @@ export const cartoUser = 'niles';
 export const cartoTables = {
   route_segments: 'ecg_route_lines_prod',
   cue_points: 'ecg_route_cues_prod',
+  alert_points: 'ecg_alert_points',
 };
 
 // Mapbox access token

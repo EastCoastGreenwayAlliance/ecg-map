@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import Legend from '../../lib/L.Control.Legend';
 
-import { configureLayerSource, queryZXY } from '../common/api';
-import configureMapSQL from '../common/sqlQueries';
+import { configureLayerSource, cartoAlertsSource, queryZXY } from '../common/api';
+import { configureMapSQL } from '../common/sqlQueries';
 import { mbSatellite, mbOutdoors } from '../common/config';
 
 // set default image paths for Leaflet
@@ -273,6 +273,7 @@ class LeafletMap extends Component {
 
     // set up the CARTO basemap layer
     this.initCartoLayer();
+    this.initAlertPointsLayer();
   }
 
   initCartoLayer() {
@@ -285,7 +286,7 @@ class LeafletMap extends Component {
     };
     // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
     cartodb.createLayer(self.map, layerSource, options)
-      .addTo(self.map, 5) // 2nd param is layer z-index
+      .addTo(self.map, 5) // 2nd param is layer z-index; alert points is 10
       .on('done', (layer) => {
         self.cartoLayer = layer;
         layer.on('error', (error) => { throw error; });
@@ -295,6 +296,26 @@ class LeafletMap extends Component {
 
         // fix the map attribution
         self.fixMapAttribution();
+      })
+      .on('error', (error) => { throw error; });
+  }
+
+  initAlertPointsLayer() {
+    const self = this;
+    const layerSource = cartoAlertsSource;
+    const options = {
+      https: true,
+      infowindow: true,
+      legends: false,
+    };
+    // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
+    console.log(layerSource);  // eslint-disable-line
+    cartodb.createLayer(self.map, layerSource, options)
+      .addTo(self.map, 10) // 2nd param is layer z-index; trails route is 5
+      .on('done', (layer) => {
+        self.alertsLayer = layer;
+        layer.on('error', (error) => { throw error; });
+        self.alertsSubLayer = layer.getSubLayer(0);
       })
       .on('error', (error) => { throw error; });
   }

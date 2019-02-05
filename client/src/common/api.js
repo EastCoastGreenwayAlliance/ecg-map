@@ -1,7 +1,8 @@
 import queryString from 'query-string';
 
 import { cartoUser, routeSegmentsFieldsVisible } from './config';
-import cartocss from './cartocss';
+import { alertPointsSQL } from './sqlQueries';
+import { cartocss, cartocss_alerts } from './cartocss';
 import { defaultRoutingState } from '../reducers';
 
 // App "API" functionality & logic stored in this module
@@ -116,10 +117,20 @@ export const cartoLayerSource = {
   }]
 };
 
-// enables the SQL to be changed for the Carto(db).JS layer source object
 export const configureLayerSource = (sql) => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;
+};
+
+// unlike the cartoLoayerSource this one won't need later adjustment so we can streamline slightly
+export const cartoAlertsSource = {
+  user_name: cartoUser,
+  type: 'cartodb',
+  sublayers: [{
+    sql: alertPointsSQL(),
+    cartocss: cartocss_alerts,
+    interactivity: 'name',
+  }]
 };
 
 // CARTO SQL API endpoint
