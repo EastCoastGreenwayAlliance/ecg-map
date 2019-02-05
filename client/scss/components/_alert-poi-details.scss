@@ -1,0 +1,11 @@
+div.AlertPoiDetails {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  z-index: 1000;
+
+  span.close {
+    cursor: pointer;
+  }
+}

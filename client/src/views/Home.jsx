@@ -14,6 +14,7 @@ import StartRouteViewCuesConnected from '../containers/StartRouteViewCuesConnect
 import ElevationProfileConnected from '../containers/ElevationProfileConnected';
 import LeafletMapConnected from '../containers/LeafletMapConnected';
 import ActiveTurningReadoutConnected from '../containers/ActiveTurningReadoutConnected';
+import AlertPoiDetailsConnected from '../containers/AlertPoiDetailsConnected';
 import ModalContent from '../components/Modal';
 
 /** Class that composes components to be shown on the default view / homepage
@@ -106,6 +107,7 @@ class Home extends Component {
           zoom={5}
           onMapMove={this.updateHash}
         />
+        <AlertPoiDetailsConnected />
         <ReactModal
           isOpen={showModal}
           onRequestClose={this.handleCloseModal}
