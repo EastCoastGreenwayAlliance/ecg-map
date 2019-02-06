@@ -10,5 +10,8 @@ export const configureMapSQL = () => sls`
 `;
 
 export const alertPointsSQL = () => sls`
-  SELECT * FROM ${alert_points} WHERE published
+  SELECT
+  name, description, ST_X(the_geom) AS lng, ST_Y(the_geom) AS lat
+  FROM ${alert_points}
+  WHERE published
 `;

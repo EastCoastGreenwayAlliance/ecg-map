@@ -149,5 +149,14 @@
           linear-gradient(transparent, transparent);
       }
     }
+
+    // Alert Point markers are DivIcon
+    div.alert-point-marker {
+      background-color: red;
+      border-radius: 50%;
+      width: 15px !important;
+      height: 15px !important;
+      border: 1px solid black;
+    }
   } // #map
 }

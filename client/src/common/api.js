@@ -1,8 +1,7 @@
 import queryString from 'query-string';
 
 import { cartoUser, routeSegmentsFieldsVisible } from './config';
-import { alertPointsSQL } from './sqlQueries';
-import { cartocss, cartocss_alerts } from './cartocss';
+import cartocss from './cartocss';
 import { defaultRoutingState } from '../reducers';
 
 // App "API" functionality & logic stored in this module
@@ -120,18 +119,6 @@ export const cartoLayerSource = {
 export const configureLayerSource = (sql) => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;
-};
-
-// unlike the cartoLoayerSource this one won't need later adjustment so we can streamline slightly
-// include in the interactivity property, any fields which we would want displayed on click
-export const cartoAlertsSource = {
-  user_name: cartoUser,
-  type: 'cartodb',
-  sublayers: [{
-    sql: alertPointsSQL(),
-    cartocss: cartocss_alerts,
-    interactivity: 'cartodb_id,name,description',
-  }]
 };
 
 // CARTO SQL API endpoint

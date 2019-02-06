@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import Legend from '../../lib/L.Control.Legend';
 
-import { configureLayerSource, cartoAlertsSource, queryZXY } from '../common/api';
-import { configureMapSQL } from '../common/sqlQueries';
-import { mbSatellite, mbOutdoors, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
+import { configureLayerSource, queryZXY } from '../common/api';
+import { configureMapSQL, alertPointsSQL } from '../common/sqlQueries';
+import { mbSatellite, mbOutdoors, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 
 // set default image paths for Leaflet
@@ -19,6 +19,8 @@ L.Icon.Default.mergeOptions({
   iconUrl: '/assets/icons/marker-icon.png',
   shadowUrl: '/assets/icons/marker-shadow.png',
 });
+
+export const ALERT_POINTS_MINZOOM = 14;
 
 /** Class that integrates Leaflet.JS with React and handles:
     - loading of basemap tiles & map interaction
@@ -273,9 +275,22 @@ class LeafletMap extends Component {
     // add the search results feature group to the map for storing markers & paths
     this.searchResults.addTo(this.map);
 
+    // create a Feature Group for storing Alert POIs which will be loaded in initAlertPoints()
+    this.map.alertpoints = L.featureGroup([]);
+    this.map.on('zoomend', () => {
+      const z = this.map.getZoom();
+
+      if (z < ALERT_POINTS_MINZOOM) {
+        this.map.removeLayer(this.map.alertpoints);
+      } else {
+        this.map.addLayer(this.map.alertpoints);
+      }
+    });
+    this.map.fire('zoomend');
+
     // set up the CARTO basemap layer
     this.initCartoLayer();
-    this.initAlertPointsLayer();
+    this.initAlertPoints();
   }
 
   initCartoLayer() {
@@ -302,28 +317,31 @@ class LeafletMap extends Component {
       .on('error', (error) => { throw error; });
   }
 
-  initAlertPointsLayer() {
-    const self = this;
-    const layerSource = cartoAlertsSource;
-    const options = {
-      https: true,
-      infowindow: true,
-      legends: false,
-    };
-    // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
-    cartodb.createLayer(self.map, layerSource, options)
-      .addTo(self.map, 10) // 2nd param is layer z-index; trails route is 5
-      .on('done', (layer) => {
-        self.alertsLayer = layer;
-        layer.on('error', (error) => { throw error; });
-        self.alertsSubLayer = layer.getSubLayer(0);
+  initAlertPoints() {
+    const { selectAlertPoint } = this.props;
+    const alertpointsqueryurl = `https://${cartoUser}.carto.com/api/v2/sql?q=${alertPointsSQL()}`;
+    const alertpointsxhr = new XMLHttpRequest();
 
-        layer.setInteraction(true);
-        layer.on('featureClick', (e, latlng, pos, data) => {
-          this.handleAlertClick(latlng, data);
+    alertpointsxhr.open('GET', alertpointsqueryurl);
+    alertpointsxhr.onload = () => {
+      if (alertpointsxhr.status === 200) {
+        const poidata = JSON.parse(alertpointsxhr.responseText);
+        poidata.rows.forEach((poi) => {
+          L.marker([poi.lat, poi.lng], {
+            title: poi.name,
+            poi,
+            icon: L.divIcon({
+              className: 'alert-point-marker',
+            }),
+          })
+          .on('click', () => {
+            selectAlertPoint(poi);
+          })
+          .addTo(this.map.alertpoints);
         });
-      })
-      .on('error', (error) => { throw error; });
+      }
+    };
+    alertpointsxhr.send();
   }
 
   fixMapAttribution() {
@@ -355,12 +373,6 @@ class LeafletMap extends Component {
           return null;
       }
     });
-  }
-
-  handleAlertClick(latlng, alertpoiinfo) {
-    const { selectAlertPoint } = this.props;
-    alertpoiinfo.latlng = latlng;
-    selectAlertPoint(alertpoiinfo);
   }
 
   enableActiveTurning() {
