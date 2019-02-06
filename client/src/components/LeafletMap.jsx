@@ -20,7 +20,8 @@ L.Icon.Default.mergeOptions({
   shadowUrl: '/assets/icons/marker-shadow.png',
 });
 
-export const ALERT_POINTS_MINZOOM = 14;
+export const ALERT_POINTS_MINZOOM = 14;  // min zoom to show all Alert Points not on a route
+export const ALERT_POINTS_DISTANCE_FROM_ROUTE = 1.0;  // miles
 
 /** Class that integrates Leaflet.JS with React and handles:
     - loading of basemap tiles & map interaction
@@ -194,6 +195,8 @@ class LeafletMap extends Component {
     /* Handles displaying of selection portion of the route */
     if (route.response && !this.props.route.response) {
       this.renderRouteHighlight(route.response);
+    } else if (!route.response && this.props.route.response) {
+      this.clearRouteHighlight();
     }
 
     /* Handles enabling & disabling of "active turning" */
@@ -275,22 +278,27 @@ class LeafletMap extends Component {
     // add the search results feature group to the map for storing markers & paths
     this.searchResults.addTo(this.map);
 
-    // create a Feature Group for storing Alert POIs which will be loaded in initAlertPoints()
-    this.map.alertpoints = L.featureGroup([]);
+    // create a FeatureGroup for storing all Alert POIs
+    // this will be populated in initAlertPoints() and will only show at zome zoom levels
+    // create a FeatureGroup for Alert POIs along our route
+    // this is populated in renderRouteHighlight() and is always visible
+    this.map.allalertpoints = L.featureGroup([]);
     this.map.on('zoomend', () => {
       const z = this.map.getZoom();
 
       if (z < ALERT_POINTS_MINZOOM) {
-        this.map.removeLayer(this.map.alertpoints);
+        this.map.removeLayer(this.map.allalertpoints);
       } else {
-        this.map.addLayer(this.map.alertpoints);
+        this.map.addLayer(this.map.allalertpoints);
       }
     });
     this.map.fire('zoomend');
-
-    // set up the CARTO basemap layer
-    this.initCartoLayer();
     this.initAlertPoints();
+
+    this.map.routealertpoints = L.featureGroup([]).addTo(this.map);
+
+    // set up the CARTO layer with the trail
+    this.initCartoLayer();
   }
 
   initCartoLayer() {
@@ -337,7 +345,7 @@ class LeafletMap extends Component {
           .on('click', () => {
             selectAlertPoint(poi);
           })
-          .addTo(this.map.alertpoints);
+          .addTo(this.map.allalertpoints);
         });
       }
     };
@@ -441,6 +449,9 @@ class LeafletMap extends Component {
       updateActiveTurning(activeTurningUpdate);
     });
 
+    // GDA
+    // could report any Alert Points nearby
+
     // dispatch error if a Leaflet locate geolocation error occurs
     this.map.on('locationerror', error => reportLocationError(error.message));
   }
@@ -543,6 +554,12 @@ class LeafletMap extends Component {
     this.fitBoundsToSearchResults(...padding);
   }
 
+  clearRouteHighlight() {
+    // the route highlight is already cleared elsewhere
+    // but we want to also clear our Route Alert Points
+    this.map.routealertpoints.clearLayers();
+  }
+
   renderRouteHighlight(routeGeoJson) {
     if (!routeGeoJson || !routeGeoJson.features || !routeGeoJson.features.length) {
       // don't try adding anything if no GeoJSON was returned from the router
@@ -561,6 +578,47 @@ class LeafletMap extends Component {
     });
     this.searchResults.addLayer(this.searchRoute);
     this.fitBoundsToSearchResults(...padding);
+
+    // find Alert Points within X miles of our route
+    // load them into the always-on Alert Points featuregroup
+    // tip: clone the markers, don't just assign them!
+    this.map.routealertpoints.clearLayers();
+    const alertpointsonroute = this.map.allalertpoints.getLayers().filter((alertpoi) => {
+      const poilatlng = alertpoi.getLatLng();
+      let shortestdistance = 1000000;
+
+      this.searchRoute.getLayers().forEach((routesegment) => {
+        const segmentvertices = routesegment.getLatLngs()[0];
+        for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
+          const p = this.map.latLngToLayerPoint(poilatlng); // this Alert Point
+          const p1 = this.map.latLngToLayerPoint(segmentvertices[i]); // vertex
+          const p2 = this.map.latLngToLayerPoint(segmentvertices[i + 1]); // vertex +1
+          const px = L.LineUtil.closestPointOnSegment(p, p1, p2); // closest pixel to Alert Point
+          const pd = this.map.layerPointToLatLng(px); // pixel back to latlng
+          const d = poilatlng.distanceTo(pd); // meters distance between Alert Point + closest
+
+          if (d < shortestdistance) {
+            shortestdistance = d;
+          }
+        }
+      });
+
+      shortestdistance /= METERS_TO_MILES;  // convert to miles
+      console.log([  // eslint-disable-line
+        'renderRouteHighlight()',
+        `POI ${alertpoi.options.poi.name} is ${shortestdistance.toFixed(1)} mi off route`
+      ]);
+      return shortestdistance <= ALERT_POINTS_DISTANCE_FROM_ROUTE;
+    });
+    console.log([  // eslint-disable-line
+      'renderRouteHighlight()',
+      'POIs found near route:', alertpointsonroute
+    ]);
+
+    alertpointsonroute.forEach((alertpoint) => {
+      const newmarker = L.marker(alertpoint.getLatLng(), alertpoint.options);
+      newmarker.addTo(this.map.routealertpoints);
+    });
   }
 
   render() {
