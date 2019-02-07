@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PoiDetails from '../components/PoiDetails';
 import { selectPoi } from '../actions';
 
-const mapStateToProps = ({ selectedpoi }) => ({
-  selectedpoi,
+const mapStateToProps = ({ pois }) => ({
+  pois,
   selectPoi,
 });
 

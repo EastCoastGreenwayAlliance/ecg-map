@@ -1,6 +1,6 @@
 import {
   POI_SELECT,
-  POI_CLEAR,
+  POI_DESELECT,
   POIS_NEARBY_UPDATE,
 } from '../common/actionTypes';
 
@@ -10,7 +10,7 @@ const poiSelect = poi => ({
 });
 
 const poiDeselect = () => ({
-  type: POI_CLEAR,
+  type: POI_DESELECT,
 });
 
 const nearbyPois = poilist => ({

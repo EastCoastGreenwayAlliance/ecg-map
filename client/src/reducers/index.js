@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
   mailchimp: mailchimpReducer,
   routing: routingReducer,
   activeturning: activeTurningReducer,
-  selectedpoi: poiReducer,
+  pois: poiReducer,
 });
 
 export default rootReducer;

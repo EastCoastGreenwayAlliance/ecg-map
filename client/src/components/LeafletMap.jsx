@@ -607,6 +607,7 @@ class LeafletMap extends Component {
       return;
     }
 
+    const { selectPoi } = this.props;
     const { isMobile } = this.props;
     const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
@@ -658,6 +659,9 @@ class LeafletMap extends Component {
 
     poisonroute.forEach((point) => {
       const newmarker = L.marker(point.getLatLng(), point.options);
+      newmarker.on('click', () => {
+        selectPoi(point.options.poi);  // click events won't clone; copy the click-info behavior
+      });
       newmarker.addTo(this.map.routepois);
     });
   }

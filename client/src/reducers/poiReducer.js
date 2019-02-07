@@ -1,11 +1,11 @@
 // Redux Reducer to store app state relating to geocode requests
 import {
   POI_SELECT,
-  POI_CLEAR,
+  POI_DESELECT,
 } from '../common/actionTypes';
 
 const defaultState = {
-  poi: null,
+  selected: null,
 };
 
 /*
@@ -18,11 +18,14 @@ export default (state = defaultState, action) => {
     case POI_SELECT:
       return {
         ...state,
-        poi: action.poi,
+        selected: action.poi,
       };
 
-    case POI_CLEAR:
-      return { ...defaultState };
+    case POI_DESELECT:
+      return {
+        ...state,
+        selected: null,
+      };
 
     default:
       return state;

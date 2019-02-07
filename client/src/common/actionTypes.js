@@ -38,7 +38,7 @@ export const ACTIVE_TURNING_ERROR = 'ACTIVE_TURNING_ERROR';
 
 // selecting an Alert POI to display info, or de-selecting it
 export const POI_SELECT = 'POI_SELECT';
-export const POI_CLEAR = 'POI_CLEAR';
+export const POI_DESELECT = 'POI_DESELECT';
 
 // during active turning, updating list of POIs nearby
 export const POIS_NEARBY_UPDATE = 'POIS_NEARBY_UPDATE';
