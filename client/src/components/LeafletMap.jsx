@@ -20,8 +20,9 @@ L.Icon.Default.mergeOptions({
   shadowUrl: '/assets/icons/marker-shadow.png',
 });
 
-export const ALERT_POINTS_MINZOOM = 14;  // min zoom to show all Alert Points not on a route
-export const ALERT_POINTS_DISTANCE_FROM_ROUTE = 1.0;  // miles
+export const POIS_SHOWALL_MINZOOM = 14;  // min zoom to show all Alert Points not on a route
+export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
+export const POIS_NOTIFY_RANGE = 1.0;  // miles
 
 /** Class that integrates Leaflet.JS with React and handles:
     - loading of basemap tiles & map interaction
@@ -47,6 +48,7 @@ class LeafletMap extends Component {
     updateActiveTurning: PropTypes.func.isRequired,
     disableActiveTurning: PropTypes.func.isRequired,
     selectPoi: PropTypes.func.isRequired,
+    updateNearbyPois: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -289,7 +291,7 @@ class LeafletMap extends Component {
     this.map.on('zoomend', () => {
       const z = this.map.getZoom();
 
-      if (z < ALERT_POINTS_MINZOOM) {
+      if (z < POIS_SHOWALL_MINZOOM) {
         this.map.removeLayer(this.map.allpois);
       } else {
         this.map.addLayer(this.map.allpois);
@@ -399,10 +401,23 @@ class LeafletMap extends Component {
   }
 
   initActiveTurningPoiNotifications() {
-    /*
-    this.map.on('locationfound', (e) => {
+    this.map.on('locationfound', (event) => {
+      const { activeTurningEnabled, updateNearbyPois } = this.props;
+      const here = event.latlng;
+
+      if (!activeTurningEnabled || !this.searchRoute) return;  // only during active turning
+
+      const nearby = this.map.routepois.getLayers().filter((poi) => {
+        const poilatlng = poi.getLatLng();
+        const miles = poilatlng.distanceTo(here) / METERS_TO_MILES;
+        return miles <= POIS_NOTIFY_RANGE;
+      })
+      .map(poi => poi.options.poi);  // extract POI info from POI L.Marker
+      // console.log(['Nearby POIs', nearby ]);  // eslint-disable-line
+
+      // hand off these nearby POIs to redux for display
+      updateNearbyPois(nearby);
     });
-    */
   }
 
   initBindActiveTurningLocationWatcher() {
@@ -634,7 +649,7 @@ class LeafletMap extends Component {
         'renderRouteHighlight()',
         `POI ${poi.options.poi.name} is ${shortestdistance.toFixed(1)} mi off route`
       ]);
-      return shortestdistance <= ALERT_POINTS_DISTANCE_FROM_ROUTE;
+      return shortestdistance <= POIS_DISTANCE_FROM_ROUTE;
     });
     console.log([  // eslint-disable-line
       'renderRouteHighlight()',
