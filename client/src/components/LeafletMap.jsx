@@ -130,6 +130,9 @@ class LeafletMap extends Component {
 
     // set up the Leaflet map
     this.initMap();
+    this.initBindActiveTurningLocationWatcher();
+    this.initActiveTurningPoiNotifications();
+    this.initFakeGeolocationClicks();  // testing: click to pretend we're driving!
 
     // if we received preloaded state for start and end locations, show those on the map
     if (startLocation.accepted && startLocation.coordinates.length && endLocation.accepted
@@ -301,6 +304,18 @@ class LeafletMap extends Component {
     this.initCartoLayer();
   }
 
+  initFakeGeolocationClicks() {
+    // for testing routing: click the map calls a locationfound event,
+    // so you can click your way as if walking/./driving
+    // note: this won't move the geo-accuracy circle, cuz that's hardcoded into L.locate()
+    // but will trigger our own locationfound events such as active turning
+    this.map.on('click', (event) => {
+      this.map.fire('locationfound', {
+        latlng: event.latlng,
+      });
+    });
+  }
+
   initCartoLayer() {
     const self = this;
     const layerSource = configureLayerSource(configureMapSQL());
@@ -383,12 +398,18 @@ class LeafletMap extends Component {
     });
   }
 
-  enableActiveTurning() {
+  initActiveTurningPoiNotifications() {
+    /*
+    this.map.on('locationfound', (e) => {
+    });
+    */
+  }
+
+  initBindActiveTurningLocationWatcher() {
     const { updateActiveTurning, reportLocationError } = this.props;
 
-    // start geolocation tracking, simply moving the marker but not otherwise affecting the map
-    this.locateMe.start();
-
+    // relocated from enableActiveTurning() where it was being re-bound
+    // each time activeturning was re-enabled, and thus firing multiple times
     this.map.on('locationfound', (e) => {
       // if there's a route, find where we are on it and the next cue point
       // if we're too far off it, some wording changes (sort of an implicit disclaimer)
@@ -449,14 +470,19 @@ class LeafletMap extends Component {
       updateActiveTurning(activeTurningUpdate);
     });
 
-    // GDA
-    // could report any Alert Points nearby
-
     // dispatch error if a Leaflet locate geolocation error occurs
     this.map.on('locationerror', error => reportLocationError(error.message));
   }
 
+  enableActiveTurning() {
+    // start geolocation tracking
+    // see also the locationfound event handlers which update active turning and nearby POIs
+    this.locateMe.start();
+  }
+
   disableActiveTurning() {
+    // stop geolocation tracking
+    // see also the locationfound event handlers which update active turning and nearby POIs
     this.locateMe.stop();
   }
 
