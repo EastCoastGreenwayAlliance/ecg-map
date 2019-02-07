@@ -2,10 +2,12 @@
 import {
   POI_SELECT,
   POI_DESELECT,
+  POIS_NEARBY_UPDATE,
 } from '../common/actionTypes';
 
 const defaultState = {
   selected: null,
+  nearby: [],
 };
 
 /*
@@ -25,6 +27,12 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         selected: null,
+      };
+
+    case POIS_NEARBY_UPDATE:
+      return {
+        ...state,
+        nearby: action.nearby,
       };
 
     default:

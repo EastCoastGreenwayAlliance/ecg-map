@@ -134,7 +134,7 @@ class LeafletMap extends Component {
     this.initMap();
     this.initBindActiveTurningLocationWatcher();
     this.initActiveTurningPoiNotifications();
-    this.initFakeGeolocationClicks();  // testing: click to pretend we're driving!
+    // this.initFakeGeolocationClicks();  // testing: click to pretend we're driving!
 
     // if we received preloaded state for start and end locations, show those on the map
     if (startLocation.accepted && startLocation.coordinates.length && endLocation.accepted

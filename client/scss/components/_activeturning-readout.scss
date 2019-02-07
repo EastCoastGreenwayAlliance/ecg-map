@@ -10,12 +10,33 @@
   border-top: 1px solid $grey;
 
   .active-turning-cancel,
+  .active-turning-nearby,
   .active-turning-cue {
     padding: 10px;
   }
 
   .active-turning-cue {
     border-top: 1px solid $grey;
+  }
+
+  .active-turning-nearby {
+    border-top: 1px solid $grey;
+
+    h3 {
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin-bottom: 0;
+    }
+
+    li {
+      font-size: 14px;
+    }
   }
 
   button.button-cancel {
