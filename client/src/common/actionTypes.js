@@ -37,5 +37,5 @@ export const ACTIVE_TURNING_DISABLE = 'ACTIVE_TURNING_DISABLE';
 export const ACTIVE_TURNING_ERROR = 'ACTIVE_TURNING_ERROR';
 
 // selecting an Alert POI to display info, or de-selecting it
-export const ALERTPOI_SELECT = 'ALERTPOI_SELECT';
-export const ALERTPOI_CLEAR = 'ALERTPOI_CLEAR';
+export const POI_SELECT = 'POI_SELECT';
+export const POI_CLEAR = 'POI_CLEAR';

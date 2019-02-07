@@ -1,7 +1,7 @@
 // Redux Reducer to store app state relating to geocode requests
 import {
-  ALERTPOI_SELECT,
-  ALERTPOI_CLEAR,
+  POI_SELECT,
+  POI_CLEAR,
 } from '../common/actionTypes';
 
 const defaultState = {
@@ -9,19 +9,19 @@ const defaultState = {
 };
 
 /*
- * Alert POI Reducer
+ * POI Reducer
  * @param {object} state: default reducer state
  * @param {object} action: redux action creator
 */
 export default (state = defaultState, action) => {
   switch (action.type) {
-    case ALERTPOI_SELECT:
+    case POI_SELECT:
       return {
         ...state,
         poi: action.poi,
       };
 
-    case ALERTPOI_CLEAR:
+    case POI_CLEAR:
       return { ...defaultState };
 
     default:

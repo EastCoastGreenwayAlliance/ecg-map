@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class AlertPoiDetails extends Component {
+class PoiDetails extends Component {
   static propTypes = {
-    alertpoi: PropTypes.object.isRequired,
-    selectAlertPoint: PropTypes.func.isRequired,
+    selectedpoi: PropTypes.object.isRequired,
+    selectPoi: PropTypes.func.isRequired,
   }
 
   deselectPoi () {
-    const { selectAlertPoint } = this.props;
-    selectAlertPoint(null);
+    const { selectPoi } = this.props;
+    selectPoi(null);
   }
 
   render () {
-    const { poi } = this.props.alertpoi;
+    const { poi } = this.props.selectedpoi;
 
     // if we have no POI then just return no UI at all
     if (!poi) return null;
 
     return (
-      <div className="AlertPoiDetails">
+      <div className="PoiDetails">
         <span className="close" onClick={() => this.deselectPoi()}>&times;</span>
         <h2>{ poi.name }</h2>
         <p>{ poi.description }</p>
@@ -28,4 +28,4 @@ class AlertPoiDetails extends Component {
   }
 }
 
-export default AlertPoiDetails;
+export default PoiDetails;

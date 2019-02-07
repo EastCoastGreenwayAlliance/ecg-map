@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
   mailchimp: state.mailchimp,
   startLocation: state.routing.startLocation,
   endLocation: state.routing.endLocation,
-  alertpoi: state.alertpoi.poi,
+  selectedpoi: state.selectedpoi.poi,
 });
 
 export default connect(mapStateToProps, {

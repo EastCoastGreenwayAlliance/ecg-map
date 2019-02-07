@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import Legend from '../../lib/L.Control.Legend';
 
 import { configureLayerSource, queryZXY } from '../common/api';
-import { configureMapSQL, alertPointsSQL } from '../common/sqlQueries';
+import { configureMapSQL, poiFetchSQL } from '../common/sqlQueries';
 import { mbSatellite, mbOutdoors, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 
@@ -46,7 +46,7 @@ class LeafletMap extends Component {
     route: PropTypes.object,
     updateActiveTurning: PropTypes.func.isRequired,
     disableActiveTurning: PropTypes.func.isRequired,
-    selectAlertPoint: PropTypes.func.isRequired,
+    selectPoi: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -279,23 +279,23 @@ class LeafletMap extends Component {
     this.searchResults.addTo(this.map);
 
     // create a FeatureGroup for storing all Alert POIs
-    // this will be populated in initAlertPoints() and will only show at zome zoom levels
+    // this will be populated in initPoints() and will only show at zome zoom levels
     // create a FeatureGroup for Alert POIs along our route
     // this is populated in renderRouteHighlight() and is always visible
-    this.map.allalertpoints = L.featureGroup([]);
+    this.map.allpois = L.featureGroup([]);
     this.map.on('zoomend', () => {
       const z = this.map.getZoom();
 
       if (z < ALERT_POINTS_MINZOOM) {
-        this.map.removeLayer(this.map.allalertpoints);
+        this.map.removeLayer(this.map.allpois);
       } else {
-        this.map.addLayer(this.map.allalertpoints);
+        this.map.addLayer(this.map.allpois);
       }
     });
     this.map.fire('zoomend');
-    this.initAlertPoints();
+    this.initPois();
 
-    this.map.routealertpoints = L.featureGroup([]).addTo(this.map);
+    this.map.routepois = L.featureGroup([]).addTo(this.map);
 
     // set up the CARTO layer with the trail
     this.initCartoLayer();
@@ -325,31 +325,31 @@ class LeafletMap extends Component {
       .on('error', (error) => { throw error; });
   }
 
-  initAlertPoints() {
-    const { selectAlertPoint } = this.props;
-    const alertpointsqueryurl = `https://${cartoUser}.carto.com/api/v2/sql?q=${alertPointsSQL()}`;
-    const alertpointsxhr = new XMLHttpRequest();
+  initPois() {
+    const { selectPoi } = this.props;
+    const poisqueryurl = `https://${cartoUser}.carto.com/api/v2/sql?q=${poiFetchSQL()}`;
+    const poisxhr = new XMLHttpRequest();
 
-    alertpointsxhr.open('GET', alertpointsqueryurl);
-    alertpointsxhr.onload = () => {
-      if (alertpointsxhr.status === 200) {
-        const poidata = JSON.parse(alertpointsxhr.responseText);
+    poisxhr.open('GET', poisqueryurl);
+    poisxhr.onload = () => {
+      if (poisxhr.status === 200) {
+        const poidata = JSON.parse(poisxhr.responseText);
         poidata.rows.forEach((poi) => {
           L.marker([poi.lat, poi.lng], {
             title: poi.name,
             poi,
             icon: L.divIcon({
-              className: 'alert-point-marker',
+              className: `poi-marker poi-marker-${poi.type}`,
             }),
           })
           .on('click', () => {
-            selectAlertPoint(poi);
+            selectPoi(poi);
           })
-          .addTo(this.map.allalertpoints);
+          .addTo(this.map.allpois);
         });
       }
     };
-    alertpointsxhr.send();
+    poisxhr.send();
   }
 
   fixMapAttribution() {
@@ -557,7 +557,7 @@ class LeafletMap extends Component {
   clearRouteHighlight() {
     // the route highlight is already cleared elsewhere
     // but we want to also clear our Route Alert Points
-    this.map.routealertpoints.clearLayers();
+    this.map.routepois.clearLayers();
   }
 
   renderRouteHighlight(routeGeoJson) {
@@ -582,9 +582,9 @@ class LeafletMap extends Component {
     // find Alert Points within X miles of our route
     // load them into the always-on Alert Points featuregroup
     // tip: clone the markers, don't just assign them!
-    this.map.routealertpoints.clearLayers();
-    const alertpointsonroute = this.map.allalertpoints.getLayers().filter((alertpoi) => {
-      const poilatlng = alertpoi.getLatLng();
+    this.map.routepois.clearLayers();
+    const poisonroute = this.map.allpois.getLayers().filter((poi) => {
+      const poilatlng = poi.getLatLng();
       let shortestdistance = 1000000;
 
       this.searchRoute.getLayers().forEach((routesegment) => {
@@ -606,18 +606,18 @@ class LeafletMap extends Component {
       shortestdistance /= METERS_TO_MILES;  // convert to miles
       console.log([  // eslint-disable-line
         'renderRouteHighlight()',
-        `POI ${alertpoi.options.poi.name} is ${shortestdistance.toFixed(1)} mi off route`
+        `POI ${poi.options.poi.name} is ${shortestdistance.toFixed(1)} mi off route`
       ]);
       return shortestdistance <= ALERT_POINTS_DISTANCE_FROM_ROUTE;
     });
     console.log([  // eslint-disable-line
       'renderRouteHighlight()',
-      'POIs found near route:', alertpointsonroute
+      'POIs found near route:', poisonroute
     ]);
 
-    alertpointsonroute.forEach((alertpoint) => {
-      const newmarker = L.marker(alertpoint.getLatLng(), alertpoint.options);
-      newmarker.addTo(this.map.routealertpoints);
+    poisonroute.forEach((point) => {
+      const newmarker = L.marker(point.getLatLng(), point.options);
+      newmarker.addTo(this.map.routepois);
     });
   }
 

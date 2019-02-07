@@ -9,9 +9,10 @@ export const configureMapSQL = () => sls`
   SELECT * FROM ${route_segments}
 `;
 
-export const alertPointsSQL = () => sls`
+export const poiFetchSQL = () => sls`
   SELECT
-  name, description, ST_X(the_geom) AS lng, ST_Y(the_geom) AS lat
+  type, name, description,
+  ST_X(the_geom) AS lng, ST_Y(the_geom) AS lat
   FROM ${alert_points}
   WHERE published
 `;

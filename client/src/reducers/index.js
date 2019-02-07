@@ -7,7 +7,7 @@ import geocodeReducer from './geocodeReducer';
 import routingReducer from './ecgRoutingReducer';
 import elevationReducer from './elevationDataReducer';
 import activeTurningReducer from './activeTurningReducer';
-import alertPointReducer from './alertPointReducer';
+import poiReducer from './poiReducer';
 
 // breakpoints to match Skeleton CSS's
 const browser = createResponsiveStateReducer({
@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
   mailchimp: mailchimpReducer,
   routing: routingReducer,
   activeturning: activeTurningReducer,
-  alertpoi: alertPointReducer,
+  selectedpoi: poiReducer,
 });
 
 export default rootReducer;

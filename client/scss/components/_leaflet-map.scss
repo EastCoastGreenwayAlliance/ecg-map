@@ -151,12 +151,24 @@
     }
 
     // Alert Point markers are DivIcon
-    div.alert-point-marker {
-      background-color: red;
+    div.poi-marker {
+      background-color: white;
       border-radius: 50%;
       width: 15px !important;
       height: 15px !important;
       border: 1px solid black;
+
+      // now the per-type clarifications
+      // the literal "type" field is inserted to form the CSS className of the marker
+      &.poi-marker-POI {
+        background-color: darkgreen;
+        border: 1px solid black;
+      }
+
+      &.poi-marker-Alert {
+        background-color: red;
+        border: 1px solid black;
+      }
     }
   } // #map
 }

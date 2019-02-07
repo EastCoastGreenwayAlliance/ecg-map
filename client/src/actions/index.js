@@ -20,4 +20,4 @@ export {
   updateActiveTurning,
   reportLocationError,
 } from './activeTurningActions';
-export selectAlertPoint from './getAlertPointInfo';
+export selectPoi from './poiInfo';
