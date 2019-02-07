@@ -71,7 +71,7 @@ class ActiveTurningReadout extends Component {
           <ul>
             {nearby.map(poi => (
               <li>
-                <b>{poi.name}</b>
+                <b>{poi.name}</b>, {poi.miles.toFixed(1)} mi {poi.bearing.toLowerCase()}
               </li>
             ))}
           </ul>

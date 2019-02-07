@@ -7,6 +7,10 @@ import { configureLayerSource, queryZXY } from '../common/api';
 import { configureMapSQL, poiFetchSQL } from '../common/sqlQueries';
 import { mbSatellite, mbOutdoors, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
+export const POIS_SHOWALL_MINZOOM = 14;  // min zoom to show all Alert Points not on a route
+export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
+export const POIS_NOTIFY_RANGE = 1.0;  // miles
+
 
 // set default image paths for Leaflet
 // note that "ecg-map" will be set as the first directory if NODE_ENV === 'production'
@@ -20,9 +24,36 @@ L.Icon.Default.mergeOptions({
   shadowUrl: '/assets/icons/marker-shadow.png',
 });
 
-export const POIS_SHOWALL_MINZOOM = 14;  // min zoom to show all Alert Points not on a route
-export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
-export const POIS_NOTIFY_RANGE = 1.0;  // miles
+// utility additions to L.LatLng to calculate the bearing from A to B
+// as both a compass heading (0=north) and as human-friendly words (Northeast)
+L.LatLng.prototype.bearingTo = function (other) {  // eslint-disable-line
+  const d2r = L.LatLng.DEG_TO_RAD;
+  const r2d = L.LatLng.RAD_TO_DEG;
+  const lat1 = this.lat * d2r;
+  const lat2 = other.lat * d2r;
+  const dLon = (other.lng - this.lng) * d2r;
+  const y = Math.sin(dLon) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);  // eslint-disable-line
+
+  let brng = Math.atan2(y, x);
+  brng = parseInt(brng * r2d, 10);
+  brng = (brng + 360) % 360;
+  return brng;
+};
+
+L.LatLng.prototype.bearingWordTo = function (other) {  // eslint-disable-line
+  const bearing = this.bearingTo(other);
+  let bearingword = '';
+  if (bearing >= 22 && bearing <= 67) bearingword = 'Northeast';
+  else if (bearing >= 67 && bearing <= 112) bearingword = 'East';
+  else if (bearing >= 112 && bearing <= 157) bearingword = 'Southeast';
+  else if (bearing >= 157 && bearing <= 202) bearingword = 'South';
+  else if (bearing >= 202 && bearing <= 247) bearingword = 'Southwest';
+  else if (bearing >= 247 && bearing <= 292) bearingword = 'West';
+  else if (bearing >= 292 && bearing <= 337) bearingword = 'Northwest';
+  else if (bearing >= 337 || bearing <= 22) bearingword = 'North';
+  return bearingword;
+};
 
 /** Class that integrates Leaflet.JS with React and handles:
     - loading of basemap tiles & map interaction
@@ -407,12 +438,18 @@ class LeafletMap extends Component {
 
       if (!activeTurningEnabled || !this.searchRoute) return;  // only during active turning
 
-      const nearby = this.map.routepois.getLayers().filter((poi) => {
+      const nearby = this.map.routepois.getLayers().map((poi) => {
         const poilatlng = poi.getLatLng();
         const miles = poilatlng.distanceTo(here) / METERS_TO_MILES;
-        return miles <= POIS_NOTIFY_RANGE;
+        const bearing = here.bearingWordTo(poilatlng);
+
+        return {  // extract POI info from L.Marker, add mileage and bearing
+          ...poi.options.poi,
+          miles,
+          bearing,
+        };
       })
-      .map(poi => poi.options.poi);  // extract POI info from POI L.Marker
+      .filter(nrb => nrb.miles <= POIS_NOTIFY_RANGE);
       // console.log(['Nearby POIs', nearby ]);  // eslint-disable-line
 
       // hand off these nearby POIs to redux for display
