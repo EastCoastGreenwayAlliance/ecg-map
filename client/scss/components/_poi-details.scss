@@ -1,26 +1,26 @@
 div.PoiDetails {
-  position: absolute;
-  right: 0;
-  bottom: 0;
   background-color: white;
-  z-index: 1000;
-  border-top: 1px solid black;
+  z-index: 2000;
   padding: 0.25em 0.25em 1em 1em;
 
   @media screen and (max-width: 499px) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    border-left-color: transparent;
-    border-left-width: 0;
+    border-top: 1px solid black;  /* single black line at top */
   }
 
   @media screen and (min-width: 500px) {
-    max-width: 75%;
-    border-top-left-radius: 5px;
-    border-left: 1px solid black;
-  }
-
-  @media screen and (min-width: 768px) {
-    max-width: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 500px;
+    margin-left: -250px;  /* half of width, to contrive fixed centering */
+    border-top-left-radius: 5px;  /* border on 3 sides, with curved corners */
+    border-top-right-radius: 5px;
+    border: 1px solid black;
+    border-bottom-width: 0;
   }
 
   h2 {
