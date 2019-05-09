@@ -7,7 +7,7 @@ import { configureLayerSource, queryZXY } from '../common/api';
 import { configureMapSQL, poiFetchSQL } from '../common/sqlQueries';
 import { mbSatellite, mbOutdoors, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
-export const POIS_SHOWALL_MINZOOM = 14;  // min zoom to show all Alert Points not on a route
+export const POIS_SHOWALL_MINZOOM = 12;  // min zoom to show all Alert Points not on a route
 export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
 export const POIS_NOTIFY_RANGE = 1.0;  // miles
 
