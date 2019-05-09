@@ -20,4 +20,4 @@ export {
   updateActiveTurning,
   reportLocationError,
 } from './activeTurningActions';
-export { selectPoi, updateNearbyPois } from './poiInfo';
+export { selectPoi, updateNearbyPois } from './poiInfoActions';
