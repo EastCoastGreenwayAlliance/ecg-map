@@ -20,6 +20,11 @@
       margin-top: 0;
     }
 
+    &.clicktarget {
+      // crosshair to idnicate "click here!"
+      cursor: crosshair;
+    }
+
     // reposition & reset the scalebar control
     .leaflet-control-scale.leaflet-control {
       bottom: 25px;
