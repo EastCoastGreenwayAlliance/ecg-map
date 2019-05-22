@@ -54,6 +54,15 @@
         url('../assets/icons/transit.svg') no-repeat,
         linear-gradient(transparent, transparent);
     }
+
+    &.legend-item-alertpoi {
+      width: 11px;
+      height: 11px;
+      margin-bottom: 4px;
+      border-radius: 50%;
+      background-color: red;
+      border: 1px solid black;
+    }
   }
 
   a {

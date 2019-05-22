@@ -33,3 +33,6 @@ $mapHeightMobile:           calc(100% - #{$navbarHeightMobile} - #{$searchboxHei
 // z-indexes
 $component-zindex:          2000;
 $modal-zindex:              4002;
+
+// default cursor over the map
+$map-mouse-cursor: crosshair;

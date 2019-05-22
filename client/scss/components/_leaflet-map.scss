@@ -15,6 +15,7 @@
     margin: 0;
     padding: 0;
     margin-top: $searchboxHeightMobile;
+    cursor: $map-mouse-cursor;
 
     @media (#{$bp-larger-than-tablet}) {
       margin-top: 0;
@@ -151,6 +152,27 @@
         background:
           url('../assets/icons/button-locate-on.svg') no-repeat,
           linear-gradient(transparent, transparent);
+      }
+    }
+
+    // Alert Point markers are DivIcon
+    div.poi-marker {
+      background-color: white;
+      border-radius: 50%;
+      width: 15px !important;
+      height: 15px !important;
+      border: 1px solid black;
+
+      // now the per-type clarifications
+      // the literal "type" field is inserted to form the CSS className of the marker
+      &.poi-marker-POI {
+        background-color: darkgreen;
+        border: 1px solid black;
+      }
+
+      &.poi-marker-Alert {
+        background-color: red;
+        border: 1px solid black;
       }
     }
   } // #map

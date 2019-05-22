@@ -116,7 +116,6 @@ export const cartoLayerSource = {
   }]
 };
 
-// enables the SQL to be changed for the Carto(db).JS layer source object
 export const configureLayerSource = (sql) => {
   cartoLayerSource.sublayers[0].sql = sql;
   return cartoLayerSource;

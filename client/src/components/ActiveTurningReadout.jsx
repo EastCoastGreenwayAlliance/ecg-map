@@ -12,6 +12,7 @@ class ActiveTurningReadout extends Component {
     onpath: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     error: PropTypes.object,
+    pois: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -55,11 +56,28 @@ class ActiveTurningReadout extends Component {
 
   render() {
     const { cueMessage } = this.state;
-    const { enabled, disableActiveTurning, distance, onpath, transition_code,
-      isMobile } = this.props;
+    const { enabled, disableActiveTurning, distance, onpath, transition_code } = this.props;
+    const { isMobile } = this.props;
+    const { nearby } = this.props.pois;
 
     // only want to display this on mobile and if active turning is enabled
     if (!isMobile || !enabled) return null;
+
+    let nearbyreadout = null;
+    if (nearby.length) {
+      nearbyreadout = (
+        <div className="active-turning-nearby">
+          <h3>Near You</h3>
+          <ul>
+            {nearby.map(poi => (
+              <li>
+                <b>{poi.name}</b>, {poi.miles.toFixed(1)} mi {poi.bearing.toLowerCase()}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
 
     return (
       <div className="ActiveTurningReadout">
@@ -74,6 +92,7 @@ class ActiveTurningReadout extends Component {
               <p className="active-turning-off-path-cue">{ cueMessage }</p>
           }
         </div>
+        {nearbyreadout}
       </div>
     );
   }
