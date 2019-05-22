@@ -55,6 +55,7 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
           <li><span class="legend-item-path"></span> Trail</li>
           <li><span class="legend-item-dirt"></span> Unpaved Trail</li>
           <li><span class="legend-item-transit"></span> Transit or Ferry</li>
+          <li><span class="legend-item-alertpoi"></span> Caution<br/>&nbsp;&nbsp;&nbsp;&nbsp;(zoom &lt; 1 mi)</li>
         </ul>
       `;
 
