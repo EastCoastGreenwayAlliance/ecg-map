@@ -207,6 +207,11 @@ class LeafletMap extends Component {
     return false;
   }
 
+  setMapTooltip (tooltiptext, latlng) {
+    // tooltiptext may be null to clear the tooltip
+    this.map.openPopup(tooltiptext, latlng);
+  }
+
   initMap() {
     // sets up the Leaflet map.
     // NOTE: attribution fixes are called within the initCartoLayer callback
@@ -292,6 +297,24 @@ class LeafletMap extends Component {
         // store a reference to the Carto SubLayer so we can act upon it later,
         // mainly to update the SQL query based on filters applied by the user
         self.cartoSubLayer = layer.getSubLayer(0);
+
+        // set up interactivity: click opens the real tooltip
+        // mouseover just sets a cursor and the poor man's tooltip
+        // mouseout clears the mouseover, but won't also cleara visible tooltip
+        self.cartoSubLayer.on('featureOver', (event, latlng, pixel, data) => {
+          document.getElementById('map').title = data.title;
+          document.getElementById('map').classList.add('clicktarget');
+        });
+
+        self.cartoSubLayer.on('featureOut', () => {
+          document.getElementById('map').title = '';
+          document.getElementById('map').classList.remove('clicktarget');
+        });
+
+        self.cartoSubLayer.setInteraction(true);
+        self.cartoSubLayer.on('featureClick', (event, latlng, pixel, data) => {
+          self.setMapTooltip(data.title, latlng);
+        });
 
         // fix the map attribution
         self.fixMapAttribution();
@@ -513,6 +536,10 @@ class LeafletMap extends Component {
     // and add .properties to the resulting L.linestring layers cuz Leaflet strips them
     this.searchRoute = L.geoJson(routeGeoJson, {
       onEachFeature: (feature, layer) => {
+        layer.setStyle({  // disable clicks on the route, as we want clicks on the trails underneath
+          interactive: false,
+          clickable: false,
+        });
         layer.properties = feature.properties;
       }
     });
