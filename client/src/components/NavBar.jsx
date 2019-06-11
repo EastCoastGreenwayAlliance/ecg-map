@@ -20,7 +20,7 @@ const NavBar = (props) => {
       </div>
       <div className="navbar-right">
         <p className="about-feedback">
-          <a target="_blank" rel="noopener noreferrer" href="https://www.greenway.org/trips/plan-your-trip">
+          <a target="_blank" rel="noopener noreferrer" href="https://www.greenway.org/route-map">
             About & Feedback
           </a>
         </p>
