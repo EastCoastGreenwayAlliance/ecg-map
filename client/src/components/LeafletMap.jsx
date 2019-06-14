@@ -110,7 +110,6 @@ class LeafletMap extends Component {
       ],
       layers: [this.baseLayers.Greyscale],
       // maxBounds: maxGeoBounds,
-      scrollWheelZoom: false,
       minZoom: 4,
       maxZoom: 18,
       zoom: hashZXY.zoom || zoom,
