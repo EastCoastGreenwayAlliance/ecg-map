@@ -12,6 +12,8 @@ import {
   ROUTE_SEARCH_ERROR,
 } from '../common/actionTypes';
 
+import { ROUTER_API_URL } from '../common/config';
+
 import { locationGeocodeClear, elevationDataClear } from './index';
 
 // Requesting the nearest ECG segment node / coordinate
@@ -39,7 +41,7 @@ export const setRoutingLocation = (coords, distance, step) => ({
 // fetch action that makes a GET request to route/nearestpoint API endpoint
 // see server.js for more info
 export const fetchRoutingLocation = (step, lat, lng) => {
-  const url = `/route/nearestpoint/?lat=${lat}&lng=${lng}`;
+  const url = `${ROUTER_API_URL}nearestpoint/?lat=${lat}&lng=${lng}`;
 
   return (dispatch) => {
     dispatch(nearestSegmentRequest(step));
@@ -113,7 +115,7 @@ export const routeSearchError = error => ({
 // fetch action that makes a GET request to the route/directions API endpoint
 // see server.js for more info
 export const fetchRouteDirections = (startLat, startLng, endLat, endLng) => {
-  const url = `/route/directions/?slat=${startLat}&slng=${startLng}&tlat=${endLat}&tlng=${endLng}`;
+  const url = `${ROUTER_API_URL}directions/?slat=${startLat}&slng=${startLng}&tlat=${endLat}&tlng=${endLng}`;
 
   return (dispatch) => {
     dispatch(routeSearchRequest());
