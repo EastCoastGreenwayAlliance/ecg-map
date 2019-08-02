@@ -47,6 +47,7 @@ class CueSheet extends Component {
     };
 
     // first cue
+    console.log([ 'GDA 1st', response.features[0] ]);  // eslint-disable-line
     cues.push(
       <tr key={0}>
         <td>
@@ -59,7 +60,7 @@ class CueSheet extends Component {
           <p style={{ margin: 0 }}>Starting on { response.features[0].properties.title }</p>
         </td>
         <td>
-          <p>{ metersToMiles(response.features[0].properties.length, 1) }</p>
+          <p>{ metersToMiles(response.features[0].properties.meters, 1) }</p>
         </td>
       </tr>
     );
@@ -69,7 +70,7 @@ class CueSheet extends Component {
       const nextSegment = arr[idx + 1];
       // sum cumulative miles with the segment's length
       // math uses 2 decimal places but client requested 1 decimal place for readout in cuesheet
-      cumulativeMiles += metersToMiles(properties.length);
+      cumulativeMiles += metersToMiles(properties.meters);
       // note that transition title is for the next turn direction and that
       // the segment length column reflects the length of the next segment, not the current one
 
@@ -91,7 +92,7 @@ class CueSheet extends Component {
           <td>
             {
               nextSegment ?
-                <p>{ metersToMiles(nextSegment.properties.length).toFixed(1) }</p> : <p />
+                <p>{ metersToMiles(nextSegment.properties.meters).toFixed(1) }</p> : <p />
             }
           </td>
         </tr>
