@@ -154,7 +154,7 @@ class LeafletMap extends Component {
     this.searchRoute = undefined;
 
     // leaflet-locate control instance (mobile only)
-    self.locateMe = null;
+    this.locateMe = null;
   }
 
   componentDidMount() {
@@ -259,41 +259,45 @@ class LeafletMap extends Component {
     // NOTE: attribution fixes are called within the initCartoLayer callback
     // map zoom buttons are conditionally added there as well, otherwise the attribution
     // is placed on top of them
-    const { onMapMove, isMobile, disableActiveTurning } = this.props;
-    const self = this;
+    const { onMapMove, disableActiveTurning } = this.props;
 
     // instantiate the map and add a reference to it
     this.map = L.map('map', this.mapOptions);
 
+    // useful for debugging where you are, for entering false locations for testing
+    /*
+    this.map.on('moveend', () => {
+      console.log([ this.map.getCenter().lat, this.map.getCenter().lng ]);  // eslint-disable-line
+    });
+    */
+
     // "locate me" feature only available on mobile devices
-    if (isMobile) {
-      // import the code for the Leaflet-Locate plugin
-      import('../../lib/L.Control.Locate')
-        .then(() => {
-          // add the plugin
-          self.locateMe = L.control.locate({
-            cacheLocation: true,
-            position: 'topright',
-            icon: 'btn-locate',
-            iconLoading: 'loading',
-            locateOptions: {
-              enableHighAccuracy: true,
-            },
-            keepCurrentZoomLevel: true,
-            metric: false,
-            markerStyle: {
-              color: '#136AEC',
-              fillColor: '#2A93EE',
-              fillOpacity: 1,
-              weight: 2,
-              opacity: 0.9,
-              radius: 5
-            },
-            stopCallback: disableActiveTurning,
-          }).addTo(self.map);
-        })
-        .catch((error) => { throw error; });
-    }
+    // import the code for the Leaflet-Locate plugin
+    import('../../lib/L.Control.Locate')
+      .then(() => {
+        // add the plugin
+        this.locateMe = L.control.locate({
+          cacheLocation: true,
+          position: 'topright',
+          icon: 'btn-locate',
+          iconLoading: 'loading',
+          locateOptions: {
+            enableHighAccuracy: true,
+          },
+          keepCurrentZoomLevel: true,
+          metric: false,
+          markerStyle: {
+            color: '#136AEC',
+            fillColor: '#2A93EE',
+            fillOpacity: 1,
+            weight: 2,
+            opacity: 0.9,
+            radius: 5
+          },
+          stopCallback: disableActiveTurning,
+        }).addTo(this.map);
+      })
+      .catch((error) => { throw error; });
 
     // add the basemap toggle control
     this.layersControl = L.control.layers(this.baseLayers, null);
@@ -494,7 +498,7 @@ class LeafletMap extends Component {
         // find route segment with closest approach to e.latlng
         const closest = { segment: null, distance: Infinity };
         this.searchRoute.getLayers().forEach((routesegment) => {
-          const segmentvertices = routesegment.getLatLngs()[0];
+          const segmentvertices = routesegment.getLatLngs();
           for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
             const p = this.map.latLngToLayerPoint(e.latlng); // me
             const p1 = this.map.latLngToLayerPoint(segmentvertices[i]); // vertex
@@ -515,28 +519,26 @@ class LeafletMap extends Component {
         const nearmile = (closest.distance / METERS_TO_MILES).toFixed(2);
         const nearfeet = Math.round(closest.distance * METERS_TO_FEET);
         const nearname = nearline.properties.title;
-        const untilturn = nearline.properties.length / METERS_TO_MILES;
+        const untilturn = (nearline.properties.meters / METERS_TO_MILES).toFixed(1);
 
         if (nearmile > 0.1) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
           activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile} miles`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn} mi`;
         } else if (nearmile > 0.03) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
           activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearfeet} feet`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn} mi`;
         } else {
           activeTurningUpdate.onpath = true;
           activeTurningUpdate.currentplace = `On ${nearname}`;
-          activeTurningUpdate.transition_code = 'RT';
-          activeTurningUpdate.transition_text = 'Turn Right';
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn} mi`;
         }
       }
 
