@@ -154,7 +154,7 @@ class LeafletMap extends Component {
     this.searchRoute = undefined;
 
     // leaflet-locate control instance (mobile only)
-    self.locateMe = null;
+    this.locateMe = null;
   }
 
   componentDidMount() {
@@ -259,41 +259,38 @@ class LeafletMap extends Component {
     // NOTE: attribution fixes are called within the initCartoLayer callback
     // map zoom buttons are conditionally added there as well, otherwise the attribution
     // is placed on top of them
-    const { onMapMove, isMobile, disableActiveTurning } = this.props;
-    const self = this;
+    const { onMapMove, disableActiveTurning } = this.props;
 
     // instantiate the map and add a reference to it
     this.map = L.map('map', this.mapOptions);
 
     // "locate me" feature only available on mobile devices
-    if (isMobile) {
-      // import the code for the Leaflet-Locate plugin
-      import('../../lib/L.Control.Locate')
-        .then(() => {
-          // add the plugin
-          self.locateMe = L.control.locate({
-            cacheLocation: true,
-            position: 'topright',
-            icon: 'btn-locate',
-            iconLoading: 'loading',
-            locateOptions: {
-              enableHighAccuracy: true,
-            },
-            keepCurrentZoomLevel: true,
-            metric: false,
-            markerStyle: {
-              color: '#136AEC',
-              fillColor: '#2A93EE',
-              fillOpacity: 1,
-              weight: 2,
-              opacity: 0.9,
-              radius: 5
-            },
-            stopCallback: disableActiveTurning,
-          }).addTo(self.map);
-        })
-        .catch((error) => { throw error; });
-    }
+    // import the code for the Leaflet-Locate plugin
+    import('../../lib/L.Control.Locate')
+      .then(() => {
+        // add the plugin
+        this.locateMe = L.control.locate({
+          cacheLocation: true,
+          position: 'topright',
+          icon: 'btn-locate',
+          iconLoading: 'loading',
+          locateOptions: {
+            enableHighAccuracy: true,
+          },
+          keepCurrentZoomLevel: true,
+          metric: false,
+          markerStyle: {
+            color: '#136AEC',
+            fillColor: '#2A93EE',
+            fillOpacity: 1,
+            weight: 2,
+            opacity: 0.9,
+            radius: 5
+          },
+          stopCallback: disableActiveTurning,
+        }).addTo(this.map);
+      })
+      .catch((error) => { throw error; });
 
     // add the basemap toggle control
     this.layersControl = L.control.layers(this.baseLayers, null);
