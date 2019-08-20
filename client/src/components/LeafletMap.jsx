@@ -264,6 +264,13 @@ class LeafletMap extends Component {
     // instantiate the map and add a reference to it
     this.map = L.map('map', this.mapOptions);
 
+    // useful for debugging where you are, for entering false locations for testing
+    /*
+    this.map.on('moveend', () => {
+      console.log([ this.map.getCenter().lat, this.map.getCenter().lng ]);  // eslint-disable-line
+    });
+    */
+
     // "locate me" feature only available on mobile devices
     // import the code for the Leaflet-Locate plugin
     import('../../lib/L.Control.Locate')
@@ -491,7 +498,7 @@ class LeafletMap extends Component {
         // find route segment with closest approach to e.latlng
         const closest = { segment: null, distance: Infinity };
         this.searchRoute.getLayers().forEach((routesegment) => {
-          const segmentvertices = routesegment.getLatLngs()[0];
+          const segmentvertices = routesegment.getLatLngs();
           for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
             const p = this.map.latLngToLayerPoint(e.latlng); // me
             const p1 = this.map.latLngToLayerPoint(segmentvertices[i]); // vertex
@@ -512,28 +519,26 @@ class LeafletMap extends Component {
         const nearmile = (closest.distance / METERS_TO_MILES).toFixed(2);
         const nearfeet = Math.round(closest.distance * METERS_TO_FEET);
         const nearname = nearline.properties.title;
-        const untilturn = nearline.properties.length / METERS_TO_MILES;
+        const untilturn = (nearline.properties.meters / METERS_TO_MILES).toFixed(1);
 
         if (nearmile > 0.1) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
           activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearmile} miles`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn} mi`;
         } else if (nearmile > 0.03) { // over this = off route, please return to route
           activeTurningUpdate.onpath = false;
           activeTurningUpdate.currentplace = `Return to ${nearname}, ${nearfeet} feet`;
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn} mi`;
         } else {
           activeTurningUpdate.onpath = true;
           activeTurningUpdate.currentplace = `On ${nearname}`;
-          activeTurningUpdate.transition_code = 'RT';
-          activeTurningUpdate.transition_text = 'Turn Right';
           activeTurningUpdate.transition_code = nearline.properties.transition.code;
           activeTurningUpdate.transition_text = nearline.properties.transition.title;
-          activeTurningUpdate.distance = `${untilturn.toFixed(1)} mi`;
+          activeTurningUpdate.distance = `${untilturn} mi`;
         }
       }
 
