@@ -150,6 +150,11 @@ class SearchResults extends Component {
       return <ErrorMsg error={geocodeError} />;
     }
 
+    if (startLocation.error) {
+      // find-trail-near-point error message: geocode OK but couldn't find a point on the trail
+      return <ErrorMsg error={startLocation.error} />;
+    }
+
     if (startLocation.distance && !startLocation.accepted) {
       return <StartLocationOptions {...{ geocodeResult, startLocation, acceptRoutingLocation }} />;
     }

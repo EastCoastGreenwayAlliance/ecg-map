@@ -48,6 +48,7 @@ export default (state = defaultRoutingState, action) => {
           ...state,
           startLocation: {
             ...state.startLocation,
+            error: null,
             isFetching: true,
           }
         };
@@ -58,6 +59,7 @@ export default (state = defaultRoutingState, action) => {
           ...state,
           endLocation: {
             ...state.endLocation,
+            error: null,
             isFetching: true,
           }
         };
@@ -123,6 +125,7 @@ export default (state = defaultRoutingState, action) => {
             accepted: false,
             coordinates: [],
             placeName: '',
+            error: null,
             isFetching: false,
           }
         };
@@ -135,6 +138,7 @@ export default (state = defaultRoutingState, action) => {
             accepted: false,
             coordinates: [],
             placeName: '',
+            error: null,
             isFetching: false,
           }
         };
@@ -148,30 +152,17 @@ export default (state = defaultRoutingState, action) => {
       break;
 
     case ROUTING_LOCATION_ERROR:
-      if (action.step === 'START') {
+      if (action.error) {
         return {
           ...state,
           startLocation: {
             ...state.startLocation,
             error: action.error,
             isFetching: false,
-          }
-        };
-      }
-
-      if (action.step === 'END') {
-        return {
-          ...state,
-          endLocation: {
-            ...state.endLocation,
-            error: action.error,
-            isFetching: false,
           },
-          route: {
-            isLoadingRoute: false,
-            response: null,
-            error: null,
-          }
+          endLocation: {
+            ...defaultRoutingState.endLocation,
+          },
         };
       }
 

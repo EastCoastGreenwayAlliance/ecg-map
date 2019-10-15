@@ -44,6 +44,6 @@ export const maxGeoBounds = [[18.312811, -110.830078], [53.278353, -45.351563]];
 export const METERS_TO_MILES = 1609;
 export const METERS_TO_FEET = 3.281;
 
-// the URL of the routing API server
-// export const ROUTER_API_URL = '/route/';
+// the URL of the routing API server; in-development server-side routing is on :9000
+// export const ROUTER_API_URL = 'https://router.greenway.org:9000/';
 export const ROUTER_API_URL = 'https://router.greenway.org/';

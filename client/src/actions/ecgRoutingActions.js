@@ -24,7 +24,7 @@ export const nearestSegmentRequest = step => ({
 
 // Errored on locating the nearest ECG segment node / coordinate
 export const nearestSegmentError = error => ({
-  ROUTING_LOCATION_ERROR,
+  type: ROUTING_LOCATION_ERROR,
   error
 });
 
@@ -49,7 +49,7 @@ export const fetchRoutingLocation = (step, lat, lng) => {
     return fetch(url)
       .then((res) => {
         if (!res.ok) {
-          dispatch(nearestSegmentError(res.statusText));
+          dispatch(nearestSegmentError('Could not find a point on the trail nearby. Please report this.'));
           throw Error(res.statusText);
         } else {
           return res.json();
@@ -59,7 +59,10 @@ export const fetchRoutingLocation = (step, lat, lng) => {
         const { closest_lat, closest_lng, closest_distance } = json;
         dispatch(setRoutingLocation([closest_lat, closest_lng], closest_distance, step));
       })
-      .catch(error => dispatch(nearestSegmentError(error)));
+      .catch((error) => {
+        console.debug(['fetchRoutingLocation error', error]);  // eslint-disable-line
+        dispatch(nearestSegmentError('Could not find a point on the trail nearby. Please report this.'));
+      });
   };
 };
 
