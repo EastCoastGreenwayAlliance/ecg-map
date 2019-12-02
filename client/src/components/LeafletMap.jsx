@@ -5,7 +5,7 @@ import Legend from '../../lib/L.Control.Legend';
 
 import { configureLayerSource, queryZXY } from '../common/api';
 import { configureMapSQL, poiFetchSQL } from '../common/sqlQueries';
-import { Satellite, Streets, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
+import { esriSatellite, esriStreets, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 export const POIS_SHOWALL_MINZOOM = 12;  // min zoom to show all Alert Points not on a route
 export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
@@ -89,14 +89,14 @@ class LeafletMap extends Component {
 
     this.map = null;
     this.baseLayers = {
-      'Detailed Streets': L.tileLayer(Streets, {
+      'Detailed Streets': L.tileLayer(esriStreets, {
         zIndex: 0,
       }),
       Greyscale: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
         maxZoom: 18,
         zIndex: 0,
       }),
-      Satellite: L.tileLayer(Satellite, {
+      Satellite: L.tileLayer(esriSatellite, {
         maxZoom: 18,
         zIndex: 0,
       }),

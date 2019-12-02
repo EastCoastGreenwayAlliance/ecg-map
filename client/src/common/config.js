@@ -14,8 +14,8 @@ export const cartoTables = {
 };
 
 // Esri layers for satellite and streets (replace Mapbox Dec 2019)
-export const Satellite = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}@2x';
-export const Streets = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}@2x';
+export const esriSatellite = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}@2x';
+export const esriStreets = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}@2x';
 
 // route segment field names to appear within InfoWindows / PopUps
 export const routeSegmentsFieldsVisible = [
