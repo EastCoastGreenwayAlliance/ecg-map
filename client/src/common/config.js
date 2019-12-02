@@ -13,11 +13,9 @@ export const cartoTables = {
   alert_points: 'ecg_pois',
 };
 
-// Mapbox access token
-const mbtoken = 'pk.eyJ1IjoiZWNnbmlsZXMiLCJhIjoiY2lyZHkxbmRqMDF5bGc3bTN2ajN0ZmNqbyJ9.29ONxUaTcSYUH3skP_FY1Q';
-const mbOutdoorsCustomID = 'cirdy2p7r000mh5m5xzg6pplr';
-export const mbSatellite = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/256/{z}/{x}/{y}@2x?access_token=${mbtoken}`;
-export const mbOutdoors = `https://api.mapbox.com/styles/v1/ecgniles/${mbOutdoorsCustomID}/tiles/256/{z}/{x}/{y}@2x?access_token=${mbtoken}`;
+// Esri layers for satellite and streets (replace Mapbox Dec 2019)
+export const Satellite = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}@2x';
+export const Streets = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}@2x';
 
 // route segment field names to appear within InfoWindows / PopUps
 export const routeSegmentsFieldsVisible = [

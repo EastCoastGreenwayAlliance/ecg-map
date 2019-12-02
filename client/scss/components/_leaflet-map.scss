@@ -28,18 +28,18 @@
 
     // reposition & reset the scalebar control
     .leaflet-control-scale.leaflet-control {
-      bottom: 25px;
-      left: 40px;
+      bottom: 50px;
+      left: 5px;
     }
 
     // reposition & reset the Carto logo on the map
     .cartodb-logo {
       z-index: 100 !important;
-      left: 0 !important;
+      left: 40px !important;
 
       img {
         left: 0 !important;
-        bottom: 0 !important;
+        bottom: 5px !important;
       }
     }
 
@@ -50,7 +50,7 @@
       height: 28px;
       width: 32px;
       left: 10px;
-      bottom: 30px;
+      bottom: 5px;
       background-image: url('../assets/icons/GreenInfo_logo@2x.png');
       background-repeat: no-repeat;
       background-position: 0 0;

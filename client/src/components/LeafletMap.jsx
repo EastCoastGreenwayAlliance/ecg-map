@@ -5,7 +5,7 @@ import Legend from '../../lib/L.Control.Legend';
 
 import { configureLayerSource, queryZXY } from '../common/api';
 import { configureMapSQL, poiFetchSQL } from '../common/sqlQueries';
-import { mbSatellite, mbOutdoors, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
+import { Satellite, Streets, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 export const POIS_SHOWALL_MINZOOM = 12;  // min zoom to show all Alert Points not on a route
 export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
@@ -89,14 +89,14 @@ class LeafletMap extends Component {
 
     this.map = null;
     this.baseLayers = {
-      'Detailed Streets': L.tileLayer(mbOutdoors, {
+      'Detailed Streets': L.tileLayer(Streets, {
         zIndex: 0,
       }),
       Greyscale: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
         maxZoom: 18,
         zIndex: 0,
       }),
-      Satellite: L.tileLayer(mbSatellite, {
+      Satellite: L.tileLayer(Satellite, {
         maxZoom: 18,
         zIndex: 0,
       }),
@@ -446,10 +446,10 @@ class LeafletMap extends Component {
           attr.innerHTML = '© <a target="_blank">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
           break;
         case 'Detailed Streets':
-          attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap<a/>';
+          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012';
           break;
         case 'Satellite':
-          attr.innerHTML = '© <a target="_blank" href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a target="_blank" href="https://www.digitalglobe.com/">Digital Globe</a>';
+          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
           break;
         default:
           return null;
@@ -735,7 +735,6 @@ class LeafletMap extends Component {
     return (
       <div className="LeafletMap">
         <div id="map">
-          <a href="http://mapbox.com/about/maps" className="mapbox-wordmark" target="_blank" rel="noopener noreferrer">Mapbox</a>
           <a href="http://greeninfo.org" className="greeninfo-logo" target="_blank" rel="noopener noreferrer">
             <span>GreenInfo</span>
           </a>
