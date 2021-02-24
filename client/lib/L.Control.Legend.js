@@ -28,7 +28,7 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
 } (function (L) {
   var Legend = L.Control.extend({
     options: {
-      collapsed: true,
+      collapsed: false,
       position: 'topright',
     },
 
