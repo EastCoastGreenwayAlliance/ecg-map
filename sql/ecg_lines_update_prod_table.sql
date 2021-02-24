@@ -13,7 +13,7 @@ SET
   meters = a.meters,
   datetime_modified = current_timestamp
 FROM ecg_route_lines a
-WHERE a.pline_id = b.pline_id;
+WHERE a.pline_id = b.pline_id and a.the_geom is not null;
 
 
 -- Delete old records that no longer exist
@@ -46,4 +46,4 @@ SELECT
 FROM ecg_route_lines a
 WHERE a.pline_id NOT IN (
   SELECT distinct pline_id FROM ecg_route_lines_prod
-);
+) and a.the_geom is not null;

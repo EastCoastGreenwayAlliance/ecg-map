@@ -21,7 +21,7 @@ const NavBar = (props) => {
       <div className="navbar-right">
         <p className="about-feedback">
           <a target="_blank" rel="noopener noreferrer" href="https://www.greenway.org/route-map">
-            About & Feedback
+            About, Feedback, & Safety Guidance
           </a>
         </p>
       </div>
