@@ -81,14 +81,14 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
           .on(this._link, 'click', L.DomEvent.preventDefault)
           .on(this._link, 'click', this._onClick, this)
           .on(this._link, 'dblclick', L.DomEvent.stopPropagation);
-
+      /* previous change to default legend to open reveals it cannot be closed with touch. Per https://github.com/Leaflet/Leaflet/issues/6978 L.touch no longer needed
       if (L.Browser.touch) {
         L.DomEvent.on(link, 'click', L.DomEvent.stop);
         L.DomEvent.on(link, 'click', this.expand, this);
       } else {
         L.DomEvent.on(link, 'focus', this.expand, this);
       }
-
+      */
       // // work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
       L.DomEvent.on(legend, 'click', function() {
         setTimeout(L.Util.bind(this._link, this), 0);
