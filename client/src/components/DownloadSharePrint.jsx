@@ -13,7 +13,6 @@ import {
 
 const GPX_CREATOR_NAME = 'East Coast Greenway Map';
 const GPX_TRACK_NAME = 'Route';
-const GPX_TRACK_DESC = '';
 
 /** Class that displays UI and handles:
     - creation and download of GPX file from route.response
@@ -74,38 +73,55 @@ class DownloadSharePrint extends Component {
     let gpx;
     let gpxConversionError;
 
-    // we don't need the downsampled route data, so remove it
-    delete geojson.downsampled;
+    // two transforms on the data for GPX output
+    // - merge the numerous linestring features (steps in the directions) into one giant feature
+    // because some GPS software treats each "trk" as a separate route and this is one big line
+    // - extract the the features' transitions (again, steps) into a list of points
+    // these are the turn directions & points, and become <wpt> entries
 
-    // merge the numerous features (linestrings, steps in the directions) into one giant feature
-    // some GPS software treats each "trk" as a separate route / tour, and we want one big "trk"
+    const turnpoints = geojson.features.map((feature) => {
+      const it = {
+        type: 'Feature',
+        properties: {
+          name: feature.properties.transition.title,
+          description: feature.properties.title,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [feature.properties.transition.lng, feature.properties.transition.lat],
+        },
+      };
+      return it;  // fool webpack into not complaining about returning in 1 statement
+    });
+
     const theonepath = {
       type: 'Feature',
-      properties: {},
+      properties: {
+        name: GPX_TRACK_NAME,
+        description: '',
+      },
       geometry: {
         type: 'MultiLineString',
-        coordinates: [],
+        coordinates: geojson.features.reduce((collected, feature) => {
+          collected.push(feature.geometry.coordinates.slice());
+          return collected;
+        }, []),
       },
     };
 
-    geojson.features.forEach((feature) => {
-      theonepath.geometry.coordinates.push(feature.geometry.coordinates.slice());
-    });
+    geojson.features = turnpoints;
+    geojson.features.push(theonepath);
 
-    geojson.features = [theonepath];
-
-    function featureTitle() {  // callback to set each feature's <name>
-      return GPX_TRACK_NAME;  // we only have the 1 feature and it's just "Route"
-      // return feature.properties.name;
-    }
-
-    function featureDescription() {  // callback to set each feature's <desc>
-      return GPX_TRACK_DESC;  // we only have the 1 feature and it's just "Route"
-      // return feature.transition.title;
-    }
-
-    // converts the GeoJSON response to a GPX string
+    // use togpx to return a GPX string representing the the GeoJSON document
     // sets component state with the gpx response and/or error
+    function featureTitle(properties) {  // callback to set each feature's <name>
+      return properties.name;
+    }
+
+    function featureDescription(properties) {  // callback to set each feature's <name>
+      return properties.description;
+    }
+
     function gpxConversion() {
       try {
         gpx = self.togpx(geojson, {
