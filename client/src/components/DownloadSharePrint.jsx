@@ -11,6 +11,10 @@ import {
   logStatefulURLCopy
 } from '../common/googleAnalytics';
 
+const GPX_CREATOR_NAME = 'East Coast Greenway Map';
+const GPX_TRACK_NAME = 'Route';
+const GPX_TRACK_DESC = '';
+
 /** Class that displays UI and handles:
     - creation and download of GPX file from route.response
     - sharing of route via stateful URL (TODO)
@@ -73,14 +77,31 @@ class DownloadSharePrint extends Component {
     // we don't need the downsampled route data, so remove it
     delete geojson.downsampled;
 
-    // sets the "name" field in the GPX file
-    function featureTitle(feature) {
-      return feature.title;
+    // merge the numerous features (linestrings, steps in the directions) into one giant feature
+    // some GPS software treats each "trk" as a separate route / tour, and we want one big "trk"
+    const theonepath = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'MultiLineString',
+        coordinates: [],
+      },
+    };
+
+    geojson.features.forEach((feature) => {
+      theonepath.geometry.coordinates.push(feature.geometry.coordinates.slice());
+    });
+
+    geojson.features = [theonepath];
+
+    function featureTitle() {  // callback to set each feature's <name>
+      return GPX_TRACK_NAME;  // we only have the 1 feature and it's just "Route"
+      // return feature.properties.name;
     }
 
-    // sets the "desc" field in the GPX file
-    function featureDescription(feature) {
-      return feature.transition.title;
+    function featureDescription() {  // callback to set each feature's <desc>
+      return GPX_TRACK_DESC;  // we only have the 1 feature and it's just "Route"
+      // return feature.transition.title;
     }
 
     // converts the GeoJSON response to a GPX string
@@ -88,6 +109,7 @@ class DownloadSharePrint extends Component {
     function gpxConversion() {
       try {
         gpx = self.togpx(geojson, {
+          creator: GPX_CREATOR_NAME,
           featureTitle,
           featureDescription,
         });
