@@ -409,6 +409,8 @@ class LeafletMap extends Component {
       if (poisxhr.status === 200) {
         const poidata = JSON.parse(poisxhr.responseText);
         poidata.rows.forEach((poi) => {
+          if (!poi.lat || !poi.lng) return;
+
           L.marker([poi.lat, poi.lng], {
             title: poi.name,
             poi,
@@ -711,10 +713,6 @@ class LeafletMap extends Component {
       });
 
       shortestdistance /= METERS_TO_MILES;  // convert to miles
-      console.log([  // eslint-disable-line
-        'renderRouteHighlight()',
-        `POI ${poi.options.poi.name} is ${shortestdistance.toFixed(1)} mi off route`
-      ]);
       return shortestdistance <= POIS_DISTANCE_FROM_ROUTE;
     });
     console.log([  // eslint-disable-line
