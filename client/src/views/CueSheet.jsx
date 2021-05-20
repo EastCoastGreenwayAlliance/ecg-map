@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import RouteDownload from '../components/RouteDownload';
 import NavBar from '../components/NavBar';
 import { metersToMiles } from '../common/api';
 
@@ -47,7 +48,6 @@ class CueSheet extends Component {
     };
 
     // first cue
-    console.log([ 'GDA 1st', response.features[0] ]);  // eslint-disable-line
     cues.push(
       <tr key={0}>
         <td>
@@ -117,6 +117,7 @@ class CueSheet extends Component {
               <div>
                 <p className="nav-link"><Link to="/">Back to Map</Link></p>
                 <button className="print" onClick={() => window.print()} />
+                <RouteDownload route={route} />
                 <table>
                   <thead>
                     <tr>

@@ -16,36 +16,32 @@
     border: 0;
   }
 
-  button {
-    margin: 0;
-    box-sizing: border-box;
-    width: 33%;
-    height: 52px;
-    display: inline-block;
-    border-bottom: none;
+  button.dps.dps-download,
+  button.dps.dps-share {
+    border-right: 1px solid $grey;
+  }
+}
 
-    &:focus {
-      outline: 5px auto $outline-color;
-    }
+button.dps {
+  margin: 0;
+  box-sizing: border-box;
+  width: 33%;
+  height: 52px;
+  display: inline-block;
+  border-bottom: none;
 
-    &.dps-download,
-    &.dps-share {
-      border-right: 1px solid $grey;
-    }
-
-    &.dps-download,
-    &.dps-share,
-    &.dps-print {
-      span {
-        width: 27px;
-        height: 27px;
-        display: block;
-        margin: 0 auto;
-      }
-    }
+  &:focus {
+    outline: 5px auto $outline-color;
   }
 
-  .dps-download {
+  span {
+    width: 27px;
+    height: 27px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  &.dps-download {
     span {
       // png fallback in case browser doesn't support svg
       background: url('../assets/icons/button-download.png') no-repeat;
@@ -55,7 +51,7 @@
     }
   }
 
-  .dps-share {
+  &.dps-share {
     span {
       // png fallback in case browser doesn't support svg
       background: url('../assets/icons/button-save.png') no-repeat;
@@ -65,7 +61,7 @@
     }
   }
 
-  .dps-print {
+  &.dps-print {
     span {
       // png fallback in case browser doesn't support svg
       background: url('../assets/icons/button-print.png') no-repeat;

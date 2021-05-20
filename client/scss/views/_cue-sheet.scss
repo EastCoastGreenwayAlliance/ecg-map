@@ -16,10 +16,16 @@
       width: 612px;
     }
 
-    button.print {
+    button {
       float: right;
       width: 27px;
+      height: 27px;
       display: inline-block;
+      margin-left: 20px;
+      padding: 0;
+    }
+
+    button.print {
       // png fallback in case browser doesn't support svg
       background: url('../assets/icons/button-print.png') no-repeat;
       background:
