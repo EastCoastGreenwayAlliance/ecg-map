@@ -55,4 +55,12 @@
       url('../assets/icons/icon-arrow-straight.svg') no-repeat,
       linear-gradient(transparent, transparent);
   }
+
+  &.turn-icon-Alert {
+    background-color: red;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: 1px solid black;
+  }
 }

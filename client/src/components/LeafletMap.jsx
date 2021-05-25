@@ -690,14 +690,17 @@ class LeafletMap extends Component {
 
     // find Alert Points within X miles of our route
     // load them into the always-on Alert Points featuregroup
-    // tip: clone the markers, don't just assign them!
+    // as we go, also tag each POI with a .segmentid attribute
+    // so we could relate which POIs are relevant to which segments (CueSheet)
     this.map.routepois.clearLayers();
-    const poisonroute = this.map.allpois.getLayers().filter((poi) => {
+    const poisonroute = [];
+    this.map.allpois.getLayers().forEach((poi) => {
       const poilatlng = poi.getLatLng();
-      let shortestdistance = 1000000;
+      let shortestdistance = Infinity;
+      let segmentid;
 
       this.searchRoute.getLayers().forEach((routesegment) => {
-        const segmentvertices = routesegment.getLatLngs()[0];
+        const segmentvertices = routesegment.getLatLngs();
         for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
           const p = this.map.latLngToLayerPoint(poilatlng); // this Alert Point
           const p1 = this.map.latLngToLayerPoint(segmentvertices[i]); // vertex
@@ -708,12 +711,17 @@ class LeafletMap extends Component {
 
           if (d < shortestdistance) {
             shortestdistance = d;
+            segmentid = routesegment.properties.id;
           }
         }
       });
 
-      shortestdistance /= METERS_TO_MILES;  // convert to miles
-      return shortestdistance <= POIS_DISTANCE_FROM_ROUTE;
+      if (shortestdistance / METERS_TO_MILES <= POIS_DISTANCE_FROM_ROUTE) {
+        poi.options.poi.segmentid = segmentid;
+        poisonroute.push(poi);
+      } else {
+        poi.options.poi.segmentid = undefined;  // not in range, relevant to no segment
+      }
     });
     console.log([  // eslint-disable-line
       'renderRouteHighlight()',
@@ -727,6 +735,11 @@ class LeafletMap extends Component {
       });
       newmarker.addTo(this.map.routepois);
     });
+
+    // monkey-patch the pois-on-route into the route structure so they're available to other callers
+    // poisonroute is a set of L.marker but extract them down to just simple objects
+    // fortunately we provided the original attributes for just this sort of unforeseen need
+    routeGeoJson.properties.pois = poisonroute.map(poi => poi.options.poi);
   }
 
   render() {
