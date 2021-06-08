@@ -77,7 +77,23 @@ class RouteDownload extends Component {
       },
     };
 
+    const alertpois = routegeojson.properties.pois.map((poi) => {
+      const it = {
+        type: 'Feature',
+        properties: {
+          name: `${poi.type}: ${poi.name}`,
+          description: poi.description,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [poi.lng, poi.lat],
+        },
+      };
+      return it;  // fool webpack into not complaining about returning in 1 statement
+    });
+
     exportgeojson.features = turnpoints;
+    exportgeojson.features = exportgeojson.features.concat(alertpois);
     exportgeojson.features.push(theonepath);
 
     // use togpx to return a GPX string representing the the GeoJSON document

@@ -86,11 +86,9 @@
       padding: 5px;
     }
 
-    tbody tr {
+    tbody:nth-child(odd) tr {
       // "zebra striping"
-      &:nth-child(odd) {
-        background: #eee;
-      }
+      background: #eee;
     }
 
     thead > tr,

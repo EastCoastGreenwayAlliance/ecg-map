@@ -21,11 +21,8 @@ class CueSheet extends Component {
 
     if (!response || !response.features || !response.features.length) return null;
 
-    let cues = [];
+    // a lookup function, turn code to icon
     const imageBaseURL = '/assets/icons/';
-    // starting cumulative mileage is always 0
-    let cumulativeMiles = 0;
-
     const transitionCodeImageMap = (code) => {
       switch (code) {
         case 'AR':
@@ -47,55 +44,81 @@ class CueSheet extends Component {
       }
     };
 
-    // first cue
+    // get started: display the header row, and initialize the total mileage at 0
+    let cues = [];
+    let cumulativeMiles = 0;
+
     cues.push(
-      <tr key={0}>
-        <td>
-          <p>{ cumulativeMiles }</p>
-        </td>
-        <td>
-          <img className="turn-icon" alt="start icon" src={`${imageBaseURL}icon-search-marker-green.svg`} />
-        </td>
-        <td>
-          <p style={{ margin: 0 }}>Starting on { response.features[0].properties.title }</p>
-        </td>
-        <td>
-          <p>{ metersToMiles(response.features[0].properties.meters, 1) }</p>
-        </td>
-      </tr>
+      <tbody key={0}>
+        <tr>
+          <td>
+            <p>{ cumulativeMiles }</p>
+          </td>
+          <td>
+            <img className="turn-icon" alt="start icon" src={`${imageBaseURL}icon-search-marker-green.svg`} />
+          </td>
+          <td>
+            <p style={{ margin: 0 }}>Starting on { response.features[0].properties.title }</p>
+          </td>
+          <td>
+            <p>{ metersToMiles(response.features[0].properties.meters, 1) }</p>
+          </td>
+        </tr>
+      </tbody>
     );
 
     cues = cues.concat(response.features.map((feature, idx, arr) => {
       const { properties } = feature;
       const nextSegment = arr[idx + 1];
+
       // sum cumulative miles with the segment's length
       // math uses 2 decimal places but client requested 1 decimal place for readout in cuesheet
       cumulativeMiles += metersToMiles(properties.meters);
-      // note that transition title is for the next turn direction and that
-      // the segment length column reflects the length of the next segment, not the current one
 
-      return (
-        <tr key={properties.id}>
-          <td>
-            <p>{ cumulativeMiles.toFixed(1) }</p>
-          </td>
-          <td>
-            <img
-              className="turn-icon"
-              src={transitionCodeImageMap(properties.transition.code)}
-              alt="turn icon"
-            />
-          </td>
-          <td>
-            <p>{ properties.transition.title }</p>
-          </td>
-          <td>
-            {
-              nextSegment ?
-                <p>{ metersToMiles(nextSegment.properties.meters).toFixed(1) }</p> : <p />
-            }
+      // note that transition title is for the next turn direction
+      // and that the segment length column reflects the length of the next segment,
+      // not the current one
+
+      // fetch the list of alert POIs relevant to this segment,
+      // by having been tagged with a .segmentid by the LeafletMap
+      const alerts = response.properties.pois.filter(poi => poi.segmentid === feature.properties.id);  // eslint-disable-line
+      if (alerts.length) console.debug(['CueSheet POIs', properties.id, properties.transition.title, alerts ]);  // eslint-disable-line
+
+      const alertshere = alerts.map(poi => (
+        <tr key={`poi-${poi.id}`}>
+          <td />
+          <td><span className="turn-icon turn-icon-Alert" /></td>
+          <td colSpan="2">
+            <p>{ poi.description }</p>
           </td>
         </tr>
+      ));
+
+      return (
+        <tbody key={`segment-${properties.id}`}>
+          <tr>
+            <td>
+              <p>{ cumulativeMiles.toFixed(1) }</p>
+            </td>
+            <td>
+              <img
+                className="turn-icon"
+                src={transitionCodeImageMap(properties.transition.code)}
+                alt="turn icon"
+              />
+            </td>
+            <td>
+              <p>{ properties.transition.title }</p>
+            </td>
+            <td>
+              {
+                nextSegment ?
+                  <p>{ metersToMiles(nextSegment.properties.meters).toFixed(1) }</p> : <p />
+              }
+            </td>
+          </tr>
+          {alertshere}
+        </tbody>
       );
     }));
 
@@ -126,9 +149,7 @@ class CueSheet extends Component {
                       <th><p>{ header2 }</p></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    { this.renderCues() }
-                  </tbody>
+                  { this.renderCues() }
                   <tfoot>
                     <tr>
                       <td colSpan="4">
