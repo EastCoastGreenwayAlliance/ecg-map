@@ -89,7 +89,7 @@ class CueSheet extends Component {
           <td />
           <td><span className="turn-icon turn-icon-Alert" /></td>
           <td colSpan="2">
-            <p>{ poi.description }</p>
+            <p>{ poi.name }<br />{ poi.description }</p>
           </td>
         </tr>
       ));
