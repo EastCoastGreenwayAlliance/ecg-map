@@ -7,9 +7,10 @@ import { configureLayerSource, queryZXY } from '../common/api';
 import { configureMapSQL, poiFetchSQL } from '../common/sqlQueries';
 import { esriSatellite, esriStreets, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
-export const POIS_SHOWALL_MINZOOM = 12;  // min zoom to show all Alert Points not on a route
+export const POIS_SHOWALL_MINZOOM = 13;  // min zoom to show all Alert Points not on a route
 export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
 export const POIS_NOTIFY_RANGE = 1.0;  // miles
+export const POIS_QUERY_URL = `https://${cartoUser}.carto.com/api/v2/sql?q=${poiFetchSQL()}`;
 
 
 // set default image paths for Leaflet
@@ -165,6 +166,10 @@ class LeafletMap extends Component {
     this.initBindActiveTurningLocationWatcher();
     this.initActiveTurningPoiNotifications();
     // this.initFakeGeolocationClicks();  // testing: click to pretend we're driving!
+
+    // load the always-on set of alert POIs onto the map
+    // visible close-up, see the "zoomend" handler
+    this.initAlwaysOnAlertPois();
 
     // if we received preloaded state for start and end locations, show those on the map
     if (startLocation.accepted && startLocation.coordinates.length && endLocation.accepted
@@ -322,19 +327,16 @@ class LeafletMap extends Component {
     // add the search results feature group to the map for storing markers & paths
     this.searchResults.addTo(this.map);
 
-    // create a FeatureGroup for storing all Alert POIs
-    // this will be populated in initPoints() and will only show at zome zoom levels
-    // create a FeatureGroup for Alert POIs along our route
-    // this is populated in renderRouteHighlight() and is always visible
+    // create FeatureGroups for storing all Alert POIs and POIs on the visible route
+    // allpois = populated here at startup, see zoomend handler for show/hide
+    // routepois = always visible, populated in renderRouteHighlight()
     this.map.allpois = L.featureGroup([]);
     this.map.routepois = L.featureGroup([]).addTo(this.map);
     this.map.on('zoomend', () => {
-      const z = this.map.getZoom();
-
-      if (z < POIS_SHOWALL_MINZOOM) {
-        this.map.removeLayer(this.map.allpois);
-      } else {
+      if (this.map.getZoom() >= POIS_SHOWALL_MINZOOM) {
         this.map.addLayer(this.map.allpois);
+      } else {
+        this.map.removeLayer(this.map.allpois);
       }
     });
     this.map.fire('zoomend');
@@ -426,6 +428,50 @@ class LeafletMap extends Component {
           return null;
       }
     });
+  }
+
+  initAlwaysOnAlertPois() {
+    this.ajaxFetchAlertPoiMarkers((poimarkers) => {
+      poimarkers.forEach((marker) => {
+        marker.addTo(this.map.allpois);
+      });
+    });
+  }
+
+  ajaxFetchAlertPoiMarkers(andthencallback) {
+    const { selectPoi } = this.props;
+
+    const poisxhr = new XMLHttpRequest();
+    poisxhr.open('GET', POIS_QUERY_URL);
+    poisxhr.onload = () => {
+      if (poisxhr.status !== 200) return;
+
+      // construct a list of L.marker items
+      const markerlist = [];
+      const poidata = JSON.parse(poisxhr.responseText);
+      poidata.rows.forEach((poi) => {
+        if (!poi.lat || !poi.lng) return;
+
+        const marker = L.marker([poi.lat, poi.lng], {
+          title: poi.name,
+          poi,  // the poi's own metadata
+          icon: L.divIcon({
+            className: `poi-marker poi-marker-${poi.type}`,
+          }),
+        })
+        .on('click', () => {
+          selectPoi(poi);
+        });
+
+        markerlist.push(marker);
+      });
+
+      // hand the list off to the callback
+      if (andthencallback) {
+        andthencallback(markerlist);
+      }
+    };
+    poisxhr.send();
   }
 
   initActiveTurningPoiNotifications() {
@@ -639,109 +685,64 @@ class LeafletMap extends Component {
       return;
     }
 
-    const { selectPoi } = this.props;
     const { isMobile } = this.props;
     const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
-    // fetch the POIs from CARTO so we can place them into the map
-    // see initMap() about this.map.allpois and this.map.routepois
-    // we can't just do this at startup, since React destroys the map, and we need
-    // the POIs to be on map before we draw the route, so we can find POIs near the route
-    const poisqueryurl = `https://${cartoUser}.carto.com/api/v2/sql?q=${poiFetchSQL()}`;
-    const poisxhr = new XMLHttpRequest();
+    // fetch the POIs from CARTO, filter to those near route, add to map.routepois for display
+    this.ajaxFetchAlertPoiMarkers((poimarkers) => {
+      // parse the GeoJSON route and place it onto the map
+      // keep each feature's .properties too, we need segment IDs & names for other purposes
+      this.searchRoute = L.geoJson(routeGeoJson, {
+        onEachFeature: (feature, layer) => {
+          layer.setStyle({
+            interactive: false,  // no clicks on the route drawing
+            clickable: false,  // let them fall to the trail segments in the layer below
+          });
+          layer.properties = feature.properties;
+        }
+      });
+      this.searchResults.addLayer(this.searchRoute);
+      this.fitBoundsToSearchResults(...padding);
 
-    poisxhr.open('GET', poisqueryurl);
-    poisxhr.onload = () => {
-      if (poisxhr.status === 200) {
-        // phase 1
-        // load the POIs into the map, in the layer that's only visible when close up
-        const poidata = JSON.parse(poisxhr.responseText);
-        poidata.rows.forEach((poi) => {
-          if (!poi.lat || !poi.lng) return;
+      // find Alert Points within X miles of our route, add to routepois
+      // tag each POI with a .segmentid attribute
+      // so we could relate which POIs are relevant to which segments (CueSheet)
+      this.map.routepois.clearLayers();
+      poimarkers.forEach((marker) => {
+        const poilatlng = marker.getLatLng();
+        let shortestdistance = Infinity;
+        let segmentid;
 
-          L.marker([poi.lat, poi.lng], {
-            title: poi.name,
-            poi,
-            icon: L.divIcon({
-              className: `poi-marker poi-marker-${poi.type}`,
-            }),
-          })
-          .on('click', () => {
-            selectPoi(poi);
-          })
-          .addTo(this.map.allpois);
-        });
+        this.searchRoute.getLayers().forEach((routesegment) => {
+          const segmentvertices = routesegment.getLatLngs();
+          for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
+            const p = this.map.latLngToLayerPoint(poilatlng); // this Alert Point
+            const p1 = this.map.latLngToLayerPoint(segmentvertices[i]); // vertex
+            const p2 = this.map.latLngToLayerPoint(segmentvertices[i + 1]); // vertex +1
+            const px = L.LineUtil.closestPointOnSegment(p, p1, p2); // closest pixel to POI
+            const pd = this.map.layerPointToLatLng(px); // pixel back to latlng
+            const d = poilatlng.distanceTo(pd); // meters distance between POI + vertex
 
-        // phase 2
-        // parse the GeoJSON route and place it onto the map
-        // keep each feature's .properties too, we need segment IDs & names for other purposes
-        this.searchRoute = L.geoJson(routeGeoJson, {
-          onEachFeature: (feature, layer) => {
-            layer.setStyle({
-              interactive: false,  // no clicks on the route drawing
-              clickable: false,  // let them fall to the trail segments in the layer below
-            });
-            layer.properties = feature.properties;
-          }
-        });
-        this.searchResults.addLayer(this.searchRoute);
-        this.fitBoundsToSearchResults(...padding);
-
-        // phase 3
-        // find Alert Points within X miles of our route
-        // load them into the always-on Alert Points featuregroup
-        // as we go, also tag each POI with a .segmentid attribute
-        // so we could relate which POIs are relevant to which segments (CueSheet)
-        this.map.routepois.clearLayers();
-        const poisonroute = [];
-        this.map.allpois.getLayers().forEach((poi) => {
-          const poilatlng = poi.getLatLng();
-          let shortestdistance = Infinity;
-          let segmentid;
-
-          this.searchRoute.getLayers().forEach((routesegment) => {
-            const segmentvertices = routesegment.getLatLngs();
-            for (let i = 0, l = segmentvertices.length; i < l - 1; i += 1) {
-              const p = this.map.latLngToLayerPoint(poilatlng); // this Alert Point
-              const p1 = this.map.latLngToLayerPoint(segmentvertices[i]); // vertex
-              const p2 = this.map.latLngToLayerPoint(segmentvertices[i + 1]); // vertex +1
-              const px = L.LineUtil.closestPointOnSegment(p, p1, p2); // closest pixel to POI
-              const pd = this.map.layerPointToLatLng(px); // pixel back to latlng
-              const d = poilatlng.distanceTo(pd); // meters distance between POI + vertex
-
-              if (d < shortestdistance) {
-                shortestdistance = d;
-                segmentid = routesegment.properties.id;
-              }
+            if (d < shortestdistance) {
+              shortestdistance = d;
+              segmentid = routesegment.properties.id;
             }
-          });
-
-          if (shortestdistance / METERS_TO_MILES <= POIS_DISTANCE_FROM_ROUTE) {
-            poi.options.poi.segmentid = segmentid;
-            poisonroute.push(poi);
-          } else {
-            poi.options.poi.segmentid = undefined;  // not in range, relevant to no segment
           }
         });
-        console.log(['renderRouteHighlight()', 'POIs found near route:', poisonroute]);  // eslint-disable-line
 
-        poisonroute.forEach((point) => {
-          const newmarker = L.marker(point.getLatLng(), point.options);
-          newmarker.on('click', () => {
-            selectPoi(point.options.poi);  // click events won't clone; copy the click-info behavior
-          });
-          newmarker.addTo(this.map.routepois);
-        });
+        const isnearby = shortestdistance / METERS_TO_MILES <= POIS_DISTANCE_FROM_ROUTE;
+        if (isnearby) {
+            marker.options.poi.segmentid = segmentid;
+            marker.addTo(this.map.routepois);
+        }
+      });
 
-        // phase 3b
-        // monkey-patch the pois-on-route into the route structure
-        // so they're available to other callers, e.g. CueSheet
-        // poisonroute is a set of L.marker but extract them down to just simple objects
-        // fortunately we provided the original attributes for just this sort of unforeseen need
-        routeGeoJson.properties.pois = poisonroute.map(poi => poi.options.poi);
-      }  // end of got-poi-json
-    };
-    poisxhr.send();
+      // monkey-patch the pois-on-route into the route structure
+      // so they're available to other callers, e.g. CueSheet
+      // poisonroute is a set of L.marker but extract them down to just simple objects
+      // fortunately we provided the original attributes for just this sort of unforeseen need
+      routeGeoJson.properties.pois = this.map.routepois.getLayers().map(poi => poi.options.poi);
+    });
   }
 
   render() {

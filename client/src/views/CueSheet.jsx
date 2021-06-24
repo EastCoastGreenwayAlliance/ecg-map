@@ -82,7 +82,6 @@ class CueSheet extends Component {
       // fetch the list of alert POIs relevant to this segment,
       // by having been tagged with a .segmentid by the LeafletMap
       const alerts = response.properties.pois.filter(poi => poi.segmentid === feature.properties.id);  // eslint-disable-line
-      if (alerts.length) console.debug(['CueSheet POIs', properties.id, properties.transition.title, alerts ]);  // eslint-disable-line
 
       const alertshere = alerts.map(poi => (
         <tr key={`poi-${poi.id}`}>
