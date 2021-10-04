@@ -127,7 +127,7 @@ export const cartoSQLQuery = query =>
 
 // async loads togpx.js
 export const loadToGPX = callback =>
-  import('togpx')
+  import('../utils/togpx-custom')
     .then(response => callback(null, response))
     .catch(error => callback(error));
 

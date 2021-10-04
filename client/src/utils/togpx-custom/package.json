@@ -1,0 +1,42 @@
+{
+  "name": "togpx",
+  "version": "0.5.4",
+  "description": "convert geojson to gpx",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm ls --depth=Infinity > /dev/null",
+    "test": "npm run test-node && npm run test-webkit",
+    "test-node": "mocha -R spec",
+    "test-webkit": "mocha-phantomjs test/index.html"
+  },
+  "bin": {
+    "togpx": "togpx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tyrasd/togpx.git"
+  },
+  "keywords": [
+    "gpx",
+    "geojson"
+  ],
+  "author": "Martin Raifer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tyrasd/togpx/issues"
+  },
+  "dependencies": {
+    "concat-stream": "~1.0.1",
+    "jxon": "~2.0.0-beta.5",
+    "optimist": "~0.3.5",
+    "xmldom": "~0.1.17"
+  },
+  "devDependencies": {
+    "expect.js": "~0.2.0",
+    "mocha": "~2.1.0",
+    "mocha-phantomjs": "^4.1.0"
+  },
+  "browser": {
+    "xmldom": false
+  }
+}

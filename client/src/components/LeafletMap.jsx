@@ -732,8 +732,8 @@ class LeafletMap extends Component {
 
         const isnearby = shortestdistance / METERS_TO_MILES <= POIS_DISTANCE_FROM_ROUTE;
         if (isnearby) {
-            marker.options.poi.segmentid = segmentid;
-            marker.addTo(this.map.routepois);
+          marker.options.poi.segmentid = segmentid;
+          marker.addTo(this.map.routepois);
         }
       });
 
