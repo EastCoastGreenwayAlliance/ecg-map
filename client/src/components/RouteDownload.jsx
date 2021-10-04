@@ -6,6 +6,7 @@ import { logDownloadGPX } from '../common/googleAnalytics';
 
 const GPX_CREATOR_NAME = 'East Coast Greenway Map';
 const GPX_TRACK_NAME = 'Route';
+const GPX_ROUTE_POINTS_NAME = 'Cues';
 
 class RouteDownload extends Component {
   static propTypes = {
@@ -51,6 +52,7 @@ class RouteDownload extends Component {
       const it = {
         type: 'Feature',
         properties: {
+          rte: true, // GreenInfo extension, this point is a rtept and not a wpt
           name: feature.properties.transition.title,
           description: feature.properties.title,
         },
@@ -81,6 +83,7 @@ class RouteDownload extends Component {
       const it = {
         type: 'Feature',
         properties: {
+          rte: false, // GreenInfo extension, this point is a wpt and not a rtept
           name: `${poi.type}: ${poi.name}`,
           description: poi.description,
         },
@@ -114,6 +117,7 @@ class RouteDownload extends Component {
           creator: GPX_CREATOR_NAME,
           featureTitle,
           featureDescription,
+          rteName: GPX_ROUTE_POINTS_NAME,
         });
 
         loadFileSaver((fserror, fileSaver) => {
