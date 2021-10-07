@@ -1,6 +1,11 @@
 -- After development version of ecg_route_lines is updated, update the production version "ecg_route_lines_prod"
 -- by updating attribute information for existing records, deleting old records, and inserting new records
 
+--Remove records in edit table that have no geometry. These occur for unknown reasons sometimes when segments are deleted in QGIS but only their geometry is deleted and all else is retained. Rather than puzzling that out, we just drop them here.
+DELETE FROM
+  ecg_route_lines
+WHERE
+  the_geom is null;
 
 -- Update existing records
 UPDATE ecg_route_lines_prod b
