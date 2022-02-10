@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -86,11 +85,60 @@ class ModalForm extends Component {
 
     return (
       <div className="ModalForm modal-content__bottom-box">
-        <a href="https://us11.list-manage.com/subscribe/post?u=1912b94880f9bb2c2834cbcf6&id=ac445f22a5" target="_blank">Sign up to receive Greenway map, event, & program updates.</a>
+        <form
+          className="modal-content__signup-form"
+          onSubmit={this.handleSubmit}
+        >
+          <fieldset className="email-signup-group">
+            <label
+              htmlFor="MERGE0"
+              className="signup-copy"
+            >
+              { 'Sign up to receive Greenway map, event, & program updates.' }
+            </label>
+            <div className="signup-input-button-group">
+              <input
+                className="signup-input"
+                type="email"
+                name="MERGE0"
+                id="MERGE0"
+                autoCapitalize="off"
+                autoCorrect="off"
+                tabIndex={0}
+                placeholder="email address"
+                value={email}
+                onChange={this.handleTextChange}
+              />
+              <input
+                className="signup-submit"
+                type="submit"
+                tabIndex={0}
+                onClick={() => {}}
+                disabled={!valid}
+                style={buttonStyle}
+                value="Sign Up"
+              />
+            </div>
+          </fieldset>
+          <fieldset className="hide-modal-group">
+            <input
+              className="hide-modal-checkbox"
+              id="hide-modal"
+              type="checkbox"
+              checked={noDisplayInFuture}
+              onChange={this.handleCheckboxChange}
+            />
+            <label
+              className="hide-modal-label"
+              htmlFor="hide-modal"
+            >
+              { 'Do not display this message in the future' }
+            </label>
+          </fieldset>
+        </form>
       </div>
     );
   }
 }
 
 export default ModalForm;
-/* eslint-enable */
