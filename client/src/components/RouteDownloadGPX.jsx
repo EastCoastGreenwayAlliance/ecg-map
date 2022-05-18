@@ -8,7 +8,7 @@ const GPX_CREATOR_NAME = 'East Coast Greenway Map';
 const GPX_TRACK_NAME = 'Route';
 const GPX_ROUTE_POINTS_NAME = 'Cues';
 
-class RouteDownload extends Component {
+class RouteDownloadGPX extends Component {
   static propTypes = {
     route: PropTypes.object,
   }
@@ -22,17 +22,6 @@ class RouteDownload extends Component {
     this.togpx = null;
     this.fileSaver = null;
   }
-
-  /*
-  componentDidUpdate(prevProps, prevState) {
-    const { gpx } = prevState;
-
-    // we have GPX data, create the blob and tell the browser to download it
-    if (this.state.gpx && !isEqual(this.state.gpx, gpx)) {
-      this.downloadGPXFile(this.state.gpx);
-    }
-  }
-  */
 
   exportRouteToGPX() {
     const { route } = this.props;
@@ -137,7 +126,7 @@ class RouteDownload extends Component {
   render() {
     return (
       <button
-        className="dps dps-download"
+        className="dps dps-download-gpx"
         title="Download GPX file"
         tabIndex={0}
         onClick={() => this.exportRouteToGPX()}
@@ -148,4 +137,4 @@ class RouteDownload extends Component {
   }
 }
 
-export default RouteDownload;
+export default RouteDownloadGPX;

@@ -16,7 +16,8 @@
     border: 0;
   }
 
-  button.dps.dps-download,
+  button.dps.dps-download-gpx,
+  button.dps.dps-download-tcx,
   button.dps.dps-share {
     border-right: 1px solid $grey;
   }
@@ -25,7 +26,7 @@
 button.dps {
   margin: 0;
   box-sizing: border-box;
-  width: 33%;
+  width: 25%;
   height: 52px;
   display: inline-block;
   border-bottom: none;
@@ -41,12 +42,22 @@ button.dps {
     margin: 0 auto;
   }
 
-  &.dps-download {
+  &.dps-download-gpx {
     span {
       // png fallback in case browser doesn't support svg
-      background: url('../assets/icons/button-download.png') no-repeat;
+      background: url('../assets/icons/button-download-gpx.png') no-repeat;
       background:
-        url('../assets/icons/button-download.svg') no-repeat,
+        url('../assets/icons/button-download-gpx.svg') no-repeat,
+        linear-gradient(transparent, transparent);
+    }
+  }
+
+  &.dps-download-tcx {
+    span {
+      // png fallback in case browser doesn't support svg
+      background: url('../assets/icons/button-download-tcx.png') no-repeat;
+      background:
+        url('../assets/icons/button-download-tcx.svg') no-repeat,
         linear-gradient(transparent, transparent);
     }
   }

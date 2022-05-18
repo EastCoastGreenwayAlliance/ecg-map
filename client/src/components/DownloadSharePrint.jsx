@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RouteDownload from './RouteDownload';
+import RouteDownloadGPX from './RouteDownloadGPX';
+import RouteDownloadTCX from './RouteDownloadTCX';
 import RouteShare from './RouteShare';
 import RouteShowCueSheet from './RouteShowCueSheet';
 
@@ -21,7 +22,8 @@ class DownloadSharePrint extends Component {
 
     return (
       <div className="DownloadSharePrint">
-        <RouteDownload route={route} />
+        <RouteDownloadGPX route={route} />
+        <RouteDownloadTCX route={route} />
         <RouteShare />
         <RouteShowCueSheet />
       </div>

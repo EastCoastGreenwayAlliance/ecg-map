@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import RouteDownload from '../components/RouteDownload';
+import RouteDownloadGPX from '../components/RouteDownloadGPX';
+import RouteDownloadTCX from '../components/RouteDownloadTCX';
 import NavBar from '../components/NavBar';
 import { metersToMiles } from '../common/api';
 
@@ -139,7 +140,8 @@ class CueSheet extends Component {
               <div>
                 <p className="nav-link"><Link to="/">Back to Map</Link></p>
                 <button className="print" onClick={() => window.print()} />
-                <RouteDownload route={route} />
+                <RouteDownloadTCX route={route} />
+                <RouteDownloadGPX route={route} />
                 <table>
                   <thead>
                     <tr>
