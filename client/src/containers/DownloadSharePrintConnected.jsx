@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import DownloadSharePrint from '../components/DownloadSharePrint';
 
-const mapStateToProps = ({ browser, routing }) => {
+const mapStateToProps = ({ browser, routing, elevation }) => {
   const { startLocation, endLocation, route } = routing;
   const { greaterThan } = browser;
 
@@ -13,6 +13,7 @@ const mapStateToProps = ({ browser, routing }) => {
     endLocation,
     route,
     isMobile: !greaterThan.medium,
+    elevData: elevation.result,
   };
 };
 

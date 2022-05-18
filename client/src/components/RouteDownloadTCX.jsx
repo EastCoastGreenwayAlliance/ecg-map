@@ -20,6 +20,7 @@ const CUE_POINT_CODES = { // CueSheet.jsx turn codes => TCX PointType
 class RouteDownloadTCX extends Component {
   static propTypes = {
     route: PropTypes.object,
+    elevData: PropTypes.array,
   }
 
   constructor() {
@@ -34,7 +35,18 @@ class RouteDownloadTCX extends Component {
 
   exportRouteToTCX() {
     const { route } = this.props;
+    const { elevData } = this.props;
     const routegeojson = route.response;
+
+    // take a copy of the elevation data which we will repeatedly sort & thrash below
+    // we'll use these to find nearest elevation sample, so convert to L.LatLng
+    const elevationpoints = elevData.map((elev) => {
+      const it = {
+        latlng: L.latLng([elev.location.lat(), elev.location.lng()]),
+        elevation: elev.elevation,
+      };
+      return it;
+    });
 
     // create a XML parser, then the top-level TrainingCenterDatabase item
     const xmlroot = (new DOMParser()).parseFromString('<root></root>', 'text/xml');
@@ -93,7 +105,21 @@ class RouteDownloadTCX extends Component {
           position_lat: vertex[1],
           position_lng: vertex[0],
           meterstraveled: cumulativeMeters,
+          elevmeters: 0, // see below
         };
+
+        // find the closest elevation sample point and use its elevation
+        // the elevation points are Google LatLng; we want distanceTo so convert to L.LatLng
+        const here = L.latLng([vertex[1], vertex[0]]);
+        elevationpoints.sort((p, q) => {
+          const d1 = here.distanceTo(p.latlng);
+          const d2 = here.distanceTo(q.latlng);
+          if (d1 === d2) return 0;
+          return d1 < d2 ? -1 : 1;
+        });
+        thisone.elevmeters = elevationpoints[0].elevation;
+
+        // done
         trackpoints.push(thisone);
       });
     });
@@ -104,15 +130,18 @@ class RouteDownloadTCX extends Component {
       const trackpoint_pos_lat = xmlroot.createElement('LatitudeDegrees');
       const trackpoint_pos_lng = xmlroot.createElement('LongitudeDegrees');
       const trackpoint_distance = xmlroot.createElement('DistanceMeters');
+      const trackpoint_elevation = xmlroot.createElement('AltitudeMeters');
 
       trackpoint_pos_lat.textContent = point.position_lat;
       trackpoint_pos_lng.textContent = point.position_lng;
       trackpoint_distance.textContent = point.meterstraveled;
+      trackpoint_elevation.textContent = point.elevmeters;
 
       trackpoint.appendChild(trackpoint_pos);
       trackpoint_pos.appendChild(trackpoint_pos_lat);
       trackpoint_pos.appendChild(trackpoint_pos_lng);
       trackpoint.appendChild(trackpoint_distance);
+      trackpoint.appendChild(trackpoint_elevation);
 
       course_track.appendChild(trackpoint);
     });

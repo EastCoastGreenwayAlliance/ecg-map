@@ -9,11 +9,12 @@ import RouteShowCueSheet from './RouteShowCueSheet';
 class DownloadSharePrint extends Component {
   static propTypes = {
     route: PropTypes.object,
+    elevData: PropTypes.array,
     isMobile: PropTypes.bool.isRequired,
   }
 
   render() {
-    const { route, isMobile } = this.props;
+    const { route, elevData, isMobile } = this.props;
 
     if (!route.response || !route.response.features) return null;
 
@@ -23,7 +24,7 @@ class DownloadSharePrint extends Component {
     return (
       <div className="DownloadSharePrint">
         <RouteDownloadGPX route={route} />
-        <RouteDownloadTCX route={route} />
+        <RouteDownloadTCX route={route} elevData={elevData} />
         <RouteShare />
         <RouteShowCueSheet />
       </div>
