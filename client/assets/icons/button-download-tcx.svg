@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   viewBox="0 0 26 26"
+   version="1.1"
+   sodipodi:docname="button-download-tcx.svg"
+   inkscape:version="1.2 (dc2aeda, 2022-05-15)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview248"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="22.627417"
+     inkscape:cx="14.075844"
+     inkscape:cy="14.429398"
+     inkscape:window-width="1390"
+     inkscape:window-height="1205"
+     inkscape:window-x="1148"
+     inkscape:window-y="63"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs239">
+    <style
+       id="style237">.cls-1{fill:#4a5058;}</style>
+  </defs>
+  <title
+     id="title241">Artboard 17</title>
+  <path
+     class="cls-1"
+     d="M23.94,22.59H2.06a.73.73,0,1,0,0,1.46H23.94a.73.73,0,0,0,0-1.46Z"
+     id="path243" />
+  <path
+     class="cls-1"
+     d="m 12.31,22.15194 c 0.270027,0.243057 0.679973,0.243057 0.95,0 l 8.94,-7.66 c 0.690442,-0.457829 -0.442296,-1.696761 -0.96,-1.05 l -7.73,6.6 v -7.803883 c 0,-0.973333 -1.46,-0.973333 -1.46,0 v 7.803883 l -7.73,-6.6 c -0.7266664,-0.633333 -1.6766664,0.456667 -0.95,1.09 z"
+     id="path245"
+     sodipodi:nodetypes="cccccsscccc" />
+  <text
+     xml:space="preserve"
+     style="fill:#000000;fill-opacity:0"
+     x="2.4303796"
+     y="7.2151899"
+     id="text915"><tspan
+       sodipodi:role="line"
+       id="tspan913"
+       x="2.4303796"
+       y="7.2151899"
+       style="fill:#000000">TTCXCX</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:'Arial Black';-inkscape-font-specification:'Arial Black, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#4a5058;fill-opacity:1"
+     x="3.5732071"
+     y="9.6002455"
+     id="text809"><tspan
+       sodipodi:role="line"
+       id="tspan807"
+       x="3.5732071"
+       y="9.6002455">TCX</tspan></text>
+</svg>

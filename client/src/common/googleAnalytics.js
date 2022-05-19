@@ -30,6 +30,15 @@ export const logDownloadGPX = () => {
   });
 };
 
+export const logDownloadTCX = () => {
+  // log the GPX file download event
+  ReactGA.event({
+    category: 'Post Route Search Options',
+    action: 'Button Click',
+    label: 'TCX download'
+  });
+};
+
 export const logStatefulURLCopy = () => {
   // log the copy event
   ReactGA.event({

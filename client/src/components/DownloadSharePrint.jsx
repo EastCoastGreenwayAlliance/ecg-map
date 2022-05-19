@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import RouteDownload from './RouteDownload';
+import RouteDownloadGPX from './RouteDownloadGPX';
+import RouteDownloadTCX from './RouteDownloadTCX';
 import RouteShare from './RouteShare';
 import RouteShowCueSheet from './RouteShowCueSheet';
 
 class DownloadSharePrint extends Component {
   static propTypes = {
     route: PropTypes.object,
+    elevData: PropTypes.array,
     isMobile: PropTypes.bool.isRequired,
   }
 
   render() {
-    const { route, isMobile } = this.props;
+    const { route, elevData, isMobile } = this.props;
 
     if (!route.response || !route.response.features) return null;
 
@@ -21,7 +23,8 @@ class DownloadSharePrint extends Component {
 
     return (
       <div className="DownloadSharePrint">
-        <RouteDownload route={route} />
+        <RouteDownloadGPX route={route} />
+        <RouteDownloadTCX route={route} elevData={elevData} />
         <RouteShare />
         <RouteShowCueSheet />
       </div>
