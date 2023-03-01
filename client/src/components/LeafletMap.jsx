@@ -73,6 +73,7 @@ class LeafletMap extends Component {
     lng: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
     onMapMove: PropTypes.func.isRequired,
+    fetchLocationGeocode: PropTypes.func.isRequired,
     geocodeResult: PropTypes.object,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
@@ -343,6 +344,20 @@ class LeafletMap extends Component {
 
     // set up the CARTO layer with the trail
     this.initCartoLayer();
+
+    // click handler on the map, to fill in a startLocation or endLocation if we don't have one yet
+    // as an alternative to typing an address for geocoding
+    // the input boxes and geocoder accept string "lng,lat" so we can just drop the click coords in
+    this.map.on('click', (event) => {
+      const { startLocation, endLocation, fetchLocationGeocode } = this.props;
+
+      const coordstring = `${event.latlng.lat.toFixed(6)},${event.latlng.lng.toFixed(6)}`;
+      if (!startLocation.accepted) {
+        fetchLocationGeocode(coordstring, true);
+      } else if (!endLocation.accepted) {
+        fetchLocationGeocode(coordstring, true);
+      }
+    });
   }
 
   initFakeGeolocationClicks() {

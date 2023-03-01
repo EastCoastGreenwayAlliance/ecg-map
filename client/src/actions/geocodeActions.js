@@ -39,13 +39,14 @@ export const locationGeocodeClear = () => ({
  * @param {string} location: A URI encoded string representing an address,
  *   e.g. "1600+Amphitheatre+Parkway,+Mountain+View,+CA"
 */
-const fetchLocationGeocode = (searchTerm) => {
+const fetchLocationGeocode = (searchTerm, addressislatlngcoords = false) => {
   const searchTermEncoded = encodeURIComponent(searchTerm);
   const viewportBias = encodeURIComponent('24.046464,-90.175781|48.224673,-58.666992');
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchTermEncoded}&bounds=${viewportBias}&key=${googleAPIKey}`;
 
   return (dispatch) => {
     dispatch(locationGeocodeRequest(searchTerm));
+
     return fetch(url)
       .then((res) => {
         if (!res.ok) {
@@ -61,7 +62,21 @@ const fetchLocationGeocode = (searchTerm) => {
         if (!results || !results.length || status !== 'OK') {
           dispatch(locationGeocodeError('Address not found, please try again.'));
         } else {
-          dispatch(locationGeocodeSuccess(results[0]));
+          // if addressislatlngcoords then fudge the result to be the point we asked for
+          // why did we geocode at all? caller expects a fetch()
+          const theresult = results[0];
+
+          if (addressislatlngcoords) {
+            const lat = parseFloat(searchTerm.trim().split(',')[0]);
+            const lng = parseFloat(searchTerm.trim().split(',')[1]);
+            theresult.address_components = [];
+            theresult.formatted_address = searchTerm;
+            theresult.geometry.location_type = 'ROOFTOP';
+            theresult.geometry.location.lng = lng;
+            theresult.geometry.location.lat = lat;
+          }
+
+          dispatch(locationGeocodeSuccess(theresult));
         }
       })
       .catch(error => dispatch(locationGeocodeError(error)));
