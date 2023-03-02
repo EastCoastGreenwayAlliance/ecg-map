@@ -74,6 +74,8 @@ class LeafletMap extends Component {
     zoom: PropTypes.number.isRequired,
     onMapMove: PropTypes.func.isRequired,
     fetchLocationGeocode: PropTypes.func.isRequired,
+    cancelRoutingLocation: PropTypes.func.isRequired,
+    acceptRoutingLocation: PropTypes.func.isRequired,
     geocodeResult: PropTypes.object,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
@@ -672,19 +674,62 @@ class LeafletMap extends Component {
     // user has finished selecting their start and end,
     // add start and end points, then zoom the map extent
     const { isMobile } = this.props;
+    const { fetchLocationGeocode, cancelRoutingLocation, acceptRoutingLocation } = this.props;
     const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
+    const startmarker = L.marker(startLocation.coordinates, {
+      icon: this.startIcon,
+      draggable: true,
+    })
+      .bindPopup('Start');
+
+    const endmarker = L.marker(endLocation.coordinates, {
+      icon: this.endIcon,
+      draggable: true,
+    })
+      .bindPopup('End');
+
+    const recalculateRouteFromMarkers = () => {
+      // routing and geocoding are tightly coded into the SearchInput and SearchResults,
+      // get marker locations, clear the route, start a new route
+      const slat = startmarker.getLatLng().lat;
+      const slng = startmarker.getLatLng().lng;
+      const elat = endmarker.getLatLng().lat;
+      const elng = endmarker.getLatLng().lng;
+      const startstring = `${slat.toFixed(6)},${slng.toFixed(6)}`;
+      const endstring = `${elat.toFixed(6)},${elng.toFixed(6)}`;
+
+      // accept-location must come after fetchgeocode event has been redux'd, thus timeouts
+      cancelRoutingLocation('DONE');
+      setTimeout(() => {
+        fetchLocationGeocode(startstring, true)
+          .then(() => {
+            setTimeout(() => {
+              acceptRoutingLocation('START');
+
+              setTimeout(() => {
+                fetchLocationGeocode(endstring, true)
+                  .then(() => {
+                    setTimeout(() => {
+                      acceptRoutingLocation('END');
+                    }, 0.5 * 1000);
+                  });
+              }, 0.5 * 1000);
+            }, 0.5 * 1000);
+          });
+      }, 0.5 * 1000);
+    };
+    startmarker.on('dragend', () => {
+      recalculateRouteFromMarkers();
+    });
+    endmarker.on('dragend', () => {
+      recalculateRouteFromMarkers();
+    });
+
     this.searchResults.clearLayers();
-    this.searchResults.addLayer(
-      L.marker(startLocation.coordinates, {
-        icon: this.startIcon
-      }).bindPopup('Start')
-    );
-    this.searchResults.addLayer(
-      L.marker(endLocation.coordinates, {
-        icon: this.endIcon
-      }).bindPopup('End')
-    );
+    this.searchResults.addLayer(startmarker);
+    this.searchResults.addLayer(endmarker);
+
     this.fitBoundsToSearchResults(...padding);
   }
 
