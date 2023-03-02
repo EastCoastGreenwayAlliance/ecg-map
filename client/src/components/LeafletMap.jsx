@@ -76,6 +76,8 @@ class LeafletMap extends Component {
     fetchLocationGeocode: PropTypes.func.isRequired,
     cancelRoutingLocation: PropTypes.func.isRequired,
     acceptRoutingLocation: PropTypes.func.isRequired,
+    setMapZoomOnGeocode: PropTypes.func.isRequired,
+    zoomMapToGeocodes: PropTypes.bool.isRequired,
     geocodeResult: PropTypes.object,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
@@ -634,9 +636,11 @@ class LeafletMap extends Component {
     // the last used location geocode result
     const { coordinates } = location;
     const { geocodeResult, isMobile } = this.props;
+    const { zoomMapToGeocodes } = this.props;
 
     if (coordinates.length) {
       const padding = isMobile ? [[0, 50], [50, 185]] : [[330, 0], [60, 0]];
+
       // display marker showing nearest ECG location
       this.searchResults.addLayer(
         L.circleMarker(location.coordinates, {
@@ -646,6 +650,7 @@ class LeafletMap extends Component {
           fillOpacity: 0.6
         }).bindPopup(`Nearest ECG ${location.positionText} Location`)
       );
+
       // connect the nearest ECG location with the user's search
       this.searchResults.addLayer(
         L.polyline([
@@ -657,17 +662,25 @@ class LeafletMap extends Component {
           lineCap: 'butt',
         })
       );
+
       // fit the map extent to the user's search and neareset ECG location
-      this.fitBoundsToSearchResults(...padding);
+      if (zoomMapToGeocodes) {
+        this.fitBoundsToSearchResults(...padding);
+      }
     }
   }
 
   zoomToNearestSegment(location) {
+    const { zoomMapToGeocodes } = this.props;
+
     this.searchResults.clearLayers();
     this.searchResults.addLayer(L.marker(location.coordinates, {
       icon: location.positionText === 'start' ? this.startIcon : this.endIcon
     }));
-    this.map.panTo(location.coordinates);
+
+    if (zoomMapToGeocodes) {
+      this.map.panTo(location.coordinates);
+    }
   }
 
   zoomRouteExtent(startLocation, endLocation) {
@@ -675,6 +688,7 @@ class LeafletMap extends Component {
     // add start and end points, then zoom the map extent
     const { isMobile } = this.props;
     const { fetchLocationGeocode, cancelRoutingLocation, acceptRoutingLocation } = this.props;
+    const { setMapZoomOnGeocode } = this.props;
     const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
     const startmarker = L.marker(startLocation.coordinates, {
@@ -701,7 +715,10 @@ class LeafletMap extends Component {
 
       // accept-location must come after fetchgeocode event has been redux'd, thus timeouts
       cancelRoutingLocation('DONE');
+
       setTimeout(() => {
+        setMapZoomOnGeocode(false);
+
         fetchLocationGeocode(startstring, true)
           .then(() => {
             setTimeout(() => {
@@ -712,6 +729,8 @@ class LeafletMap extends Component {
                   .then(() => {
                     setTimeout(() => {
                       acceptRoutingLocation('END');
+
+                      setMapZoomOnGeocode(true);
                     }, 0.5 * 1000);
                   });
               }, 0.5 * 1000);

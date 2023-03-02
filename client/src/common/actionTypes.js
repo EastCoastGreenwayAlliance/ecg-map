@@ -1,10 +1,13 @@
 // Redux Action Types, see: http://redux.js.org/docs/basics/Actions.html
 
 // Geocoding a search location
+// including a flag whether we should zoom the map to show locations
 export const LOCATION_GEOCODE_REQUEST = 'LOCATION_GEOCODE_REQUEST';
 export const LOCATION_GEOCODE_SUCCESS = 'LOCATION_GEOCODE_SUCCESS';
 export const LOCATION_GEOCODE_ERROR = 'LOCATION_GEOCODE_ERROR';
 export const LOCATION_GEOCODE_CLEAR = 'LOCATION_GEOCODE_CLEAR';
+export const LOCATION_GEOCODE_ZOOMMAP_ENABLE = 'LOCATION_GEOCODE_ZOOMMAP_ENABLE';
+export const LOCATION_GEOCODE_ZOOMMAP_DISABLE = 'LOCATION_GEOCODE_ZOOMMAP_DISABLE';
 
 // UX flow for selecting a ECG Route start and end location:
 // requesting, setting, accepting, canceling, and erroring
