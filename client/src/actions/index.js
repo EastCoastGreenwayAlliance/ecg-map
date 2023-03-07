@@ -1,5 +1,5 @@
 // Redux Actions, for more info see: http://redux.js.org/docs/basics/Actions.html
-export fetchLocationGeocode, { locationGeocodeError, locationGeocodeClear } from './geocodeActions';
+export fetchLocationGeocode, { locationGeocodeError, locationGeocodeClear, setMapZoomOnGeocode } from './geocodeActions';
 export {
   nearestSegmentRequest,
   nearestSegmentError,

@@ -73,6 +73,11 @@ class LeafletMap extends Component {
     lng: PropTypes.number.isRequired,
     zoom: PropTypes.number.isRequired,
     onMapMove: PropTypes.func.isRequired,
+    fetchLocationGeocode: PropTypes.func.isRequired,
+    cancelRoutingLocation: PropTypes.func.isRequired,
+    acceptRoutingLocation: PropTypes.func.isRequired,
+    setMapZoomOnGeocode: PropTypes.func.isRequired,
+    zoomMapToGeocodes: PropTypes.bool.isRequired,
     geocodeResult: PropTypes.object,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
@@ -343,6 +348,20 @@ class LeafletMap extends Component {
 
     // set up the CARTO layer with the trail
     this.initCartoLayer();
+
+    // click handler on the map, to fill in a startLocation or endLocation if we don't have one yet
+    // as an alternative to typing an address for geocoding
+    // the input boxes and geocoder accept string "lng,lat" so we can just drop the click coords in
+    this.map.on('click', (event) => {
+      const { startLocation, endLocation, fetchLocationGeocode } = this.props;
+
+      const coordstring = `${event.latlng.lat.toFixed(6)},${event.latlng.lng.toFixed(6)}`;
+      if (!startLocation.accepted) {
+        fetchLocationGeocode(coordstring, true);
+      } else if (!endLocation.accepted) {
+        fetchLocationGeocode(coordstring, true);
+      }
+    });
   }
 
   initFakeGeolocationClicks() {
@@ -617,9 +636,11 @@ class LeafletMap extends Component {
     // the last used location geocode result
     const { coordinates } = location;
     const { geocodeResult, isMobile } = this.props;
+    const { zoomMapToGeocodes } = this.props;
 
     if (coordinates.length) {
       const padding = isMobile ? [[0, 50], [50, 185]] : [[330, 0], [60, 0]];
+
       // display marker showing nearest ECG location
       this.searchResults.addLayer(
         L.circleMarker(location.coordinates, {
@@ -629,6 +650,7 @@ class LeafletMap extends Component {
           fillOpacity: 0.6
         }).bindPopup(`Nearest ECG ${location.positionText} Location`)
       );
+
       // connect the nearest ECG location with the user's search
       this.searchResults.addLayer(
         L.polyline([
@@ -640,36 +662,93 @@ class LeafletMap extends Component {
           lineCap: 'butt',
         })
       );
+
       // fit the map extent to the user's search and neareset ECG location
-      this.fitBoundsToSearchResults(...padding);
+      if (zoomMapToGeocodes) {
+        this.fitBoundsToSearchResults(...padding);
+      }
     }
   }
 
   zoomToNearestSegment(location) {
+    const { zoomMapToGeocodes } = this.props;
+
     this.searchResults.clearLayers();
     this.searchResults.addLayer(L.marker(location.coordinates, {
       icon: location.positionText === 'start' ? this.startIcon : this.endIcon
     }));
-    this.map.panTo(location.coordinates);
+
+    if (zoomMapToGeocodes) {
+      this.map.panTo(location.coordinates);
+    }
   }
 
   zoomRouteExtent(startLocation, endLocation) {
     // user has finished selecting their start and end,
     // add start and end points, then zoom the map extent
     const { isMobile } = this.props;
+    const { fetchLocationGeocode, cancelRoutingLocation, acceptRoutingLocation } = this.props;
+    const { setMapZoomOnGeocode } = this.props;
     const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
+    const startmarker = L.marker(startLocation.coordinates, {
+      icon: this.startIcon,
+      draggable: true,
+    })
+      .bindPopup('Start');
+
+    const endmarker = L.marker(endLocation.coordinates, {
+      icon: this.endIcon,
+      draggable: true,
+    })
+      .bindPopup('End');
+
+    const recalculateRouteFromMarkers = () => {
+      // routing and geocoding are tightly coded into the SearchInput and SearchResults,
+      // get marker locations, clear the route, start a new route
+      const slat = startmarker.getLatLng().lat;
+      const slng = startmarker.getLatLng().lng;
+      const elat = endmarker.getLatLng().lat;
+      const elng = endmarker.getLatLng().lng;
+      const startstring = `${slat.toFixed(6)},${slng.toFixed(6)}`;
+      const endstring = `${elat.toFixed(6)},${elng.toFixed(6)}`;
+
+      // accept-location must come after fetchgeocode event has been redux'd, thus timeouts
+      cancelRoutingLocation('DONE');
+
+      setTimeout(() => {
+        setMapZoomOnGeocode(false);
+
+        fetchLocationGeocode(startstring, true)
+          .then(() => {
+            setTimeout(() => {
+              acceptRoutingLocation('START');
+
+              setTimeout(() => {
+                fetchLocationGeocode(endstring, true)
+                  .then(() => {
+                    setTimeout(() => {
+                      acceptRoutingLocation('END');
+
+                      setMapZoomOnGeocode(true);
+                    }, 0.5 * 1000);
+                  });
+              }, 0.5 * 1000);
+            }, 0.5 * 1000);
+          });
+      }, 0.5 * 1000);
+    };
+    startmarker.on('dragend', () => {
+      recalculateRouteFromMarkers();
+    });
+    endmarker.on('dragend', () => {
+      recalculateRouteFromMarkers();
+    });
+
     this.searchResults.clearLayers();
-    this.searchResults.addLayer(
-      L.marker(startLocation.coordinates, {
-        icon: this.startIcon
-      }).bindPopup('Start')
-    );
-    this.searchResults.addLayer(
-      L.marker(endLocation.coordinates, {
-        icon: this.endIcon
-      }).bindPopup('End')
-    );
+    this.searchResults.addLayer(startmarker);
+    this.searchResults.addLayer(endmarker);
+
     this.fitBoundsToSearchResults(...padding);
   }
 

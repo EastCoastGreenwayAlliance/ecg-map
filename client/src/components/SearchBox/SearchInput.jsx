@@ -44,6 +44,7 @@ class SearchInput extends Component {
   }
 
   handleSubmit(e) {
+    // FYI map click behavior instead of address: see LeafletMap and fetchLocationGeocode()
     const { searchAddress } = this.state;
     const { startLocation, endLocation, fetchLocationGeocode,
       cancelRoutingLocation, isLoadingRoute } = this.props;
@@ -96,9 +97,9 @@ class SearchInput extends Component {
     const { startLocation, endLocation } = this.props;
     let text = '';
 
-    if (!startLocation.accepted && !endLocation.accepted) text = 'Search a Starting Point';
-    if (startLocation.accepted && !endLocation.accepted) text = 'Search an Ending Point';
-    if (startLocation.accepted && endLocation.accepted) text = 'Search Again';
+    if (!startLocation.accepted && !endLocation.accepted) text = 'Search Starting Point or Click Map';
+    if (startLocation.accepted && !endLocation.accepted) text = 'Search Ending Point or Click Map';
+    if (startLocation.accepted && endLocation.accepted) text = 'Search Again or Click X to Clear';
 
     return text;
   }

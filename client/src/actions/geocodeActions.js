@@ -9,6 +9,8 @@ import {
   LOCATION_GEOCODE_SUCCESS,
   LOCATION_GEOCODE_ERROR,
   LOCATION_GEOCODE_CLEAR,
+  LOCATION_GEOCODE_ZOOMMAP_ENABLE,
+  LOCATION_GEOCODE_ZOOMMAP_DISABLE,
 } from '../common/actionTypes';
 
 // we are about to make a GET request to geocode a location
@@ -34,18 +36,26 @@ export const locationGeocodeClear = () => ({
   type: LOCATION_GEOCODE_CLEAR,
 });
 
+// toggle the zoom-to map behavior when a geocode is done
+// disabling is useful e.g. when dragging a marker to change one end
+// when zooming in to the points is disturbing UX
+export const setMapZoomOnGeocode = trueorfalse => ({
+  type: trueorfalse ? LOCATION_GEOCODE_ZOOMMAP_ENABLE : LOCATION_GEOCODE_ZOOMMAP_DISABLE,
+});
+
 /*
  * Redux Thunk action creator to fetch geocoded JSON for a given location / address
  * @param {string} location: A URI encoded string representing an address,
  *   e.g. "1600+Amphitheatre+Parkway,+Mountain+View,+CA"
 */
-const fetchLocationGeocode = (searchTerm) => {
+const fetchLocationGeocode = (searchTerm, addressislatlngcoords = false) => {
   const searchTermEncoded = encodeURIComponent(searchTerm);
   const viewportBias = encodeURIComponent('24.046464,-90.175781|48.224673,-58.666992');
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchTermEncoded}&bounds=${viewportBias}&key=${googleAPIKey}`;
 
   return (dispatch) => {
     dispatch(locationGeocodeRequest(searchTerm));
+
     return fetch(url)
       .then((res) => {
         if (!res.ok) {
@@ -61,7 +71,21 @@ const fetchLocationGeocode = (searchTerm) => {
         if (!results || !results.length || status !== 'OK') {
           dispatch(locationGeocodeError('Address not found, please try again.'));
         } else {
-          dispatch(locationGeocodeSuccess(results[0]));
+          // if addressislatlngcoords then fudge the result to be the point we asked for
+          // why did we geocode at all? caller expects a fetch()
+          const theresult = results[0];
+
+          if (addressislatlngcoords) {
+            const lat = parseFloat(searchTerm.trim().split(',')[0]);
+            const lng = parseFloat(searchTerm.trim().split(',')[1]);
+            theresult.address_components = [];
+            theresult.formatted_address = searchTerm;
+            theresult.geometry.location_type = 'ROOFTOP';
+            theresult.geometry.location.lng = lng;
+            theresult.geometry.location.lat = lat;
+          }
+
+          dispatch(locationGeocodeSuccess(theresult));
         }
       })
       .catch(error => dispatch(locationGeocodeError(error)));

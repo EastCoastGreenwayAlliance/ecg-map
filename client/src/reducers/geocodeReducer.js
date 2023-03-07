@@ -4,13 +4,16 @@ import {
   LOCATION_GEOCODE_SUCCESS,
   LOCATION_GEOCODE_ERROR,
   LOCATION_GEOCODE_CLEAR,
+  LOCATION_GEOCODE_ZOOMMAP_ENABLE,
+  LOCATION_GEOCODE_ZOOMMAP_DISABLE,
 } from '../common/actionTypes';
 
 const defaultState = {
   isFetching: false,
   searchTerm: '',
   result: null,
-  error: null
+  error: null,
+  zoomMapToGeocodes: true,
 };
 
 const parseGeocodeResult = (result) => {
@@ -55,6 +58,18 @@ export default (state = defaultState, action) => {
 
     case LOCATION_GEOCODE_CLEAR:
       return { ...defaultState };
+
+    case LOCATION_GEOCODE_ZOOMMAP_ENABLE:
+      return {
+        ...state,
+        zoomMapToGeocodes: true,
+      };
+
+    case LOCATION_GEOCODE_ZOOMMAP_DISABLE:
+      return {
+        ...state,
+        zoomMapToGeocodes: false,
+      };
 
     default:
       return state;
