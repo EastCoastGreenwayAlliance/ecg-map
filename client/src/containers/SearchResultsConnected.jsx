@@ -17,7 +17,7 @@ import {
 } from '../actions';
 
 const mapStateToProps = ({ browser, geocoding, routing }) => {
-  const { error, result, isFetching } = geocoding;
+  const { error, result, isFetching, zoomMapToGeocodes } = geocoding;
   const { endLocation, startLocation, route } = routing;
   const { greaterThan } = browser;
 
@@ -28,6 +28,7 @@ const mapStateToProps = ({ browser, geocoding, routing }) => {
     isMobile: !greaterThan.medium,
     endLocation,
     startLocation,
+    zoomMapToGeocodes,
     route
   };
 };

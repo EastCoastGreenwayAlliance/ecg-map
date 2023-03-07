@@ -37,6 +37,7 @@ class SearchResults extends Component {
       PropTypes.object
     ]),
     geocodeResult: PropTypes.object,
+    zoomMapToGeocodes: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     startLocation: PropTypes.object,
     endLocation: PropTypes.object,
@@ -138,7 +139,9 @@ class SearchResults extends Component {
   renderSearchResultsStep() {
     // handles which step of the Search UX Flow to display using application state
     const { geocodeError, geocodeResult, geocodeIsFetching, isMobile, startLocation,
-      endLocation, acceptRoutingLocation, route } = this.props;
+      endLocation, acceptRoutingLocation, zoomMapToGeocodes, route } = this.props;
+
+    // zoomMapToGeocodes = hide the Accept location prompts when we drag markers to recalculate
 
     if (geocodeIsFetching || startLocation.isFetching || endLocation.isFetching) {
       // loading message for when location is being searched
@@ -155,8 +158,8 @@ class SearchResults extends Component {
       return <ErrorMsg error={startLocation.error} />;
     }
 
-    if (startLocation.distance && !startLocation.accepted) {
-      return <StartLocationOptions {...{ geocodeResult, startLocation, acceptRoutingLocation }} />;
+    if (startLocation.distance && !startLocation.accepted && zoomMapToGeocodes) {
+      return <StartLocationOptions {...{ geocodeResult, startLocation, acceptRoutingLocation }} />; // eslint-disable-line max-len
     }
 
     if (startLocation.accepted && !endLocation.coordinates.length) {
@@ -164,8 +167,8 @@ class SearchResults extends Component {
       // see issue #50
     }
 
-    if (endLocation.coordinates.length && !endLocation.accepted) {
-      return <EndLocationOptions {...{ endLocation, geocodeResult, acceptRoutingLocation }} />;
+    if (endLocation.coordinates.length && !endLocation.accepted && zoomMapToGeocodes) {
+      return <EndLocationOptions {...{ endLocation, geocodeResult, acceptRoutingLocation }} />; // eslint-disable-line max-len
     }
 
     if (!isMobile && endLocation.accepted && startLocation.accepted) {
