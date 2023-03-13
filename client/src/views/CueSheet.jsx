@@ -13,6 +13,7 @@ import { metersToMiles } from '../common/api';
 class CueSheet extends Component {
   static propTypes = {
     route: PropTypes.object,
+    elevData: PropTypes.array,
     isMobile: PropTypes.bool
   }
 
@@ -126,7 +127,7 @@ class CueSheet extends Component {
   }
 
   render() {
-    const { isMobile, route } = this.props;
+    const { isMobile, route, elevData } = this.props;
     const { response } = route;
     const header1 = isMobile ? 'Cum. miles' : 'Cumulative miles';
     const header2 = isMobile ? 'Seg. miles' : 'Segment miles';
@@ -140,7 +141,7 @@ class CueSheet extends Component {
               <div>
                 <p className="nav-link"><Link to="/">Back to Map</Link></p>
                 <button className="print" onClick={() => window.print()} />
-                <RouteDownloadTCX route={route} />
+                <RouteDownloadTCX route={route} elevData={elevData} />
                 <RouteDownloadGPX route={route} />
                 <table>
                   <thead>

@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 import CueSheet from '../views/CueSheet';
 
-const mapStateToProps = ({ browser, routing }) => ({
+const mapStateToProps = ({ browser, routing, elevation }) => ({
   isMobile: !browser.greaterThan.medium,
-  route: routing.route
+  route: routing.route,
+  elevData: elevation.result,
 });
 
 export default connect(mapStateToProps, null)(CueSheet);
