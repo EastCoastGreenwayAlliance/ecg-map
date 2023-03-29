@@ -5,6 +5,7 @@ export const gaTrackingID = 'UA-20533957-3';
 
 // CARTO account name (temporarily set to "greeninfo" until data is in order)
 export const cartoUser = 'niles';
+// GDA is this still in use?
 
 // CARTO tables
 export const cartoTables = {
@@ -12,6 +13,7 @@ export const cartoTables = {
   cue_points: 'ecg_route_cues_prod',
   alert_points: 'ecg_pois',
 };
+// GDA is this still in use?
 
 // Esri layers for satellite and streets (replace Mapbox Dec 2019)
 export const esriSatellite = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}@2x';
@@ -45,3 +47,10 @@ export const METERS_TO_FEET = 3.281;
 // the URL of the routing API server; in-development server-side routing is on :9000
 // export const ROUTER_API_URL = 'https://router.greenway.org:9000/';
 export const ROUTER_API_URL = 'https://router.greenway.org/';
+
+// the URL of the WMS, used for serving the greenway linework for map display
+export const ROUTER_WMS_URL = 'https://router.greenway.org/wms';
+
+// the URL to fetch Alert POIs
+export const ROUTER_ALERT_POIS_URL = 'https://router.greenway.org:9000/alertpois/';
+// GDA remove 9000 before launch

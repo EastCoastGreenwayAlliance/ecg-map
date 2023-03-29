@@ -8,11 +8,4 @@ const { route_segments, alert_points } = cartoTables;
 export const configureMapSQL = () => sls`
   SELECT * FROM ${route_segments}
 `;
-
-export const poiFetchSQL = () => sls`
-  SELECT
-  cartodb_id AS id, type, name, description,
-  ST_X(the_geom) AS lng, ST_Y(the_geom) AS lat
-  FROM ${alert_points}
-  WHERE published = 1
-`;
+// GDA is this still in use?

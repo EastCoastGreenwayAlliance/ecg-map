@@ -4,13 +4,11 @@ import isEqual from 'lodash/isEqual';
 import Legend from '../../lib/L.Control.Legend';
 
 import { queryZXY } from '../common/api';
-import { poiFetchSQL } from '../common/sqlQueries';
-import { esriSatellite, esriStreets, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
+import { esriSatellite, esriStreets, ROUTER_WMS_URL, ROUTER_ALERT_POIS_URL, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 export const POIS_SHOWALL_MINZOOM = 13;  // min zoom to show all Alert Points not on a route
 export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
 export const POIS_NOTIFY_RANGE = 1.0;  // miles
-export const POIS_QUERY_URL = `https://${cartoUser}.carto.com/api/v2/sql?q=${poiFetchSQL()}`;
 
 
 // set default image paths for Leaflet
@@ -150,7 +148,7 @@ class LeafletMap extends Component {
     });
 
     // add trail via WMS
-    this.thegreenway = L.tileLayer.wms('https://router.greenway.org/wms', {
+    this.thegreenway = L.tileLayer.wms(ROUTER_WMS_URL, {
       format: 'image/png',
       transparent: 'TRUE',
       layers: 'ecgroutelines_live',
@@ -401,18 +399,11 @@ class LeafletMap extends Component {
   }
 
   initAlwaysOnAlertPois() {
-    this.ajaxFetchAlertPoiMarkers((poimarkers) => {
-      poimarkers.forEach((marker) => {
-        marker.addTo(this.map.allpois);
-      });
-    });
-  }
-
-  ajaxFetchAlertPoiMarkers(andthencallback) {
     const { selectPoi } = this.props;
 
+    // GDA
     const poisxhr = new XMLHttpRequest();
-    poisxhr.open('GET', POIS_QUERY_URL);
+    poisxhr.open('GET', ROUTER_ALERT_POIS_URL);
     poisxhr.onload = () => {
       if (poisxhr.status !== 200) return;
 
@@ -420,7 +411,7 @@ class LeafletMap extends Component {
       const markerlist = [];
       const poidata = JSON.parse(poisxhr.responseText);
       poidata.rows.forEach((poi) => {
-        if (!poi.lat || !poi.lng) return;
+        if (!poi.lat || !poi.lng) return; // invalid, skip
 
         const marker = L.marker([poi.lat, poi.lng], {
           title: poi.name,
@@ -436,10 +427,10 @@ class LeafletMap extends Component {
         markerlist.push(marker);
       });
 
-      // hand the list off to the callback
-      if (andthencallback) {
-        andthencallback(markerlist);
-      }
+      // add the markers to the map
+      markerlist.forEach((marker) => {
+        marker.addTo(this.map.allpois);
+      });
     };
     poisxhr.send();
   }
