@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import Legend from '../../lib/L.Control.Legend';
 
-import { configureLayerSource, queryZXY } from '../common/api';
-import { configureMapSQL, poiFetchSQL } from '../common/sqlQueries';
+import { queryZXY } from '../common/api';
+import { poiFetchSQL } from '../common/sqlQueries';
 import { esriSatellite, esriStreets, cartoUser, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 export const POIS_SHOWALL_MINZOOM = 13;  // min zoom to show all Alert Points not on a route
@@ -61,7 +61,6 @@ L.LatLng.prototype.bearingWordTo = function (other) {  // eslint-disable-line
     - toggling of basemap style from Positron and satellite
     - updating features to be shown on the map such as markers and the highlighted
       portion of the ECG route after a successful search
-    - integrating Carto(db).JS for loading the ECG route as a tileLayer
     - enabling "Locate Me" and "Active Turning"
  */
 class LeafletMap extends Component {
@@ -109,7 +108,6 @@ class LeafletMap extends Component {
     };
 
     this.mapOptions = {
-      attributionControl: false,
       center: [
         hashZXY.lat && hashZXY.lng ? hashZXY.lat : lat,
         hashZXY.lat && hashZXY.lng ? hashZXY.lng : lng,
@@ -151,8 +149,13 @@ class LeafletMap extends Component {
       popupAnchor: [12, -12]
     });
 
-    // reference to CARTO sublayer
-    this.cartoSubLayer = null;
+    // add trail via WMS
+    this.thegreenway = L.tileLayer.wms('https://router.greenway.org/wms', {
+      format: 'image/png',
+      transparent: 'TRUE',
+      layers: 'ecgroutelines_live',
+      zIndex: 5,
+    });
 
     // layer to store searchResults (route, markers, etc) when user is searching for a location
     this.searchResults = L.featureGroup();
@@ -265,21 +268,22 @@ class LeafletMap extends Component {
   }
 
   initMap() {
-    // sets up the Leaflet map.
-    // NOTE: attribution fixes are called within the initCartoLayer callback
-    // map zoom buttons are conditionally added there as well, otherwise the attribution
-    // is placed on top of them
+    // sets up the Leaflet map
     const { onMapMove, disableActiveTurning } = this.props;
+    const { isMobile } = this.props;
 
     // instantiate the map and add a reference to it
     this.map = L.map('map', this.mapOptions);
 
-    // useful for debugging where you are, for entering false locations for testing
+    // useful for debugging where you are, or for entering manual locations for testing
     /*
     this.map.on('moveend', () => {
       console.log([ this.map.getCenter().lat, this.map.getCenter().lng ]);  // eslint-disable-line
     });
     */
+
+    // add the greenway trail WMS
+    this.map.addLayer(this.thegreenway);
 
     // "locate me" feature only available on mobile devices
     // import the code for the Leaflet-Locate plugin
@@ -309,16 +313,39 @@ class LeafletMap extends Component {
       })
       .catch((error) => { throw error; });
 
-    // add the basemap toggle control
-    this.layersControl = L.control.layers(this.baseLayers, null);
-    this.layersControl.addTo(this.map, { position: 'topright' });
-
     // add the legend control
     this.legend = new Legend();
     this.legend.addTo(this.map);
 
     // add the scale bar control
     L.control.scale().addTo(this.map);
+
+    // add the basemap toggle control
+    this.layersControl = L.control.layers(this.baseLayers, null);
+    this.layersControl.addTo(this.map, { position: 'topright' });
+
+    // add attribution & map zoom buttons at lower-right
+    // and use our custom attributions
+    this.zoomControl = !isMobile ?
+      L.control.zoom({ position: 'bottomright' }).addTo(this.map) : null;
+
+    this.map.on('baselayerchange', (e) => {
+      const attr = document.querySelector('.leaflet-control-attribution.leaflet-control');
+      switch (e.name) {
+        case 'Greyscale':
+          attr.innerHTML = '© <a target="_blank" href="https://carto.com/">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+          break;
+        case 'Detailed Streets':
+          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012';
+          break;
+        case 'Satellite':
+          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+          break;
+        default:
+          return null;
+      }
+    });
+    this.map.fire('baselayerchange', { name: 'Greyscale' });
 
     // update the URL hash with zoom, lat, lng
     this.map.on('moveend', (e) => {
@@ -346,9 +373,6 @@ class LeafletMap extends Component {
     });
     this.map.fire('zoomend');
 
-    // set up the CARTO layer with the trail
-    this.initCartoLayer();
-
     // click handler on the map, to fill in a startLocation or endLocation if we don't have one yet
     // as an alternative to typing an address for geocoding
     // the input boxes and geocoder accept string "lng,lat" so we can just drop the click coords in
@@ -373,79 +397,6 @@ class LeafletMap extends Component {
       this.map.fire('locationfound', {
         latlng: event.latlng,
       });
-    });
-  }
-
-  initCartoLayer() {
-    const self = this;
-    const layerSource = configureLayerSource(configureMapSQL());
-    const options = {
-      https: true,
-      infowindow: true,
-      legends: false,
-    };
-    // `cartodb` is a global var, refers to CARTO.JS: https://carto.com/docs/carto-engine/carto-js/
-    cartodb.createLayer(self.map, layerSource, options)
-      .addTo(self.map, 5) // 2nd param is layer z-index; alert points is 10
-      .on('done', (layer) => {
-        self.cartoLayer = layer;
-        layer.on('error', (error) => { throw error; });
-        // store a reference to the Carto SubLayer so we can act upon it later,
-        // mainly to update the SQL query based on filters applied by the user
-        self.cartoSubLayer = layer.getSubLayer(0);
-
-        // set up interactivity: click opens the real tooltip
-        // mouseover just sets a cursor and the poor man's tooltip
-        // mouseout clears the mouseover, but won't also cleara visible tooltip
-        self.cartoSubLayer.on('featureOver', (event, latlng, pixel, data) => {
-          document.getElementById('map').title = data.title;
-          document.getElementById('map').classList.add('clicktarget');
-        });
-
-        self.cartoSubLayer.on('featureOut', () => {
-          document.getElementById('map').title = '';
-          document.getElementById('map').classList.remove('clicktarget');
-        });
-
-        self.cartoSubLayer.setInteraction(true);
-        self.cartoSubLayer.on('featureClick', (event, latlng, pixel, data) => {
-          self.setMapTooltip(data.title, latlng);
-        });
-
-        // fix the map attribution
-        self.fixMapAttribution();
-      })
-      .on('error', (error) => { throw error; });
-  }
-
-  fixMapAttribution() {
-    const { isMobile } = this.props;
-    // when a user changes the basemap layer, show the correct attribution for the provider
-    // leaflet's layer control does a poor job of handling this on its own.
-    const attr = document.querySelector('.leaflet-control-attribution.leaflet-control');
-    attr.innerHTML = '© <a target="_blank">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-
-    // if we're on desktop add zoom buttons
-    // adding zoom buttons here because otherwise the attribution is placed on top
-    // of them and looks wrong
-    this.zoomControl = !isMobile ?
-      L.control.zoom({ position: 'bottomright' }).addTo(this.map) : null;
-
-    this.map.on('baselayerchange', (e) => {
-      // set the correct attribution
-      switch (e.name) {
-        case 'Greyscale':
-          attr.innerHTML = '© <a target="_blank">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-          break;
-        case 'Detailed Streets':
-          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012';
-          break;
-        case 'Satellite':
-          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
-          break;
-        default:
-          return null;
-      }
     });
   }
 
