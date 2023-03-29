@@ -1,7 +1,5 @@
 import queryString from 'query-string';
 
-import { cartoUser, routeSegmentsFieldsVisible } from './config';
-import cartocss from './cartocss';
 import { defaultRoutingState } from '../reducers';
 
 // App "API" functionality & logic stored in this module
@@ -104,26 +102,6 @@ export const preloadRoutingState = () => {
     }
   };
 };
-
-// CARTO layer source object for use with carto(db).js
-export const cartoLayerSource = {
-  user_name: cartoUser,
-  type: 'cartodb',
-  sublayers: [{
-    sql: '',
-    cartocss,
-    interactivity: routeSegmentsFieldsVisible.join(',')
-  }]
-};
-
-export const configureLayerSource = (sql) => {
-  cartoLayerSource.sublayers[0].sql = sql;
-  return cartoLayerSource;
-};
-
-// CARTO SQL API endpoint
-export const cartoSQLQuery = query =>
-  `https://${cartoUser}.carto.com/api/v2/sql?q=${query}`;
 
 // async loads togpx.js
 export const loadToGPX = callback =>

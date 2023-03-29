@@ -3,18 +3,6 @@ export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
 // Google Analytics tracking id
 export const gaTrackingID = 'UA-20533957-3';
 
-// CARTO account name (temporarily set to "greeninfo" until data is in order)
-export const cartoUser = 'niles';
-// GDA is this still in use?
-
-// CARTO tables
-export const cartoTables = {
-  route_segments: 'ecg_route_lines_prod',
-  cue_points: 'ecg_route_cues_prod',
-  alert_points: 'ecg_pois',
-};
-// GDA is this still in use?
-
 // Esri layers for satellite and streets (replace Mapbox Dec 2019)
 export const esriSatellite = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}@2x';
 export const esriStreets = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}@2x';

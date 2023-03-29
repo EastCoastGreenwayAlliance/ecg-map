@@ -399,9 +399,16 @@ class LeafletMap extends Component {
   }
 
   initAlwaysOnAlertPois() {
+    this.ajaxFetchAlertPoiMarkers((poimarkers) => {
+      poimarkers.forEach((marker) => {
+        marker.addTo(this.map.allpois);
+      });
+    });
+  }
+
+  ajaxFetchAlertPoiMarkers(andthencallback) {
     const { selectPoi } = this.props;
 
-    // GDA
     const poisxhr = new XMLHttpRequest();
     poisxhr.open('GET', ROUTER_ALERT_POIS_URL);
     poisxhr.onload = () => {
@@ -411,7 +418,7 @@ class LeafletMap extends Component {
       const markerlist = [];
       const poidata = JSON.parse(poisxhr.responseText);
       poidata.rows.forEach((poi) => {
-        if (!poi.lat || !poi.lng) return; // invalid, skip
+        if (!poi.lat || !poi.lng) return; // missing location, happens
 
         const marker = L.marker([poi.lat, poi.lng], {
           title: poi.name,
@@ -427,10 +434,10 @@ class LeafletMap extends Component {
         markerlist.push(marker);
       });
 
-      // add the markers to the map
-      markerlist.forEach((marker) => {
-        marker.addTo(this.map.allpois);
-      });
+      // hand the list off to the callback
+      if (andthencallback) {
+        andthencallback(markerlist);
+      }
     };
     poisxhr.send();
   }
@@ -709,7 +716,7 @@ class LeafletMap extends Component {
     const { isMobile } = this.props;
     const padding = isMobile ? [[0, 50], [50, 160]] : [[330, 0], [60, 0]];
 
-    // fetch the POIs from CARTO, filter to those near route, add to map.routepois for display
+    // fetch the POIs from the server, filter to those near route, add to map.routepois for display
     this.ajaxFetchAlertPoiMarkers((poimarkers) => {
       // parse the GeoJSON route and place it onto the map
       // keep each feature's .properties too, we need segment IDs & names for other purposes
