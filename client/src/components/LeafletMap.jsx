@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import Legend from '../../lib/L.Control.Legend';
 
 import { queryZXY } from '../common/api';
-import { esriSatellite, esriStreets, ROUTER_WMS_URL, ROUTER_ALERT_POIS_URL, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
+import { esriSatellite, ROUTER_WMS_URL, ROUTER_ALERT_POIS_URL, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 export const POIS_SHOWALL_MINZOOM = 13;  // min zoom to show all Alert Points not on a route
 export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
@@ -92,10 +92,7 @@ class LeafletMap extends Component {
 
     this.map = null;
     this.baseLayers = {
-      'Detailed Streets': L.tileLayer(esriStreets, {
-        zIndex: 0,
-      }),
-      Greyscale: L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
+      Greyscale: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
         maxZoom: 18,
         zIndex: 0,
       }),
@@ -147,12 +144,19 @@ class LeafletMap extends Component {
       popupAnchor: [12, -12]
     });
 
-    // add trail via WMS
+    // define the trail WMS
     this.thegreenway = L.tileLayer.wms(ROUTER_WMS_URL, {
       format: 'image/png',
       transparent: 'TRUE',
       layers: 'ecgroutelines_live',
       zIndex: 5,
+    });
+
+    // define the labels TileLayer
+    this.labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      zIndex: 100,
     });
 
     // layer to store searchResults (route, markers, etc) when user is searching for a location
@@ -280,8 +284,9 @@ class LeafletMap extends Component {
     });
     */
 
-    // add the greenway trail WMS
+    // add the greenway trail WMS, then the always-on labels overlay after it
     this.map.addLayer(this.thegreenway);
+    this.map.addLayer(this.labels);
 
     // "locate me" feature only available on mobile devices
     // import the code for the Leaflet-Locate plugin

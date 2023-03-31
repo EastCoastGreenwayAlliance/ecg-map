@@ -5,7 +5,6 @@ export const gaTrackingID = 'UA-20533957-3';
 
 // Esri layers for satellite and streets (replace Mapbox Dec 2019)
 export const esriSatellite = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}@2x';
-export const esriStreets = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}@2x';
 
 // route segment field names to appear within InfoWindows / PopUps
 export const routeSegmentsFieldsVisible = [
