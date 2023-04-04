@@ -16,6 +16,7 @@ SET
   title = a.title,
   line_type = a.line_type,
   meters = a.meters,
+  lts_rating = a.lts_rating,
   datetime_modified = current_timestamp
 FROM ecg_route_lines a
 WHERE a.pline_id = b.pline_id and a.the_geom is not null;
@@ -37,6 +38,7 @@ INSERT INTO ecg_route_lines_prod (
   title,
   line_type,
   meters,
+  lts_rating,
   datetime_modified
 )
 SELECT
@@ -47,6 +49,7 @@ SELECT
   title,
   line_type,
   meters,
+  lts_rating,
   current_timestamp
 FROM ecg_route_lines a
 WHERE a.pline_id NOT IN (
