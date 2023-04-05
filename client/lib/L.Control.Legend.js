@@ -54,7 +54,7 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
           <li><span class="legend-item-road"></span> On Road</li>
           <li><span class="legend-item-dirt"></span> Trail</li>
           <li><span class="legend-item-transit"></span> Transit or Ferry</li>
-          <li><span class="legend-item-highstress"></span> High_Stress Route</li>
+          <li><span class="legend-item-highstress"></span> High-Stress Route</li>
           <li><span class="legend-item-alertpoi"></span> Caution<br/>&nbsp;&nbsp;&nbsp;&nbsp;(zoom &lt; 1 mi)</li>
         </ul>
       `;
