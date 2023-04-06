@@ -39,5 +39,4 @@ export const ROUTER_API_URL = 'https://router.greenway.org/';
 export const ROUTER_WMS_URL = 'https://router.greenway.org/wms';
 
 // the URL to fetch Alert POIs
-export const ROUTER_ALERT_POIS_URL = 'https://router.greenway.org:9000/alertpois/';
-// GDA remove 9000 before launch
+export const ROUTER_ALERT_POIS_URL = 'https://router.greenway.org/alertpois/';
