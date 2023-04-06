@@ -7,7 +7,7 @@
   ul {
     display: none;
     position: absolute;
-    left: -115px;
+    left: -125px;
     padding: 5px;
     background: #fff;
     list-style: none;
@@ -31,14 +31,6 @@
         linear-gradient(transparent, transparent);
     }
 
-    &.legend-item-path {
-      // png fallback in case browser doesn't support svg
-      background: url('../assets/icons/path.png') no-repeat;
-      background:
-        url('../assets/icons/path.svg') no-repeat,
-        linear-gradient(transparent, transparent);
-    }
-
     &.legend-item-dirt {
       // png fallback in case browser doesn't support svg
       background: url('../assets/icons/dirt.png') no-repeat;
@@ -52,6 +44,14 @@
       background: url('../assets/icons/transit.png') no-repeat;
       background:
         url('../assets/icons/transit.svg') no-repeat,
+        linear-gradient(transparent, transparent);
+    }
+
+    &.legend-item-highstress {
+      // png fallback in case browser doesn't support svg
+      background: url('../assets/icons/highstress.png') no-repeat;
+      background:
+        url('../assets/icons/highstress.svg') no-repeat,
         linear-gradient(transparent, transparent);
     }
 
