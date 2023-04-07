@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 import Legend from '../../lib/L.Control.Legend';
 
 import { queryZXY } from '../common/api';
-import { esriSatellite, ROUTER_WMS_URL, ROUTER_ALERT_POIS_URL, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
+import { esriSatellite, esriSatelliteName, esriSatelliteAttribution, esriStreets, esriStreetsName, esriStreetsAttribution, greyScaleBasemap, greyScaleBasemapName, greyScaleBasemapAttribution, ROUTER_WMS_URL, ROUTER_ALERT_POIS_URL, METERS_TO_MILES, METERS_TO_FEET } from '../common/config';
 
 export const POIS_SHOWALL_MINZOOM = 13;  // min zoom to show all Alert Points not on a route
 export const POIS_DISTANCE_FROM_ROUTE = 1.0;  // miles
@@ -91,23 +91,25 @@ class LeafletMap extends Component {
     const hashZXY = queryZXY();
 
     this.map = null;
-    this.baseLayers = {
-      Greyscale: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        zIndex: 0,
-      }),
-      Satellite: L.tileLayer(esriSatellite, {
-        maxZoom: 18,
-        zIndex: 0,
-      }),
-    };
+    this.baseLayers = {};  // see also baselayerchange event handler
+    this.baseLayers[esriStreetsName] = L.tileLayer(esriStreets, {
+      zIndex: 0,
+    });
+    this.baseLayers[greyScaleBasemapName] = L.tileLayer(greyScaleBasemap, {
+      maxZoom: 18,
+      zIndex: 0,
+    });
+    this.baseLayers[esriSatelliteName] = L.tileLayer(esriSatellite, {
+      maxZoom: 18,
+      zIndex: 0,
+    });
 
     this.mapOptions = {
       center: [
         hashZXY.lat && hashZXY.lng ? hashZXY.lat : lat,
         hashZXY.lat && hashZXY.lng ? hashZXY.lng : lng,
       ],
-      layers: [this.baseLayers.Greyscale],
+      layers: [this.baseLayers[greyScaleBasemapName]],
       // maxBounds: maxGeoBounds,
       minZoom: 4,
       maxZoom: 18,
@@ -153,6 +155,7 @@ class LeafletMap extends Component {
     });
 
     // define the labels TileLayer
+    // see also baselayerchange event handler
     this.labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: 'abcd',
@@ -324,8 +327,19 @@ class LeafletMap extends Component {
     L.control.scale().addTo(this.map);
 
     // add the basemap toggle control
+    // and the behavior to turn off the always-on labels when some basemaps are chosen
     this.layersControl = L.control.layers(this.baseLayers, null);
     this.layersControl.addTo(this.map, { position: 'topright' });
+    this.map.on('baselayerchange', (e) => {
+      switch (e.name) {
+        case esriStreetsName:
+          this.map.removeLayer(this.labels);
+          break;
+        default:
+          this.map.addLayer(this.labels);
+          break;
+      }
+    });
 
     // add attribution & map zoom buttons at lower-right
     // and use our custom attributions
@@ -335,14 +349,14 @@ class LeafletMap extends Component {
     this.map.on('baselayerchange', (e) => {
       const attr = document.querySelector('.leaflet-control-attribution.leaflet-control');
       switch (e.name) {
-        case 'Greyscale':
-          attr.innerHTML = '© <a target="_blank" href="https://carto.com/">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+        case greyScaleBasemapName:
+          attr.innerHTML = greyScaleBasemapAttribution;
           break;
-        case 'Detailed Streets':
-          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012';
+        case esriStreetsName:
+          attr.innerHTML = esriStreetsAttribution;
           break;
-        case 'Satellite':
-          attr.innerHTML = 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+        case esriSatelliteName:
+          attr.innerHTML = esriSatelliteAttribution;
           break;
         default:
           return null;

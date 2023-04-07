@@ -3,8 +3,18 @@ export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
 // Google Analytics tracking id
 export const gaTrackingID = 'UA-20533957-3';
 
-// Esri layers for satellite and streets (replace Mapbox Dec 2019)
+// basemap layers for LeafletMap component
+export const esriSatelliteName = 'Satellite';
 export const esriSatellite = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}@2x';
+export const esriSatelliteAttribution = 'Tiles © Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+
+export const esriStreetsName = 'Detailed Streets';
+export const esriStreets = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}@2x';
+export const esriStreetsAttribution = 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012';
+
+export const greyScaleBasemapName = 'Greyscale';
+export const greyScaleBasemap = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png';
+export const greyScaleBasemapAttribution = '© <a target="_blank" href="https://carto.com/">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 // route segment field names to appear within InfoWindows / PopUps
 export const routeSegmentsFieldsVisible = [
