@@ -30,7 +30,7 @@
   .navbar-right {
     // placeholder container for nav UI options
     width: calc(100% - #{$logoWidthMobile});
-    line-height: $navbarHeightMobile;
+    line-height: 48px;
 
     @media (#{$bp-larger-than-tablet}) {
       width: calc(100% - #{$logoWidth});
@@ -44,7 +44,23 @@
       text-align: right;
 
       a {
+        border: 2px solid $blue;
+        background: $blue;
+        color: #FFF;
+        font-size: 1.25rem;
+        font-weight: 600;
+        font-family: "Hind", sans-serif;
+        border-radius: 0;
+        padding: 0.5rem 2rem;
+        text-align: center;
         text-decoration: none;
+        cursor: pointer;
+        -webkit-appearance: none;
+      }
+
+      a:hover {
+        border: 2px solid $dark-blue;
+        background: $dark-blue;
       }
     }
   }
