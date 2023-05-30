@@ -5,7 +5,8 @@
 
 // sample color palette
 $green:           #63bc47 !default;
-$blue:            #1482c5 !default;
+$blue:            #0c6ec0 !default;
+$dark-blue:       #0b60a8 !default;
 $grey:            #484f57 !default;
 $light-grey:      #bababa !default;
 $dark-grey:          #333 !default;
@@ -20,8 +21,8 @@ $route-yellow:       #ff0 !default; // public transit
 $route-grey:         #333 !default; // casing
 
 // component sizes
-$navbarHeight:              106px;
-$navbarHeightMobile:        62px;
+$navbarHeight:              107px;
+$navbarHeightMobile:        71px;
 $logoWidth:                 163px;
 $logoWidthMobile:           79px;
 $left-ui-width:             300px;
