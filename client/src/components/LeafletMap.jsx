@@ -152,6 +152,7 @@ class LeafletMap extends Component {
       transparent: 'TRUE',
       layers: 'ecgroutelines_live',
       zIndex: 5,
+      tileSize: 1024,
     });
 
     // define the labels TileLayer
