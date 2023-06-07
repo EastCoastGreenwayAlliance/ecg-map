@@ -51,10 +51,11 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
       var legend = this._container = L.DomUtil.create('div', className, L.DomUtil.get('map'));
       var html = `
         <ul class="map-legend-items">
+          <li><span class="legend-item-paved"></span> Trail</li>
+          <li><span class="legend-item-unpaved"></span> Unpaved Trail</li>
           <li><span class="legend-item-road"></span> On Road</li>
-          <li><span class="legend-item-dirt"></span> Trail</li>
+          <li><span class="legend-item-highstress"></span> High-Stress Road<br/><span style="padding-left: 15px; white-space: nowrap;">Extreme Caution</span></li>
           <li><span class="legend-item-transit"></span> Transit or Ferry</li>
-          <li><span class="legend-item-highstress"></span> High-Stress Route</li>
           <li><span class="legend-item-alertpoi"></span> Caution<br/>&nbsp;&nbsp;&nbsp;&nbsp;(zoom &lt; 1 mi)</li>
         </ul>
       `;
@@ -78,9 +79,17 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
 
       L.DomEvent
           .on(this._link, 'click', L.DomEvent.stopPropagation)
+          .on(this._link, 'mousedown', L.DomEvent.stopPropagation)
           .on(this._link, 'click', L.DomEvent.preventDefault)
           .on(this._link, 'click', this._onClick, this)
           .on(this._link, 'dblclick', L.DomEvent.stopPropagation);
+
+      L.DomEvent
+          .on(legend, 'click', L.DomEvent.stopPropagation)
+          .on(legend, 'mousedown', L.DomEvent.stopPropagation)
+          .on(legend, 'click', L.DomEvent.preventDefault)
+          .on(legend, 'dblclick', L.DomEvent.stopPropagation);
+
       /* previous change to default legend to open reveals it cannot be closed with touch. Per https://github.com/Leaflet/Leaflet/issues/6978 L.touch no longer needed
       if (L.Browser.touch) {
         L.DomEvent.on(link, 'click', L.DomEvent.stop);
@@ -89,6 +98,7 @@ Author: Chris Henrick @clhenrick <chrishenrick@gmail.com>
         L.DomEvent.on(link, 'focus', this.expand, this);
       }
       */
+
       // // work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
       L.DomEvent.on(legend, 'click', function() {
         setTimeout(L.Util.bind(this._link, this), 0);

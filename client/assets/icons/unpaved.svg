@@ -4,14 +4,14 @@
    data-name="Layer 1"
    viewBox="0 0 10 18"
    version="1.1"
-   sodipodi:docname="highstress.svg"
+   sodipodi:docname="road.svg"
    inkscape:version="1.2 (dc2aeda, 2022-05-15)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
-     id="namedview17"
+     id="namedview30"
      pagecolor="#ffffff"
      bordercolor="#000000"
      borderopacity="0.25"
@@ -25,59 +25,28 @@
      inkscape:cy="9"
      inkscape:window-width="1390"
      inkscape:window-height="1205"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-x="509"
+     inkscape:window-y="58"
      inkscape:window-maximized="0"
      inkscape:current-layer="Layer_1" />
   <defs
-     id="defs4">
+     id="defs21">
     <style
-       id="style2">.cls-1{fill:#5a5c5d;}.cls-2{fill:#5b5d5e;}.cls-3{fill:#c9da2b;}</style>
+       id="style19">.cls-1{fill:#bfe6f1;}.cls-2{fill:#5b5d5e;}</style>
   </defs>
   <title
-     id="title6">Artboard 24</title>
+     id="title23">Artboard 22</title>
   <rect
      class="cls-1"
      x="1.25"
      y="1.24"
      width="7.51"
      height="15.52"
-     id="rect8"
-     style="fill:#FF000F;fill-opacity:1" />
+     id="rect25"
+     style="fill:#50B762;fill-opacity:1" />
   <path
      class="cls-2"
      d="M9,17H1V1H9Zm-7.51-.48h7v-15h-7Z"
-     id="path10"
-     style="fill:#FF000F;fill-opacity:1" />
-  <rect
-     class="cls-3"
-     x="1.5161009"
-     y="12.748413"
-     width="6.9405355"
-     height="3.2665632"
-     id="rect12-0"
-     style="fill:#ffffff;fill-opacity:1" />
-  <rect
-     class="cls-3"
-     x="1.524863"
-     y="7.6014061"
-     width="6.9405355"
-     height="3.2665632"
-     id="rect12-0-3"
-     style="fill:#ffffff;fill-opacity:1" />
-  <rect
-     class="cls-3"
-     x="1.5248637"
-     y="2.3453038"
-     width="6.9405355"
-     height="3.2665632"
-     id="rect12-0-3-7"
-     style="fill:#ffffff;fill-opacity:1" />
-  <rect
-     style="fill:#ffffff;fill-opacity:1"
-     id="rect10803"
-     width="0.17526777"
-     height="0.017526777"
-     x="5.9591041"
-     y="12.759494" />
+     id="path27"
+     style="fill:#5D635B;fill-opacity:1" />
 </svg>
