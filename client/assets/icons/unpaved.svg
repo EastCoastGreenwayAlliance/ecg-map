@@ -4,7 +4,7 @@
    data-name="Layer 1"
    viewBox="0 0 10 18"
    version="1.1"
-   sodipodi:docname="road.svg"
+   sodipodi:docname="paved.svg"
    inkscape:version="1.2 (dc2aeda, 2022-05-15)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -43,7 +43,7 @@
      width="7.51"
      height="15.52"
      id="rect25"
-     style="fill:#50B762;fill-opacity:1" />
+     style="fill:#99E07C;fill-opacity:1" />
   <path
      class="cls-2"
      d="M9,17H1V1H9Zm-7.51-.48h7v-15h-7Z"
