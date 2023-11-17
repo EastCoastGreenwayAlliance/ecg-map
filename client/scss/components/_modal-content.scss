@@ -3,29 +3,34 @@
 
   .modal-content__close {
     position: absolute;
-    top: 5px;
+    top: 25px;
     right: 8px;
     width: auto;
-    font-size: 3rem;
+    font-size: 5rem;
     font-weight: 400;
     line-height: 1;
-    color: #fff;
+    color: #333;
     padding: 0;
     margin: 0;
     border: 0;
-
-    @media (#{$bp-larger-than-tablet}) {
-      font-size: 3.5rem;
-    }
   }
 
   .modal-content__top-box {
-    padding: 15px 20px 15px 15px;
-    color: #fff;
-    background: lighten($dark-grey, 10%);
+    padding: 10px 20px;
 
     @media (#{$bp-larger-than-tablet}) {
-      padding: 25px 35px 25px 25px;
+      padding: 5px 25px;
+    }
+  }
+
+  .modal-content__greeting-title {
+    margin-bottom: 0;
+    font-size: 2.4rem;
+    text-align: center;
+    font-weight: bold;
+
+    @media (#{$bp-larger-than-tablet}) {
+      font-size: 2.7rem;
     }
   }
 
@@ -38,18 +43,11 @@
     }
   }
 
-  .modal-content__signup-msg {
-    padding: 25px;
+  .modal-content__bottom-errormessage {
+    background-color: pink;
+    color: black;
     text-align: center;
-
-    p {
-      display: inline-block;
-      margin: 0 10px 0 0;
-      font-size: 1.8rem;
-    }
-
-    button.close {
-      margin: 0;
-    }
+    padding: 1rem;
+    margin-bottom: 1em;
   }
 }

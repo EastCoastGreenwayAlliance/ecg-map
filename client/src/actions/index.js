@@ -12,7 +12,6 @@ export {
   fetchRoutingLocation,
   fetchRouteDirections,
 } from './ecgRoutingActions';
-export postMailchimpAPI from './mailchimpActions';
 export fetchElevationData, { elevationDataClear } from './elevationDataActions';
 export {
   enableActiveTurning,

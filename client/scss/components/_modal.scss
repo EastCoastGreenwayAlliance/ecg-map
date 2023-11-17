@@ -8,7 +8,7 @@
   background-color: #fff;
 
   @media (#{$bp-larger-than-tablet}) {
-    width: 700px;
+    max-width: 925px;
     top: initial;
     transform: translate(-50%, $navbarHeight + 40px);
   }

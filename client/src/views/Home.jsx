@@ -29,8 +29,6 @@ class Home extends Component {
     match: PropTypes.object, // via react-router
     staticContext: PropTypes.object, // via react-router
     isMobile: PropTypes.bool, // via redux-responsive
-    mailchimp: PropTypes.object, // mailchimp POST status
-    postMailchimpAPI: PropTypes.func.isRequired, // action creator for POSTing to mailchip
     startLocation: PropTypes.object.isRequired,
     endLocation: PropTypes.object.isRequired,
   }
@@ -91,7 +89,7 @@ class Home extends Component {
 
   render() {
     const { showModal } = this.state;
-    const { isMobile, mailchimp, postMailchimpAPI } = this.props;
+    const { isMobile } = this.props;
 
     return (
       <div className="Home">
@@ -117,9 +115,6 @@ class Home extends Component {
         >
           <ModalContent
             handleCloseModal={this.handleCloseModal}
-            handleFormSubmit={postMailchimpAPI}
-            mailchimpResponse={mailchimp.text}
-            mailchimpError={mailchimp.error}
           />
         </ReactModal>
       </div>

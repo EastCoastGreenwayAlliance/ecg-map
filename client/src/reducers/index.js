@@ -2,7 +2,6 @@
 import { combineReducers } from 'redux';
 import { createResponsiveStateReducer } from 'redux-responsive';
 
-import mailchimpReducer from './mailchimpReducer';
 import geocodeReducer from './geocodeReducer';
 import routingReducer from './ecgRoutingReducer';
 import elevationReducer from './elevationDataReducer';
@@ -27,7 +26,6 @@ const rootReducer = combineReducers({
   browser,
   elevation: elevationReducer,
   geocoding: geocodeReducer,
-  mailchimp: mailchimpReducer,
   routing: routingReducer,
   activeturning: activeTurningReducer,
   pois: poiReducer,
