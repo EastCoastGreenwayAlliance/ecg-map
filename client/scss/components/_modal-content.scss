@@ -13,6 +13,7 @@
     padding: 0;
     margin: 0;
     border: 0;
+    z-index: 1;
   }
 
   .modal-content__top-box {
@@ -43,11 +44,13 @@
     }
   }
 
-  .modal-content__bottom-errormessage {
-    background-color: pink;
-    color: black;
-    text-align: center;
-    padding: 1rem;
-    margin-bottom: 1em;
+  header.at-markup.HeaderHtml {
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  legend.at-legend {
+    padding-top: 0;
   }
 }
