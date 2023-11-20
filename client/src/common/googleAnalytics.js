@@ -93,14 +93,6 @@ export const logRouteLocationError = (error) => {
   });
 };
 
-export const logMailchimpError = (error) => {
-  ReactGA.event({
-    category: 'App Errors',
-    action: 'Mailchimp signup error',
-    label: error.message || error
-  });
-};
-
 export const logElevDataRequestError = (error) => {
   ReactGA.event({
     category: 'App Errors',

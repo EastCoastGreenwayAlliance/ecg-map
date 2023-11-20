@@ -1,5 +1,4 @@
 .ModalForm {
-  // same padding as modal-content__top-box in _modal-content.scss
   padding: 15px 20px 15px 15px;
 
   @media (#{$bp-larger-than-tablet}) {
@@ -21,50 +20,61 @@
     }
   }
 
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
   fieldset {
     margin: 0;
     padding: 0;
     border: 0;
-
-    &.hide-modal-group {
-      margin-top: 20px;
-    }
   }
 
-  .signup-copy,
-  .signup-input,
-  .signup-submit {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
-    border: 0;
-    border-radius: 0;
+  header.at-title {
+    font-size: 2.5rem;
+    padding-top: 0;
   }
 
-  .signup-copy {
-    width: 100%;
-    padding-bottom: 10px;
-
-    @media (#{$bp-larger-than-tablet}) {
-      width: 250px;
-      padding-bottom: 0;
-    }
+  .at .at-fieldset {
+    padding-top: 0;
   }
 
-  .signup-input {
-    width: calc(100% - 85px);
-
-    @media (#{$bp-larger-than-tablet}) {
-      // width: 275px;
-    }
+  header.at-markup p {
+    font-size: 1.5rem;
   }
 
-  .signup-submit {
-    width: 85px;
-    text-transform: none;
-    padding: 0 20px;
-    background: $green;
+  .at-legend {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .at label {
+    font-size: 1.8rem;
+  }
+
+  .at input[type="text"],
+  .at input[type="tel"],
+  .at input[type="email"] {
+    font-size: 1.8rem;
+    height: 2em;
+  }
+
+  .at input[type=checkbox] + span {
+    padding-left: 2.5rem;
+  }
+
+  .at input[type=checkbox] + span::before {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .at-form-submit input[type="submit"] {
+    border: 2px solid #0c6ec0;
+    background: #0c6ec0;
     color: #fff;
+    line-height: 0;
   }
 
   .hide-modal-checkbox,

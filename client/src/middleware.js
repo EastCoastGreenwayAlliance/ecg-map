@@ -5,7 +5,6 @@ import {
   ROUTE_SEARCH_ERROR,
   LOCATION_GEOCODE_ERROR,
   ROUTING_LOCATION_ERROR,
-  MAILCHIMP_POST_ERROR,
   ELEVATION_DATA_ERROR,
   ACTIVE_TURNING_ERROR
 } from './common/actionTypes';
@@ -13,7 +12,6 @@ import {
 import {
   logGeocodeError,
   logRouteLocationError,
-  logMailchimpError,
   logElevDataRequestError,
   logActiveTurningError,
   logRouteSearchError,
@@ -35,10 +33,6 @@ const errorGaReporter = store => next => (action) => {
 
     case ROUTING_LOCATION_ERROR:
       logRouteLocationError(action.error);
-      return next(action);
-
-    case MAILCHIMP_POST_ERROR:
-      logMailchimpError(action.error);
       return next(action);
 
     case ELEVATION_DATA_ERROR:

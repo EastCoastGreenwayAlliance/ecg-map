@@ -4,12 +4,19 @@
   top: 50%;
   width: calc(100% - 20px);
   height: auto;
-  transform: translate(-50%, -50%);
   background-color: #fff;
 
   @media (#{$bp-larger-than-tablet}) {
-    width: 700px;
+    max-width: 925px;
     top: initial;
     transform: translate(-50%, $navbarHeight + 40px);
+  }
+
+  @media (#{$bp-smaller-than-desktop}) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-height: 100vh;
+    overflow-y: auto;
   }
 }
