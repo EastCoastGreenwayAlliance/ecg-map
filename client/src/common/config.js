@@ -1,5 +1,10 @@
 // App wide configuration goes here
-export const googleAPIKey = 'AIzaSyAFBQ5xLgNikyYrlnfvbfODyO35g3k-IkU';
+
+// Google API key: Maps Elevation API
+// Spring 2025, geocoding is now by Nominatim since Google Geocoding API
+// will no longer work if referer restriction is used
+export const googleAPIKey = 'AIzaSyBiwvrm0RJhGb2hT5m6CWli7BtoCco66gc';
+
 // Google Analytics tracking id
 export const gaTrackingID = 'UA-20533957-3';
 

@@ -2,7 +2,7 @@
 // Used with Redux Thunk, see: http://redux.js.org/docs/advanced/AsyncActions.html
 import fetch from 'isomorphic-fetch';
 
-import { googleAPIKey } from '../common/config';
+// import { googleAPIKey } from '../common/config';
 
 import {
   LOCATION_GEOCODE_REQUEST,
@@ -47,11 +47,56 @@ export const setMapZoomOnGeocode = trueorfalse => ({
  * Redux Thunk action creator to fetch geocoded JSON for a given location / address
  * @param {string} location: A URI encoded string representing an address,
  *   e.g. "1600+Amphitheatre+Parkway,+Mountain+View,+CA"
+ * This also handles reverse geocodes, to fetch the address at the point...
+ * though this is not really used anymore, so the reverse geocode is wasted,
+ * but caller expects a fetch() and refactoring would be a big deal.
 */
 const fetchLocationGeocode = (searchTerm, addressislatlngcoords = false) => {
-  const searchTermEncoded = encodeURIComponent(searchTerm);
-  const viewportBias = encodeURIComponent('24.046464,-90.175781|48.224673,-58.666992');
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${searchTermEncoded}&bounds=${viewportBias}&key=${googleAPIKey}`;
+  if (addressislatlngcoords) {
+    const [lat, lng] = searchTerm.split(',');
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lng)}&format=geojson`;
+
+    return (dispatch) => {
+      dispatch(locationGeocodeRequest(searchTerm));
+
+      return fetch(url)
+        .then((res) => {
+          if (!res.ok) {
+            dispatch(locationGeocodeError(res.statusText));
+            throw Error(res.statusText);
+          } else {
+            return res.json();
+          }
+        })
+        .then((json) => {
+          const { features } = json;
+          if (!features || !features.length) {
+            dispatch(locationGeocodeError('Address not found, please try again.'));
+            return;
+          }
+
+          const theresult = {
+            address_components: [],  // unused, legacy
+            formatted_address: searchTerm,  // their own words, don't use geocoder's name anymore
+            geometry: {  // emulate Google Maps API format
+              location_type: 'ROOFTOP',
+              location: {
+                lng: features[0].geometry.coordinates[0],
+                lat: features[0].geometry.coordinates[1],
+              },
+            },
+          };
+
+          dispatch(locationGeocodeSuccess(theresult));
+        })
+        .catch(error => dispatch(locationGeocodeError(error)));
+    };
+  }
+
+  // not a reverse geocode, but an address geocode
+  // can't wrap this in a nice, readable "else" because of the linter
+  const viewbox = '-90.175781,24.046464,-58.666992,48.224673';
+  const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&bounded=1&viewbox=${viewbox}&limit=1&q=${encodeURIComponent(searchTerm)}`;
 
   return (dispatch) => {
     dispatch(locationGeocodeRequest(searchTerm));
@@ -65,28 +110,25 @@ const fetchLocationGeocode = (searchTerm, addressislatlngcoords = false) => {
           return res.json();
         }
       })
-      .then((json) => {
-        const { results, status } = json;
-        // catch a non-successful geocode result that was returned in the response
-        if (!results || !results.length || status !== 'OK') {
+      .then((features) => {
+        if (!features || !features.length) {
           dispatch(locationGeocodeError('Address not found, please try again.'));
-        } else {
-          // if addressislatlngcoords then fudge the result to be the point we asked for
-          // why did we geocode at all? caller expects a fetch()
-          const theresult = results[0];
-
-          if (addressislatlngcoords) {
-            const lat = parseFloat(searchTerm.trim().split(',')[0]);
-            const lng = parseFloat(searchTerm.trim().split(',')[1]);
-            theresult.address_components = [];
-            theresult.formatted_address = searchTerm;
-            theresult.geometry.location_type = 'ROOFTOP';
-            theresult.geometry.location.lng = lng;
-            theresult.geometry.location.lat = lat;
-          }
-
-          dispatch(locationGeocodeSuccess(theresult));
+          return;
         }
+
+        const theresult = {
+          address_components: [],  // unused, legacy
+          formatted_address: searchTerm,  // their own words, don't use geocoder's name anymore
+          geometry: {  // emulate Google Maps API format
+            location_type: 'ROOFTOP',
+            location: {
+              lng: parseFloat(features[0].lon),
+              lat: parseFloat(features[0].lat),
+            },
+          },
+        };
+
+        dispatch(locationGeocodeSuccess(theresult));
       })
       .catch(error => dispatch(locationGeocodeError(error)));
   };
