@@ -61,12 +61,16 @@ class RouteDownloadGPX extends Component {
       },
       geometry: {
         type: 'MultiLineString',
-        coordinates: routegeojson.features.reduce((collected, feature) => {
-          collected.push(feature.geometry.coordinates.slice());
-          return collected;
-        }, []),
+        coordinates: [  // one single trkseg...
+          routegeojson.features.reduce((collected, feature) => {
+            const coords = feature.geometry.coordinates.slice();
+            collected.push(...coords);  // ... with all of the trkpt vertices within it
+            return collected;
+          }, []),
+        ],
       },
     };
+    console.debug(theonepath.geometry);  // eslint-disable-line
 
     const alertpois = routegeojson.properties.pois.map((poi) => {
       const it = {
