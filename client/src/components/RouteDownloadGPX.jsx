@@ -70,7 +70,6 @@ class RouteDownloadGPX extends Component {
         ],
       },
     };
-    console.debug(theonepath.geometry);  // eslint-disable-line
 
     const alertpois = routegeojson.properties.pois.map((poi) => {
       const it = {
