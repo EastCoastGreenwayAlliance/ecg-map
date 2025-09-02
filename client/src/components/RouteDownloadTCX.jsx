@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { loadFileSaver } from '../common/api';
 import { logDownloadTCX } from '../common/googleAnalytics';
 
-const TCX_FOLDER_NAME = 'East Coast Greenway Map';
-const TCX_ROUTE_NAME = 'Route';
 const CUE_POINT_CODES = { // CueSheet.jsx turn codes => TCX PointType
   AR: 'Danger',
   RT: 'Right',
@@ -49,43 +47,37 @@ class RouteDownloadTCX extends Component {
     });
 
     // create a XML parser, then the top-level TrainingCenterDatabase item
-    const xmlroot = (new DOMParser()).parseFromString('<root></root>', 'text/xml');
+    const namespace = 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2';
+    const xsi = 'http://www.w3.org/2001/XMLSchema-instance';
+    const loc = 'http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd';
 
-    const tcxmain = xmlroot.createElement('TrainingCenterDatabase');
-    tcxmain.setAttribute('xmlns', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2');
-    tcxmain.setAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
-    tcxmain.setAttribute('xsi:schemaLocation', 'http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd');
+    const xmlroot = (new DOMParser()).parseFromString('<root></root>', 'text/xml');
+    const tcxmain = xmlroot.createElementNS(namespace, 'TrainingCenterDatabase');
+
+    xmlroot.replaceChild(tcxmain, xmlroot.documentElement);
+
+    tcxmain.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns:xsi', xsi);
+    tcxmain.setAttributeNS(xsi, 'xsi:schemaLocation', `${namespace} ${loc}`);
 
     // just one folder with one course in it
     // Folders -> Courses -> CourseFolder -> CourseNameRef -> Id
-    const folders = xmlroot.createElement('Folders');
-    tcxmain.appendChild(folders);
-    const folders_courses = xmlroot.createElement('Courses');
-    const folders_csubfolder = xmlroot.createElement('CourseFolder');
-    folders_csubfolder.setAttribute('Name', TCX_FOLDER_NAME);
-    const folders_csubfolder_coursenameref = xmlroot.createElement('CourseNameRef');
-    const folders_csubfolder_coursenameref_id = xmlroot.createElement('Id');
-    folders_csubfolder_coursenameref_id.textContent = TCX_ROUTE_NAME;
-    folders.appendChild(folders_courses);
-    folders_courses.appendChild(folders_csubfolder);
-    folders_csubfolder.appendChild(folders_csubfolder_coursenameref);
-    folders_csubfolder_coursenameref.appendChild(folders_csubfolder_coursenameref_id);
+
 
     // a Courses set with only the one Course
     // Courses -> Course -> Track -> Trackpoint
-    const courses = xmlroot.createElement('Courses');
+    const courses = xmlroot.createElementNS(namespace, 'Courses');
     tcxmain.appendChild(courses);
-    const course = xmlroot.createElement('Course');
+    const course = xmlroot.createElementNS(namespace, 'Course');
     courses.appendChild(course);
-    const course_name = xmlroot.createElement('Name');
-    course_name.textContent = TCX_ROUTE_NAME;
+    const course_name = xmlroot.createElementNS(namespace, 'Name');
+    course_name.textContent = 'Route';
     course.appendChild(course_name);
 
     // the one Course has one Track, and the list of points along the track
     // Courses -> Course -> Track -> [Trackpoint, ...]
     // each trackpoint also has the meters traveled so far, which sounds similar to
     // Cumulative Distance on CueSheet except that's at each cue point, and this is at each vertex
-    const course_track = xmlroot.createElement('Track');
+    const course_track = xmlroot.createElementNS(namespace, 'Track');
     course.appendChild(course_track);
 
     const trackpoints = [];
@@ -125,12 +117,12 @@ class RouteDownloadTCX extends Component {
     });
 
     trackpoints.forEach((point) => {
-      const trackpoint = xmlroot.createElement('Trackpoint');
-      const trackpoint_pos = xmlroot.createElement('Position');
-      const trackpoint_pos_lat = xmlroot.createElement('LatitudeDegrees');
-      const trackpoint_pos_lng = xmlroot.createElement('LongitudeDegrees');
-      const trackpoint_distance = xmlroot.createElement('DistanceMeters');
-      const trackpoint_elevation = xmlroot.createElement('AltitudeMeters');
+      const trackpoint = xmlroot.createElementNS(namespace, 'Trackpoint');
+      const trackpoint_pos = xmlroot.createElementNS(namespace, 'Position');
+      const trackpoint_pos_lat = xmlroot.createElementNS(namespace, 'LatitudeDegrees');
+      const trackpoint_pos_lng = xmlroot.createElementNS(namespace, 'LongitudeDegrees');
+      const trackpoint_distance = xmlroot.createElementNS(namespace, 'DistanceMeters');
+      const trackpoint_elevation = xmlroot.createElementNS(namespace, 'AltitudeMeters');
 
       trackpoint_pos_lat.textContent = point.position_lat;
       trackpoint_pos_lng.textContent = point.position_lng;
@@ -190,13 +182,13 @@ class RouteDownloadTCX extends Component {
     });
 
     cuepoints.forEach((poi) => {
-      const coursepoint = xmlroot.createElement('CoursePoint');
-      const coursepoint_name = xmlroot.createElement('Name');
-      const coursepoint_notes = xmlroot.createElement('Notes');
-      const coursepoint_pointtype = xmlroot.createElement('PointType');
-      const coursepoint_pos = xmlroot.createElement('Position');
-      const coursepoint_pos_lat = xmlroot.createElement('LatitudeDegrees');
-      const coursepoint_pos_lng = xmlroot.createElement('LongitudeDegrees');
+      const coursepoint = xmlroot.createElementNS(namespace, 'CoursePoint');
+      const coursepoint_name = xmlroot.createElementNS(namespace, 'Name');
+      const coursepoint_notes = xmlroot.createElementNS(namespace, 'Notes');
+      const coursepoint_pointtype = xmlroot.createElementNS(namespace, 'PointType');
+      const coursepoint_pos = xmlroot.createElementNS(namespace, 'Position');
+      const coursepoint_pos_lat = xmlroot.createElementNS(namespace, 'LatitudeDegrees');
+      const coursepoint_pos_lng = xmlroot.createElementNS(namespace, 'LongitudeDegrees');
 
       coursepoint_name.textContent = poi.name;
       coursepoint_notes.textContent = poi.notes;
