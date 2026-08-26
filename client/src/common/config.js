@@ -18,7 +18,7 @@ export const esriStreets = 'https://server.arcgisonline.com/ArcGIS/rest/services
 export const esriStreetsAttribution = 'Tiles © Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012';
 
 export const greyScaleBasemapName = 'Greyscale';
-export const greyScaleBasemap = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png';
+export const greyScaleBasemap = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png?key=cb1_28h1_1_7660bcb99eab66e8e05d8af9';
 export const greyScaleBasemapAttribution = '© <a target="_blank" href="https://carto.com/">CARTO</a> © <a target="_blank" href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
 // route segment field names to appear within InfoWindows / PopUps
