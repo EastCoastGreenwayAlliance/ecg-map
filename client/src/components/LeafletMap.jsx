@@ -157,7 +157,7 @@ class LeafletMap extends Component {
 
     // define the labels TileLayer
     // see also baselayerchange event handler
-    this.labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png?key=cb1_28h1_1_7660bcb99eab66e8e05d8af9', {
+    this.labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png?key=cb1_2x9y_2_ee312d667e4c5cde6aa0ef6a', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: 'abcd',
       zIndex: 100,
